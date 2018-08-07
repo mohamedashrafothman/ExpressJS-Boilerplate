@@ -1,0 +1,17 @@
+{
+	"extends": "eslint:recommended",
+	"env": {
+		"browser": true,
+		"commonjs": true,
+		"es6": true,
+		"jquery": true
+	},
+	"rules": {
+		"camelcase": 1,
+		"comma-dangle": 2,
+		"semi": 1,
+		"quotes": 1,
+		"no-console": 0,
+		"indent": 0
+	}
+}

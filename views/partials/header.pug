@@ -1,0 +1,19 @@
+nav.container-fluid.d-flex.align-items-center.justify-content-between(style="height:10vh;")
+	a.logo.text-black.h-100(href="/")
+		span.lnr.lnr-mustache
+	.d-flex.flex-row.align-items-center.justify-content-end.w-50
+		ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0
+			li.text-uppercase.h-6.text-dark.font-weight-bold.mr-5
+				a(href="/login") login
+			li.text-uppercase.h-6.text-dark.font-weight-bold.mr-5
+				a(href="/reigster") register
+			li.text-uppercase.h-6.text-dark.font-weight-bold
+				a(href="/logout") logout
+		span.menu-open.lnr.lnr-menu.d-inline-block.d-md-none
+
+<!-- Direction options are: up, down, left, right -->
+<!-- Speed options are: slow, slower, fast, faster -->
+<!-- Animation Type options: fade, slide, zoom, bounce -->
+<!-- Defauly options are: data-enternce-direction: left, data-exit-direction: left, data-animation-type: slide, data-speed: 1s -->
+.overlay(data-enternce-direction="left" data-exit-direction="left" data-speed="fast" data-animation-type="slide")
+	span.menu-close.lnr.lnr-cross

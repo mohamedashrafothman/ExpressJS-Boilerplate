@@ -1,0 +1,27 @@
+*, *::after, *::before{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body.preloader-site {
+	overflow: hidden;
+}
+
+a {
+	color: $black;
+	&:hover{
+		text-decoration: none;
+	}
+}
+ul {
+	li {
+		list-style: none;
+	}
+}
+.logo{
+	font-size: 3rem;
+	&:hover{
+		color: $dark;
+	}
+}
