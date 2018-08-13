@@ -87,13 +87,12 @@ module.exports = {
 		 	if (!user) {
 		 		req.flash('error', info);
 		 		return res.redirect('/user/login');
-				
 		 	}
 		 	req.logIn(user, (err) => {
 		 		if (err) {
 		 			return next(err);
 		 		}
-		 		req.flash('success', res.__('msgs.login.success_login'));
+		 		req.flash('success', res.__('msgs.validation.login.success_login'));
 		 		res.redirect('/');
 		 	});
 		 })(req, res, next);
@@ -101,7 +100,70 @@ module.exports = {
 	logoutUser: (req, res)=> {
 		req.logout();
 		req.user = null;
-		req.flash('success', res.__('msgs.logout.success_logout'));
+		req.flash('success', res.__('msgs.validation.logout.success_logout'));
 		res.redirect('/');
+	},
+	getUserProfile: (req, res)=> {
+		res.render('user/profile', {title: `${req.user.profile.name}'s profile`});
+	},
+	validateUserProfile: async (req, res, next)=> {
+		req.sanitizeBody('name');
+		req.checkBody('name', res.__('msgs.validation.register.name')).notEmpty();
+		req.checkBody('email', res.__('msgs.validation.register.email')).isEmail();
+		req.sanitizeBody('email');
+		const errors = await req.getValidationResult();
+		if (!errors.isEmpty()) {
+			var err = errors.array();
+			req.flash('error', err);
+			res.redirect('back');
+			return;
+		}
+		next();
+	},
+	updateUserProfile: async (req, res)=> {
+		const userNewData = {
+			email: req.body.email,
+			profile: {
+				name: req.body.name,
+				username: req.body.username,
+				location: req.body.location,
+				gender: req.body.gender,
+				website: req.body.website
+			}
+		}
+		const [err, user] = await to(User.findOneAndUpdate({ _id: req.user._id }, { $set: userNewData }, {new: true, runValidators: true, context: 'query' }).exec());
+		if(err) return next(err);
+		
+		req.flash('success', 'profile basic info updated!');
+		res.redirect('back');
+	},
+	validateUserPassword: async (req, res, next)=> {
+		req.checkBody('newPassword', res.__('msgs.validation.register.password')).notEmpty();
+		req.checkBody('confirmPassword', res.__('msgs.validation.register.confirm_password')).notEmpty();
+		req.checkBody('confirmPassword', res.__('msgs.validation.register.passwords_not_match')).equals(req.body.newPassword);
+		const errors = await req.getValidationResult();
+		if (!errors.isEmpty()) {
+			var err = errors.array();
+			req.flash('error', err);
+			res.redirect('back');
+			return;
+		}
+		next();
+	},
+	updateUserPassword: async (req, res, next)=> {
+		const [err, user] = await to(User.findOne({_id: req.user._id}).exec());
+		if(err) return next(err);
+		user.password = req.body.newPassword;
+		const [err2, updatedUser] = await to(user.save());
+		if(err2) return next(err2);
+		req.flash('success', 'successfully updated password');
+		res.redirect('/user/profile');
+	},
+	deleteUserAccount: async(req, res, next)=> {
+		const [err, user] = await to(User.findByIdAndRemove({_id:req.user._id}).exec());
+		if(err) return next(err);
+		req.logout();
+		req.flash('success', 'Account has been deleted!');
+		res.redirect('/'); 
 	}
 }

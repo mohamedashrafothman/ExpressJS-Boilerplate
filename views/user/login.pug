@@ -7,10 +7,10 @@ block content
 			form.w-75.mx-auto(action="/user/login", method="POST")
 				input(type="hidden", name="_csrf", value=`${csrfToken}`)
 				.form-group
-					label(for="email") Email
-					input.rounded-0.form-control#email(type="email" name="email" placeholder="Email" aria-describedby="emailHelp")
+					label(for="email")= __('user.email')
+					input.rounded-0.form-control#email(type="email" name="email" placeholder= __('user.email') aria-describedby="emailHelp")
 					small#emailHelp.form-text.text-muted please enter your email formatted like "john@doe.com".
 				.form-group
-					label(for="password") password
-					input.rounded-0.form-control#password(type="password" name="password" placeholder="password" aria-describedby="passwordHelp")
-				button.btn.btn-warning.rounded-0.text-white(type="submit") login
+					label(for="password")= __('user.password')
+					input.rounded-0.form-control#password(type="password" name="password" placeholder= __('user.password') aria-describedby="passwordHelp")
+				button.btn.btn-primary.rounded-0.text-white(type="submit")= __('user.login')

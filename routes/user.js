@@ -8,5 +8,8 @@ router.get("/register", userController.getRegisteration);
 router.post("/register", userController.validateRegister, userController.registerUser);
 router.post("/login", userController.validateLogin, userController.loginUser);
 router.get('/logout', passportConfig.isAuthenticated, userController.logoutUser);
-
+router.get('/profile', passportConfig.isAuthenticated, userController.getUserProfile);
+router.post('/profile/update', passportConfig.isAuthenticated, userController.validateUserProfile, userController.updateUserProfile);
+router.post('/profile/password', passportConfig.isAuthenticated, userController.validateUserPassword, userController.updateUserPassword);
+router.get('/profile/delete', passportConfig.isAuthenticated, userController.deleteUserAccount);
 module.exports = router;

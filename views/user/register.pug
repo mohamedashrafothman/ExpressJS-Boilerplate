@@ -7,19 +7,19 @@ block content
 			form.w-75.mx-auto.mb-5(action="/user/register", method="POST")
 				input(type="hidden", name="_csrf", value=`${csrfToken}`)
 				.form-group
-					label.text-capitalize(for="name") Name
-					input.rounded-0.form-control#name(type="text" name="name" placeholder="Name")
+					label.text-capitalize(for="name")= __('user.name')
+					input.rounded-0.form-control#name(type="text" name="name" placeholder= __('user.name'))
 				.form-group
-					label.text-capitalize(for="username") username
-					input.rounded-0.form-control#username(type="text" name="username" placeholder="username")
+					label.text-capitalize(for="username")= __('user.username')
+					input.rounded-0.form-control#username(type="text" name="username" placeholder= __('user.username'))
 				.form-group
-					label.text-capitalize(for="email") Email
-					input.rounded-0.form-control#email(type="email" name="email" placeholder="Email" aria-describedby="emailHelp")
+					label.text-capitalize(for="email")= __('user.email')
+					input.rounded-0.form-control#email(type="email" name="email" placeholder= __('user.email') aria-describedby="emailHelp")
 					small#emailHelp.form-text.text-muted please enter your email formatted like "john@doe.com".
 				.form-group
-					label.text-capitalize(for="password") password
-					input.rounded-0.form-control#password(type="password" name="password" placeholder="password" aria-describedby="passwordHelp")
+					label.text-capitalize(for="password")= __('user.password')
+					input.rounded-0.form-control#password(type="password" name="password" placeholder= __('user.password') aria-describedby="passwordHelp")
 				.form-group
-					label.text-capitalize(for="confirmPassword") Confirm Password
-					input.rounded-0.form-control#confirmPassword(type="password" name="confirmPassword" placeholder="Confirm Password" aria-describedby="confirmPasswordHelp")
-				button.btn.btn-warning.rounded-0.text-white.text-capitalize(type="submit") sign up
+					label.text-capitalize(for="confirmPassword")= __('user.confirm_password')
+					input.rounded-0.form-control#confirmPassword(type="password" name="confirmPassword" placeholder= __('user.confirm_password') aria-describedby="confirmPasswordHelp")
+				button.btn.btn-primary.rounded-0.text-white.text-capitalize(type="submit")= __('user.register')

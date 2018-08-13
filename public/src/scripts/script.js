@@ -1,5 +1,7 @@
 const animateCssInit = require("./partials/animateCssInit");
 const overlayMenu = require("./partials/overlayMenu");
+const tooltipInit = require("./partials/tooltipInit");
+
 
 $(window).on("load", () => {
 	$(".preloader").animate({
@@ -13,4 +15,5 @@ $(document).ready(() => {
 	$("body").addClass("preloader-site");
 	animateCssInit();
 	overlayMenu();
+	tooltipInit();
 });

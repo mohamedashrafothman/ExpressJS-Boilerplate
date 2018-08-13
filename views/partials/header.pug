@@ -1,25 +1,32 @@
 nav.h-100.border-bottom
 	.container.d-flex.align-items-center.justify-content-between
-		a.logo.text-black.h-100.pr-5.py-2.border-right(href="/")
-			span(class=(title === 'Home' ? 'lnr lnr-mustache text-warning' : 'lnr lnr-mustache text-dark'))
+		a.logo.text-black.h-100.pr-5.py-2.border-right(href="/" data-toggle="tooltip" data-placement="bottom" title="Expressjs Starter Env.")
+			span(class=(title === 'Home' ? 'lnr lnr-mustache text-primary' : 'lnr lnr-mustache text-dark'))
 		.d-flex.flex-row.align-items-center.justify-content-end.w-75
 			ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0.py-4
-				li(class=(title === "Resturants" ? "text-uppercase h-6 bg-warning font-weight-bold mr-4 px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
-					a(href="/resturants" class=(title === "Resturants" ? "text-white" : "text-dark"))= __('data.resturants')
+				li(class=(title === "Resturants" ? "text-uppercase h-6 bg-primary font-weight-bold mr-4 px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
+					a(href="/resturants" class=(title === "Resturants" ? "text-white" : " "))= __('data.resturants')
 				if user
 					li.text-uppercase.h-6.text-dark.font-weight-bold.shadow-sm.px-3.mr-4
 						a(href="/user/logout")= __('user.logout')
 				else
-					li(class=(title === "login" ? "text-uppercase h-6 bg-warning font-weight-bold mr-4 shadow-sm px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
-						a(href="/user/login" class=(title === "login" ? "text-white" : "text-dark"))= __('user.login')
-					li(class=(title === "register" ? "text-uppercase h-6 bg-warning font-weight-bold mr-4 shadow-sm px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
-						a(href="/user/register" class=(title === "register" ? "text-white" : "text-dark"))= __('user.register')
+					li(class=(title === "login" ? "text-uppercase h-6 bg-primary font-weight-bold mr-4 shadow-sm px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
+						a(href="/user/login" class=(title === "login" ? "text-white" : " "))= __('user.login')
+					li(class=(title === "register" ? "text-uppercase h-6 bg-primary font-weight-bold mr-4 shadow-sm px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
+						a(href="/user/register" class=(title === "register" ? "text-white" : " "))= __('user.register')
 				if (lang === 'en')
 					li(class="text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3") 
 						a(href="/lang/ar")= __('lang.ar')
 				if (lang === 'ar')
 					li(class="text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3") 
 						a(href="/lang/en")= __('lang.en')
+				if user
+					li(class=(title === `${user.profile.name}'s profile` ? "mr-4 shadow-sm rounded-circle" : "mr-4 shadow-sm rounded-circle"))
+						a(href="/user/profile" title=`${user.profile.name}'s profile` class="rounded-circle" data-toggle="tooltip" data-placement="bottom")
+							if user.profile.picture
+								img.rounded-circle(src=user.profile.picture)
+							else
+								img.rounded-circle(src=user.gravatar(30))
 			.d-inline-block.d-md-none.pl-3.py-3
 				span.menu-open.lnr.lnr-menu.text-dark
 

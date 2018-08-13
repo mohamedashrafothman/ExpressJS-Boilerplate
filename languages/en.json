@@ -32,7 +32,23 @@
 	"user": {
 		"login": "login",
 		"register": "register",
-		"logout": "logout"
+		"logout": "logout",
+		"email": "Email",
+		"password": "Password",
+		"confirm_password": "Confirm Password",
+		"username": "Username",
+		"name": "Name",
+		"profile": "Profile",
+		"location": "Location",
+		"website": "Website",
+		"update_profile": "Update Profile",
+		"gender": {
+			"male": "Male",
+			"female": "Female",
+			"title": "Gender"
+		},
+		"new_password": "New Password",
+		"change_password": "Change Password"
 	},
 	"lang": {
 		"ar": "ع",

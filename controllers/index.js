@@ -9,12 +9,12 @@ const getHome = async (req, res, next)=> {
 const setLang = (req, res, next)=> {
 	const lang = req.params.lang;
 	res.cookie('lang', lang);
-	res.redirect('/');
+	res.redirect('back');
 };
 
 const getListOfData = async (req, res, next) => {
 	const page = req.params.page || 1;
-	const limit = 6;
+	const limit = 8;
 	const skip = (page * limit) - limit;
 	const resturants = await Resturant.find().skip(skip).limit(limit).sort({
 		created: 'desc'

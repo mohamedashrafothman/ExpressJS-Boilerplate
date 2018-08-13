@@ -17,7 +17,8 @@
 			"login": {
 				"email": "هذا الايميل غير صالح للإستخدام",
 				"name": "لا يمكن ترك حقل الأسم فارغ!",
-				"success_login": "تم تسجيل الدخول."
+				"success_login": "تم تسجيل الدخول.",
+				"password": "msgs.validation.login.password"
 			},
 			"logout": {
 				"success_logout": "تم تسجيل الخروج."
@@ -32,7 +33,23 @@
 	"user": {
 		"login": "تسجيل الدخول",
 		"register": "تسجيل حساب",
-		"logout": "خروج"
+		"logout": "خروج",
+		"email": "البريد الإلكتروني",
+		"password": "الرقم السري",
+		"confirm_password": "تأكيد الرقم السري",
+		"username": "أسم المستخدم",
+		"name": "الأسم",
+		"profile": "الحساب الشخصي",
+		"location": "العنوان",
+		"website": "الموقع الشخصي",
+		"update_profile": "تحديث الملف الشخصي",
+		"gender": {
+			"male": "ذكر",
+			"female": "إنثي",
+			"title": "النوع"
+		},
+		"new_password": "الرقم السري الجديد",
+		"change_password": "تغيير الرقم السري"
 	},
 	"lang": {
 		"ar": "ar",
