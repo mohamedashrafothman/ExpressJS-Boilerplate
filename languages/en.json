@@ -1,0 +1,44 @@
+{
+	"starter_env": {
+		"main_title": "expressjs starter env.",
+		"main_subtitle": "Use this document as a way to quickly start any new project."
+	},
+	"msgs": {
+		"validation": {
+			"register": {
+				"email": "That Email is not Valied!",
+				"name": "You must supply a name!",
+				"password": "Password cannot be Blank!",
+				"confirm_password": "Confirm password cannot be blank!'",
+				"passwords_not_match": "Your passwords don't match!",
+				"already_exists": "Account with that email address already exists.",
+				"success_registeration": "You are registerd and can now login"
+			},
+			"login": {
+				"email": "That Email is not Valied!",
+				"password": "Password cannot be Blank!",
+				"success_login": "You are logged in."
+			},
+			"logout": {
+				"success_logout": "You are logged out."
+			}
+		}
+	},
+	"titles": {
+		"register": "Register",
+		"login": "Login",
+		"home": "Home"
+	},
+	"user": {
+		"login": "login",
+		"register": "register",
+		"logout": "logout"
+	},
+	"lang": {
+		"ar": "ع",
+		"en": "en"
+	},
+	"data": {
+		"resturants": "resturants"
+	}
+}

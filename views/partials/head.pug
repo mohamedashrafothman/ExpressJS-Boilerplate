@@ -2,8 +2,10 @@ head
 	meta(charset="utf-8")
 	meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
 	meta(name="A way to quickly start any new project" content="")
+	meta(name='csrf-token', content=`${csrfToken}`)
 	meta(name="gulp starter env" content="")
 	meta(http-equiv="X-UA-Compatible", content="ie=edge")
+
 	
 	title= `${title}`
 	
@@ -11,5 +13,7 @@ head
 	<!-- importing custom css file including bootstrap v4 -->
 	link(rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css")
 	link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous")
-	link(href="/styles/styles.min.css" rel="stylesheet" type="text/css")
-	//- link(href="/styles/styles.min-rtl.css" rel="stylesheet" type="text/css")
+	if (lang === 'en')
+		link(href="/styles/styles.min.css" rel="stylesheet" type="text/css")
+	else 
+		link(href="/styles/styles.min-rtl.css" rel="stylesheet" type="text/css")

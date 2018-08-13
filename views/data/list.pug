@@ -1,0 +1,22 @@
+extends ../layouts/index-layout.pug
+include ../mixins/_pagination.pug
+
+block content
+	section.my-5
+		.container
+			.row
+				h1.col-12.border-bottom.py-3.mb-4.text-capitalize= `${title}`
+			.row
+				each resturant in resturants
+					.col-3.mb-3
+						.card.h-100.border-0.shadow
+							.card-body.p-3
+								a.card-title.text-warning.h4(href="#")
+									= `${resturant.name} `
+								br
+								span.font-weight-normal.text-dark.h5= `(${resturant.cuisine})`
+								h6.card-subtitle.my-2.text-muted.font-weight-light= `${resturant.address.street}.`
+								p.card-text Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eum eaque praesentium quasi necessitatibus tenetur hic deserunt pariatur quam, incidunt esse amet ea iusto quibusdam accusamus deleniti, minus laudantium temporibus.
+			if (pages > 0)
+				+pagination(page, pages)
+				

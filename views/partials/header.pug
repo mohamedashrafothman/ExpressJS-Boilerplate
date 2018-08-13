@@ -1,15 +1,27 @@
-nav.container-fluid.d-flex.align-items-center.justify-content-between(style="height:10vh;")
-	a.logo.text-black.h-100(href="/")
-		span.lnr.lnr-mustache
-	.d-flex.flex-row.align-items-center.justify-content-end.w-50
-		ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0
-			li.text-uppercase.h-6.text-dark.font-weight-bold.mr-5
-				a(href="/login") login
-			li.text-uppercase.h-6.text-dark.font-weight-bold.mr-5
-				a(href="/reigster") register
-			li.text-uppercase.h-6.text-dark.font-weight-bold
-				a(href="/logout") logout
-		span.menu-open.lnr.lnr-menu.d-inline-block.d-md-none
+nav.h-100.border-bottom
+	.container.d-flex.align-items-center.justify-content-between
+		a.logo.text-black.h-100.pr-5.py-2.border-right(href="/")
+			span(class=(title === 'Home' ? 'lnr lnr-mustache text-warning' : 'lnr lnr-mustache text-dark'))
+		.d-flex.flex-row.align-items-center.justify-content-end.w-75
+			ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0.py-4
+				li(class=(title === "Resturants" ? "text-uppercase h-6 bg-warning font-weight-bold mr-4 px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
+					a(href="/resturants" class=(title === "Resturants" ? "text-white" : "text-dark"))= __('data.resturants')
+				if user
+					li.text-uppercase.h-6.text-dark.font-weight-bold.shadow-sm.px-3.mr-4
+						a(href="/user/logout")= __('user.logout')
+				else
+					li(class=(title === "login" ? "text-uppercase h-6 bg-warning font-weight-bold mr-4 shadow-sm px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
+						a(href="/user/login" class=(title === "login" ? "text-white" : "text-dark"))= __('user.login')
+					li(class=(title === "register" ? "text-uppercase h-6 bg-warning font-weight-bold mr-4 shadow-sm px-3" : "text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3"))
+						a(href="/user/register" class=(title === "register" ? "text-white" : "text-dark"))= __('user.register')
+				if (lang === 'en')
+					li(class="text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3") 
+						a(href="/lang/ar")= __('lang.ar')
+				if (lang === 'ar')
+					li(class="text-uppercase h-6 font-weight-bold mr-4 shadow-sm px-3") 
+						a(href="/lang/en")= __('lang.en')
+			.d-inline-block.d-md-none.pl-3.py-3
+				span.menu-open.lnr.lnr-menu.text-dark
 
 <!-- Direction options are: up, down, left, right -->
 <!-- Speed options are: slow, slower, fast, faster -->

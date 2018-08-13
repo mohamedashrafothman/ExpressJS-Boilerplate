@@ -1,0 +1,16 @@
+extends ../layouts/index-layout.pug
+
+block content
+	section.d-flex.align-items-center.justify-content-center(style="min-height: 80vh;")
+		.container.d-flex.flex-column.align-items-stretch.justify-content-between
+			h1.border-bottom.py-3.w-100.mb-4.text-capitalize= __('titles.login')
+			form.w-75.mx-auto(action="/user/login", method="POST")
+				input(type="hidden", name="_csrf", value=`${csrfToken}`)
+				.form-group
+					label(for="email") Email
+					input.rounded-0.form-control#email(type="email" name="email" placeholder="Email" aria-describedby="emailHelp")
+					small#emailHelp.form-text.text-muted please enter your email formatted like "john@doe.com".
+				.form-group
+					label(for="password") password
+					input.rounded-0.form-control#password(type="password" name="password" placeholder="password" aria-describedby="passwordHelp")
+				button.btn.btn-warning.rounded-0.text-white(type="submit") login

@@ -1,8 +1,27 @@
 <!DOCTYPE html>
-html(lang="en" dir="ltr")
+html(lang=lang dir=(lang == 'en' ? 'ltr' : 'rtl'))
 	include ../partials/head
 	body
 		include ../partials/header
 		include ../partials/preloader
+		block messages
+			if flashes
+				- const categories = Object.keys(flashes)
+					each category in categories
+						.messages
+						each message, i in flashes[category]
+							.col-xs-11.col-sm-4.alert.alert-with-icon.animated.fadeInDown(class=(category === 'error' ? `alert-danger` : `alert-${category}`), data-notify='container', role='alert', data-notify-position='top-right', style=`display: block; margin: 20px auto; position: fixed; transition: all 0.5s ease-in-out 0s; z-index:1; top: ${i*60+55}px; right: 20px;`)
+								if message.msg						
+									button.close(type='button', aria-hidden='true', data-notify='dismiss', style='position: absolute; right: 10px; top: 55%; margin-top: -13px; z-index: 1;', onClick="this.parentElement.remove()") &times;
+									span(data-notify='title')
+									span(data-notify='message')= message.msg
+									a(href='#', target='_blank', data-notify='url')
+
+								else 
+									button.close(type='button', aria-hidden='true', data-notify='dismiss', style='position: absolute; right: 10px; top: 55%; margin-top: -13px; z-index: 1;', onClick="this.parentElement.remove()") &times;
+									span(data-notify='title')
+									span(data-notify='message')= message
+									a(href='#', target='_blank', data-notify='url')
+
 		block content
 		include ../partials/foot
