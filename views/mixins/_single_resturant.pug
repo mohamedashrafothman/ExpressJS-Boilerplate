@@ -1,0 +1,9 @@
+mixin resturant(data= {})
+	.col-lg-3.col-md-4.col-sm-6.col-12.mb-3
+		.card.h-100.border-0.shadow-sm
+			.card-body.p-3
+				a.card-title.text-primary.h4(href="#")= `${data.name} `
+				br
+				span.font-weight-normal.text-dark.h5= `(${data.cuisine})`
+				h6.card-subtitle.my-2.text-muted.font-weight-light= `${data.address.street}.`
+				p.card-text Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eum eaque praesentium quasi necessitatibus tenetur hic deserunt pariatur quam, incidunt esse amet ea iusto quibusdam accusamus deleniti, minus laudantium temporibus.

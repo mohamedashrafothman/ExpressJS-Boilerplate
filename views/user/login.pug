@@ -5,12 +5,12 @@ block content
 		.container.d-flex.flex-column.align-items-stretch.justify-content-between
 			h1.border-bottom.py-3.w-100.mb-4.text-capitalize= __('titles.login')
 			form.w-75.mx-auto(action="/user/login", method="POST")
-				input(type="hidden", name="_csrf", value=`${csrfToken}`)
+				input(name="_csrf", type="hidden", value=`${csrfToken}`)
 				.form-group
 					label(for="email")= __('user.email')
-					input.rounded-0.form-control#email(type="email" name="email" placeholder= __('user.email') aria-describedby="emailHelp")
-					small#emailHelp.form-text.text-muted please enter your email formatted like "john@doe.com".
+					input.rounded-0.form-control#email(name="email" type="email" placeholder=__('user.email'))
 				.form-group
 					label(for="password")= __('user.password')
-					input.rounded-0.form-control#password(type="password" name="password" placeholder= __('user.password') aria-describedby="passwordHelp")
+					input.rounded-0.form-control#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
 				button.btn.btn-primary.rounded-0.text-white(type="submit")= __('user.login')
+				a.btn.btn-link(href='/user/forgot')= __('user.forgot_password_q')

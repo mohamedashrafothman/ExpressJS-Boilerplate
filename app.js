@@ -12,10 +12,10 @@ const flash            = require('connect-flash');
 const bodyParser       = require("body-parser");
 const expressValidator = require("express-validator");
 const passport         = require("passport");
-const LocalStrategy    = require("passport-local").Strategy;
 const csrf             = require('csurf');
 const chalk            = require("chalk");
 const i18n             = require("i18n");
+const favicon          = require('serve-favicon');
 const indexRoute       = require("./routes/index");
 const userRoute        = require("./routes/user");
 
@@ -25,12 +25,13 @@ const userRoute        = require("./routes/user");
 require('dotenv').config({
 	path: '.env'
 });
+
 /**
- * API keys and Passport configuration.
+ * Configurations
  */
-const passportConfig = require('./config/passport');
+require('./config/passport');
 i18n.configure({
-	locales: ['en', 'arabic', 'ar'],
+	locales: ['en', 'ar'],
 	cookie: 'lang',
 	directory: __dirname + '/languages',
 	register: global,
@@ -63,6 +64,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views/'));
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public/build/')));
+app.use(favicon(path.join(__dirname, 'public/build/images', 'favicon.ico')));
 app.use(logger("dev"));
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(bodyParser.json());
@@ -87,20 +89,21 @@ app.use(i18n.init);
 app.use((req, res, next) => {
 	res.locals.title     = 'Express Starter Env.';
 	res.locals.flashes   = req.flash() || null;
-	res.locals.user = req.user || null;
-	res.locals.lang = req.cookies.lang || 'en';
+	res.locals.user      = req.user || null;
+	res.locals.lang      = req.cookies.lang || req.setLocale('en') || 'en';
 	res.locals.csrfToken = req.csrfToken();
 	next();
 });
 app.use((req, res, next) => {
 	// After successful login, redirect back to the intended page
-	if (!req.user && req.path !== '/login' && req.path !== '/signup' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
+	if (!req.user && req.path !== '/user/login' && req.path !== '/user/register' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
 		req.session.returnTo = req.originalUrl;
-	} else if (req.user && (req.path === '/account' || req.path.match(/^\/api/))) {
+	} else if (req.user && (req.path === '/user/profile' || req.path.match(/^\/api/))) {
 		req.session.returnTo = req.originalUrl;
 	}
 	next();
 });
+
 
 /**
  ** Routing

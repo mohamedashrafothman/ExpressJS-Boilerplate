@@ -8,20 +8,20 @@ html(lang=lang dir=(lang == 'en' ? 'ltr' : 'rtl'))
 			if flashes
 				- const categories = Object.keys(flashes)
 					each category in categories
-						.messages
-						each message, i in flashes[category]
-							.col-xs-11.col-sm-4.alert.alert-with-icon.animated.fadeInDown(class=(category === 'error' ? `alert-danger` : `alert-${category}`), data-notify='container', role='alert', data-notify-position='top-right', style=`display: block; margin: 20px auto; position: fixed; transition: all 0.5s ease-in-out 0s; z-index:1; top: ${i*60+55}px; right: 20px;`)
-								if message.msg						
-									button.close(type='button', aria-hidden='true', data-notify='dismiss', style='position: absolute; right: 10px; top: 55%; margin-top: -13px; z-index: 1;', onClick="this.parentElement.remove()") &times;
-									span(data-notify='title')
-									span(data-notify='message')= message.msg
-									a(href='#', target='_blank', data-notify='url')
+						.messages.d-flex.flex-column.justify-content-center.align-items-end.w-100.position-absolute
+							each message, i in flashes[category]
+								.col-xs-11.col-sm-4.alert.alert-with-icon.animated.fadeInDown(class=(category === 'error' ? `alert-danger` : `alert-${category}`), data-notify='container', data-notify-position=`top-${(lang == 'en' ? 'right' : 'left')}`, role='alert', style='display: block; margin: 0 10px 10px;transition: all 0.5s ease-in-out; z-index:1;' )
+									if message.msg						
+										button.close(data-notify='dismiss', type='button', aria-hidden='true', style=`position: absolute; ${(lang == 'en' ? 'right' : 'left')}: 10px; top: 55%; margin-top: -13px; z-index: 1;`, onClick="this.parentElement.remove()") &times;
+										span(data-notify='title')
+										span(data-notify='message')= message.msg
+										a(data-notify='url', href='#', target='_blank')
 
-								else 
-									button.close(type='button', aria-hidden='true', data-notify='dismiss', style='position: absolute; right: 10px; top: 55%; margin-top: -13px; z-index: 1;', onClick="this.parentElement.remove()") &times;
-									span(data-notify='title')
-									span(data-notify='message')= message
-									a(href='#', target='_blank', data-notify='url')
+									else 
+										button.close(data-notify='dismiss', type='button', aria-hidden='true', style=`position: absolute; ${(lang == 'en' ? 'right' : 'left')}: 10px; top: 55%; margin-top: -13px; z-index: 1;`, onClick="this.parentElement.remove()") &times;
+										span(data-notify='title')
+										span(data-notify='message')= message
+										a(data-notify='url', href='#', target='_blank')
 
 		block content
 		include ../partials/foot

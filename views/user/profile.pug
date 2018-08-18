@@ -4,57 +4,57 @@ block content
 	section.d-flex.align-items-center.justify-content-center(style="min-height: 80vh;")
 		.container.d-flex.flex-column.align-items-stretch.justify-content-between
 			.row
-				h1.col-12.border-bottom.py-3.text-capitalize Basic information
+				h1.col-12.border-bottom.py-3.text-capitalize= __('user.basic_info')
 				form.col-lg-8.offset-lg-2.col-12.mb-5(action="/user/profile/update", method="POST")
-					input(type="hidden", name="_csrf", value=`${csrfToken}`)
+					input(name="_csrf", type="hidden", value=`${csrfToken}`)
 					.form-row.my-3
 						if user.profile.picture
-							img.rounded-circle.mx-auto.shadow.img-thumbnail.border-primary(src=user.profile.picture data-toggle="tooltip" data-placement="right" title=`${user.profile.name}'s profile`)
+							img.rounded-circle.mx-auto.shadow.img-thumbnail.border-primary(data-placement="top" data-toggle="tooltip" src=user.profile.picture title=`${user.profile.name}'s profile`)
 						else
-							img.rounded-circle.mx-auto.shadow.img-thumbnail.border-primary(src=user.gravatar(100) data-toggle="tooltip" data-placement="right" title=`${user.profile.name}'s profile`)
+							img.rounded-circle.mx-auto.shadow.img-thumbnail.border-primary(data-placement="top" data-toggle="tooltip" src=user.gravatar(100) title=`${user.profile.name}'s profile`)
 					.form-row.my-3
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="email")= __('user.email')
-							input.rounded-0.form-control#email(type="email" name="email" placeholder= __('user.email') value=`${user.email}`)
+							input.rounded.form-control.shadow-none.border-primary#email(name="email" type="email" placeholder=__('user.email') value=`${user.email}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="name")= __('user.name')
-							input.rounded-0.form-control#name(type="text" name="name" placeholder= __('user.name') value=`${user.profile.name}`)
+							input.rounded.form-control.shadow-none.border-primary#name(name="name" type="text" placeholder=__('user.name') value=`${user.profile.name}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="username")= __('user.username')
-							input.rounded-0.form-control#username(type="text" name="username" placeholder= __('user.username') value=`${user.profile.username}`)
+							input.rounded.form-control.shadow-none.border-primary#username(name="username" type="text" placeholder=__('user.username') value=`${user.profile.username}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="location")= __('user.location')
-							input.rounded-0.form-control#location(type="text" name="location" placeholder= __('user.location')  value=`${user.profile.location ? user.profile.location : ''}`)
+							input.rounded.form-control.shadow-none.border-primary#location(name="location" type="text" placeholder=__('user.location') value=`${user.profile.location ? user.profile.location : ''}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="website")= __('user.website')
-							input.rounded-0.form-control#website(type="text" name="website" placeholder= __('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
+							input.rounded.form-control.shadow-none.border-primary#website(name="website" type="text" placeholder=__('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
 					.form-row.my-3
 						label.font-weight-bold.col-2= __('user.gender.title')
 						.form-check.form-check-inline.col-3
-							input.form-check-input(type="radio", name="gender", id="gender_male", value="male" checked=((user.profile.gender === 'male') ? true : false))
+							input.form-check-input(id="gender_male", name="gender", type="radio", value="male", checked=((user.profile.gender === 'male') ? true : false))
 							label.form-check-label(for="gender_male")= __('user.gender.male')
 						.form-check.form-check-inline.col-3
-							input.form-check-input(type="radio", name="gender", id="gender_female", value="female" checked=((user.profile.gender === 'female') ? true : false))
+							input.form-check-input(id="gender_female", name="gender", type="radio", value="female", checked=((user.profile.gender === 'female') ? true : false))
 							label.form-check-label(for="gender_female")= __('user.gender.female')
 					button.btn.btn-primary.rounded-0.text-white(type="submit")
 						span.mr-2.lnr.lnr-user
 						= __('user.update_profile')
 			.row
-				h1.col-12.border-bottom.py-3.text-capitalize change password
+				h1.col-12.border-bottom.py-3.text-capitalize= __('user.change_password')
 				form.col-lg-8.offset-lg-2.col-12.mb-5(action="/user/profile/password", method="POST")
-					input(type="hidden", name="_csrf", value=`${csrfToken}`)
+					input(name="_csrf", type="hidden", value=`${csrfToken}`)
 					.form-row.my-3
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="newPassword")= __('user.new_password')
-							input.rounded-0.form-control#newPassword(type="password" name="newPassword" placeholder= __('user.new_password'))
+							input.rounded.form-control.shadow-none.border-primary#newPassword(name="newPassword" type="password" placeholder=__('user.new_password'))
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="confirmPassword")= __('user.confirm_password')
-							input.rounded-0.form-control#confirmPassword(type="password" name="confirmPassword" placeholder= __('user.confirm_password'))
+							input.rounded.form-control.shadow-none.border-primary#confirmPassword(name="confirmPassword" type="password" placeholder=__('user.confirm_password'))
 					button.btn.btn-primary.rounded-0.text-white(type="submit")
 						span.mr-2.lnr.lnr-lock
 						= __('user.change_password')
 			.row.mb-5
-				h1.col-12.border-bottom.py-3.text-capitalize Delete Account
+				h1.col-12.border-bottom.py-3.text-capitalize= __('user.delete_account')
 				a.col-md-3.offset-md-2.col-6.btn.btn-danger.text-uppercase.rounded-0(href="/user/profile/delete") 
 					span.mr-2.lnr.lnr-trash
-					| delete my account
+					= __('user.delete_my_account')

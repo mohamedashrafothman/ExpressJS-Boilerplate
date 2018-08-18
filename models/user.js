@@ -18,6 +18,13 @@ const UserSchema = mongoose.Schema({
 		type    : String,
 		required: true
 	},
+	hash: {
+		type: String
+	},
+	active: {
+		type: Number,
+		default: 0
+	},
 	profile: {
 		name: {
 			type    : String,
@@ -37,18 +44,21 @@ const UserSchema = mongoose.Schema({
 	resturants: [{
 		type: mongoose.Schema.ObjectId,
 		ref : 'Resturant'
-	}]
+	}],
+	resetPasswordToken  : String,
+	resetPasswordExpires: Date
 });
-
 
 UserSchema.pre("save", function (next) {
 	const user = this;
 	if (!user.isModified('password')) return next();
-	bcrypt.genSalt(10, function (err, salt) {
+	bcrypt.genSalt(12, function (err, salt) {
 		if (err) return next(err);
-		bcrypt.hash(user.password, salt, function (err, hash) {
+		bcrypt.hash(user.password, salt, async function (err, hash) {
 			if (err) return next(err);
+			const RandomBytes = await crypto.randomBytes(16).toString('hex');
 			user.password = hash;
+			user.hash = RandomBytes;
 			next();
 		})
 	})
@@ -69,6 +79,5 @@ UserSchema.methods.gravatar = function gravatar(size) {
 	const md5 = crypto.createHash('md5').update(this.email).digest('hex');
 	return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
-
 
 module.exports = mongoose.model("User", UserSchema);

@@ -1,7 +1,7 @@
 const animateCssInit = require("./partials/animateCssInit");
 const overlayMenu = require("./partials/overlayMenu");
 const tooltipInit = require("./partials/tooltipInit");
-
+const smothScroll = require("./partials/smothScroll");
 
 $(window).on("load", () => {
 	$(".preloader").animate({
@@ -16,4 +16,5 @@ $(document).ready(() => {
 	animateCssInit();
 	overlayMenu();
 	tooltipInit();
+	smothScroll();
 });

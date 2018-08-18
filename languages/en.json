@@ -1,6 +1,6 @@
 {
 	"starter_env": {
-		"main_title": "expressjs starter env.",
+		"main_title": "express starter env.",
 		"main_subtitle": "Use this document as a way to quickly start any new project."
 	},
 	"msgs": {
@@ -12,7 +12,7 @@
 				"confirm_password": "Confirm password cannot be blank!'",
 				"passwords_not_match": "Your passwords don't match!",
 				"already_exists": "Account with that email address already exists.",
-				"success_registeration": "You are registerd and can now login"
+				"success_registeration": "You are registerd, verify your account first before you login."
 			},
 			"login": {
 				"email": "That Email is not Valied!",
@@ -21,13 +21,25 @@
 			},
 			"logout": {
 				"success_logout": "You are logged out."
+			},
+			"profile": {
+				"success_basic": "profile basic info updated!",
+				"success_password": "successfully updated password",
+				"success_deleted": "Account has been deleted!"
+			},
+			"reset": {
+				"email_not_exist": "account with that email doesn't exist.",
+				"emailed_token": "You have been emailed a password link.",
+				"token_invlid": "Password reset token is invalid or has expired.",
+				"success_update_pass": "successfully updated password"
 			}
 		}
 	},
 	"titles": {
 		"register": "Register",
 		"login": "Login",
-		"home": "Home"
+		"home": "Home",
+		"reset_password": "Reset Password"
 	},
 	"user": {
 		"login": "login",
@@ -48,13 +60,25 @@
 			"title": "Gender"
 		},
 		"new_password": "New Password",
-		"change_password": "Change Password"
+		"change_password": "Change Password",
+		"basic_info": "Basic information",
+		"delete_account": "Delete Account",
+		"delete_my_account": "Delete my account",
+		"%s 's profile": "%s 's profile",
+		"forgot_password_q": "Forgot your password?"
 	},
 	"lang": {
 		"ar": "ع",
 		"en": "en"
 	},
 	"data": {
-		"resturants": "resturants"
+		"resturants": "resturants",
+		"view_all": "View All"
+	},
+	"pagination": {
+		"page %s": "page %s",
+		"next_page": "Next",
+		"pervious_page": "Previous",
+		"current_page": "Current Page"
 	}
 }

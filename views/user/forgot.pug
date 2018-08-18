@@ -1,0 +1,12 @@
+extends ../layouts/index-layout.pug
+
+block content
+	section.d-flex.align-items-center.justify-content-center(style="min-height: 80vh;")
+		.container.d-flex.flex-column.align-items-stretch.justify-content-between
+			h1.border-bottom.py-3.w-100.mb-4.text-capitalize= __('titles.reset_password')
+			form.w-75.mx-auto(action="/user/forgot", method="POST")
+				input(name="_csrf", type="hidden", value=`${csrfToken}`)
+				.form-group
+					label(for="email")= __('user.email')
+					input.rounded-0.form-control#email(name="email" type="email" placeholder=__('user.email'))
+				button.btn.btn-primary.rounded-0.text-white(type="submit")= __('titles.reset_password')
