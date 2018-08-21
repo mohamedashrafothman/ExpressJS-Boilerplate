@@ -1,5 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Cairo:200,300,400,600,700,900');
-*, *::after, *::before{
+@import url('https://fonts.googleapis.com/css?family=Amiri:400,400i,700,700i|Cairo:200,300,400,600,700,900|Rakkas');
+*,
+*::after,
+*::before {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -8,27 +10,33 @@
 body.preloader-site {
 	overflow: hidden;
 }
-html[dir="rtl"]{
-	body, body > * {
-		font-family: 'Cairo', sans-serif;
-		letter-spacing: -1px;
+
+html[dir="rtl"] {
+	body,
+	body>* {
+		// font-family: 'Amiri', serif;
+		font-family: 'Rakkas', cursive;
+		// font-family: 'Cairo', sans-serif;
+		// letter-spacing: -1px;
 	}
 }
 
 a {
 	color: $black;
-	&:hover{
+	&:hover {
 		text-decoration: none;
 	}
 }
+
 ul {
 	li {
 		list-style: none;
 	}
 }
-.logo{
+
+.logo {
 	font-size: 3rem;
-	&:hover{
+	&:hover {
 		color: $dark;
 	}
 }

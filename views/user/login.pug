@@ -8,9 +8,20 @@ block content
 				input(name="_csrf", type="hidden", value=`${csrfToken}`)
 				.form-group
 					label(for="email")= __('user.email')
-					input.rounded-0.form-control#email(name="email" type="email" placeholder=__('user.email'))
+					input.rounded-0.form-control.shadow-none#email(name="email" type="email" placeholder=__('user.email'))
 				.form-group
 					label(for="password")= __('user.password')
-					input.rounded-0.form-control#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
-				button.btn.btn-primary.rounded-0.text-white(type="submit")= __('user.login')
+					input.rounded-0.form-control.shadow-none#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
+				button.btn.btn-outline-primary.text-capitalize(type="submit")= __('user.login')
 				a.btn.btn-link(href='/user/forgot')= __('user.forgot_password_q')
+			.w-75.mx-auto.my-5.d-flex.align-items-start.justify-content-around
+				a.btn.btn-outline-danger.mx-3(href="/user/google")
+					span.fab.fa-google.mr-2
+					| sign in with Google+
+				a.btn.btn-outline-primary.mx-3(href="/user/facebook")
+					span.fab.fa-facebook-f.mr-2
+					| sign in with Facebook
+				a.btn.btn-outline-dark.mx-3(href="/user/github")
+					span.fab.fa-github.mr-2
+					| sign in with Github
+				

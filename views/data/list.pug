@@ -8,7 +8,7 @@ block content
 			.row
 				h1.col-12.border-bottom.py-3.mb-4.text-capitalize= __('data.resturants')
 			.row
-				each resturant in resturants
-					+resturant(resturant)
+				each resturant, index in resturants
+					+resturant(resturant, index)
 			if (pages > 0)
 				+pagination(page, pages)

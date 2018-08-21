@@ -15,27 +15,29 @@ block content
 					.form-row.my-3
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="email")= __('user.email')
-							input.rounded.form-control.shadow-none.border-primary#email(name="email" type="email" placeholder=__('user.email') value=`${user.email}`)
+							input#emailclass(class=`rounded-0 form-control shadow-none ${(user.email) ? "is-valid" : "is-invalid"}` name="email" type="email" placeholder=__('user.email') value=`${user.email}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="name")= __('user.name')
-							input.rounded.form-control.shadow-none.border-primary#name(name="name" type="text" placeholder=__('user.name') value=`${user.profile.name}`)
+							input#name(class=`rounded-0 form-control shadow-none  ${(user.profile.name) ? "is-valid" : "is-invalid"}` name="name" type="text" placeholder=__('user.name') value=`${user.profile.name}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="username")= __('user.username')
-							input.rounded.form-control.shadow-none.border-primary#username(name="username" type="text" placeholder=__('user.username') value=`${user.profile.username}`)
+							input#username(class=`rounded-0 form-control shadow-none ${(user.profile.username) ? "is-valid" : "is-invalid"}` name="username" type="text" placeholder=__('user.username') value=`${user.profile.username}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="location")= __('user.location')
-							input.rounded.form-control.shadow-none.border-primary#location(name="location" type="text" placeholder=__('user.location') value=`${user.profile.location ? user.profile.location : ''}`)
+							input#location(class=`rounded-0 form-control shadow-none ${(user.profile.location) ? "is-valid" : "is-invalid"}` name="location" type="text" placeholder=__('user.location') value=`${user.profile.location ? user.profile.location : ''}`)
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="website")= __('user.website')
-							input.rounded.form-control.shadow-none.border-primary#website(name="website" type="text" placeholder=__('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
-					.form-row.my-3
-						label.font-weight-bold.col-2= __('user.gender.title')
-						.form-check.form-check-inline.col-3
-							input.form-check-input(id="gender_male", name="gender", type="radio", value="male", checked=((user.profile.gender === 'male') ? true : false))
-							label.form-check-label(for="gender_male")= __('user.gender.male')
-						.form-check.form-check-inline.col-3
-							input.form-check-input(id="gender_female", name="gender", type="radio", value="female", checked=((user.profile.gender === 'female') ? true : false))
-							label.form-check-label(for="gender_female")= __('user.gender.female')
+							input#website(class=`rounded-0 form-control shadow-none ${(user.profile.website) ? "is-valid" : "is-invalid"}` name="website" type="text" placeholder=__('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
+						.form-group.col-6
+							label.font-weight-bold.col-12.mb-3= __('user.gender.title')
+							.form-check.form-check-inline.col-6.m-0.px-3
+								.custom-control.custom-checkbox
+									input(class="custom-control-input" id="gender_male", name="gender", type="radio", value="male", checked=(user.profile.gender == 'male' ? "checked" : undefined))
+									label.custom-control-label(for="gender_male")= __('user.gender.male')
+							.form-check.form-check-inline.col-6.m-0.px-3
+								.custom-control.custom-checkbox
+									input(class="custom-control-input" id="gender_female", name="gender", type="radio", value="female", checked=(user.profile.gender == 'female' ? "checked" : undefined))
+									label.custom-control-label(for="gender_female")= __('user.gender.female')
 					button.btn.btn-primary.rounded-0.text-white(type="submit")
 						span.mr-2.lnr.lnr-user
 						= __('user.update_profile')
@@ -46,15 +48,42 @@ block content
 					.form-row.my-3
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="newPassword")= __('user.new_password')
-							input.rounded.form-control.shadow-none.border-primary#newPassword(name="newPassword" type="password" placeholder=__('user.new_password'))
+							input.rounded.form-control.shadow-none#newPassword(name="newPassword" type="password" placeholder=__('user.new_password'))
 						.form-group.col-6
 							label.font-weight-bold.text-capitalize(for="confirmPassword")= __('user.confirm_password')
-							input.rounded.form-control.shadow-none.border-primary#confirmPassword(name="confirmPassword" type="password" placeholder=__('user.confirm_password'))
+							input.rounded.form-control.shadow-none#confirmPassword(name="confirmPassword" type="password" placeholder=__('user.confirm_password'))
 					button.btn.btn-primary.rounded-0.text-white(type="submit")
 						span.mr-2.lnr.lnr-lock
 						= __('user.change_password')
 			.row.mb-5
 				h1.col-12.border-bottom.py-3.text-capitalize= __('user.delete_account')
-				a.col-md-3.offset-md-2.col-6.btn.btn-danger.text-uppercase.rounded-0(href="/user/profile/delete") 
+				a.offset-md-2.btn.btn-danger.text-uppercase.rounded-0(href="/user/profile/delete") 
 					span.mr-2.lnr.lnr-trash
 					= __('user.delete_my_account')
+			.row.mb-5
+				h1.col-12.border-bottom.py-3.text-capitalize linked accounts
+				.col-md-10.offset-md-2.col-6
+					if user.google
+						p.mb-1.text-danger
+							span.fab.fa-google.mr-2
+							a.text-danger(href='/user/unlink/google') Unlink your Google account
+					else
+						p.mb-1.text-danger
+							span.fab.fa-google.mr-2
+							a.text-danger(href='/user/google') Link your Google account
+					if user.facebook
+						p.mb-1.text-primary
+							span.fab.fa-facebook-f.mr-2
+							a.text-primary(href='/user/unlink/facebook') Unlink your Facebook account
+					else
+						p.mb-1.text-primary
+							span.fab.fa-facebook-f.mr-2
+							a.text-primary(href='/user/facebook') Link your Facebook account
+					if user.github
+						p.mb-1.text-dark
+							span.fab.fa-github.mr-2
+							a.text-dark(href='/user/unlink/github') Unlink your Github account
+					else
+						p.mb-1.text-dark
+							span.fab.fa-github.mr-2
+							a.text-dark(href='/user/github') Link your Github account

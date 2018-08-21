@@ -121,7 +121,7 @@ const verifyUser = async (req, res, next) => {
 		runValidators: true,
 		context: 'query'
 	}).exec());
-	if (userError) return console.log(userError);
+	if (userError) return next(userError);
 	if (!user) {
 		req.flash('error', "Invalid approach, please use the link that has been send to your email.");
 		res.redirect("/user/register");
@@ -425,9 +425,34 @@ const postResetPassword = async (req, res, next) => {
 	if (sendMailErr) return next(sendMailErr);
 	req.flash('success', res.__('msgs.validation.reset.success_update_pass'));
 	res.redirect('/user/login');
-
 }
 
+const oauthRedirect = (req, res, next) => {
+	req.flash('success', res.__('msgs.validation.login.success_login'));
+	res.redirect('/');
+}
+
+/**
+ * GET /account/unlink/:provider
+ * Unlink OAuth provider.
+ */
+const getOauthUnlink = (req, res, next) => {
+	const {provider} = req.params;
+	User.findById(req.user.id, (err, user) => {
+		if (err) {
+			return next(err);
+		}
+		user[provider] = undefined;
+		user.tokens = user.tokens.filter(token => token.kind !== provider);
+		user.save((err) => {
+			if (err) {
+				return next(err);
+			}
+			req.flash('success', `${provider} account has been unlinked.`);
+			res.redirect('/user/profile');
+		});
+	});
+};
 
 /**
  * Exporting all functions
@@ -451,5 +476,7 @@ module.exports = {
 	getResetPassword,
 	postResetPassword,
 	validateResetPassword,
-	verifyUser
+	verifyUser,
+	oauthRedirect,
+	getOauthUnlink
 }

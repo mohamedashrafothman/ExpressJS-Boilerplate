@@ -15,6 +15,7 @@ const passport         = require("passport");
 const csrf             = require('csurf');
 const chalk            = require("chalk");
 const i18n             = require("i18n");
+const dotenv           = require("dotenv");
 const favicon          = require('serve-favicon');
 const indexRoute       = require("./routes/index");
 const userRoute        = require("./routes/user");
@@ -22,7 +23,7 @@ const userRoute        = require("./routes/user");
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-require('dotenv').config({
+dotenv.config({
 	path: '.env'
 });
 
@@ -66,11 +67,12 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public/build/')));
 app.use(favicon(path.join(__dirname, 'public/build/images', 'favicon.ico')));
 app.use(logger("dev"));
-app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
+app.use(expressValidator());
+app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(cookieSession({
 	name: 'session',
 	secret: process.env.SESSION_SECRET,
@@ -80,7 +82,6 @@ app.use(cookieSession({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(expressValidator());
 app.use(csrf({
 	cookie: true
 }))

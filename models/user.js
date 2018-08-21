@@ -1,22 +1,20 @@
-const mongoose         = require("mongoose");
-const bcrypt           = require("bcryptjs");
-const crypto           = require('crypto');
-const validator        = require("validator");
-      mongoose.Promise = global.Promise;
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const crypto = require('crypto');
+const validator = require("validator");
+mongoose.Promise = global.Promise;
 
 
 const UserSchema = mongoose.Schema({
 	email: {
-		type     : String,
-		unique   : true,
+		type: String,
+		unique: true,
 		lowercase: true,
-		trim     : true,
-		validate : [validator.isEmail, 'Invalid Email Address'],
-		required : 'Please Supply an Email Address'
+		trim: true,
+		validate: [validator.isEmail, 'Invalid Email Address']
 	},
 	password: {
-		type    : String,
-		required: true
+		type: String
 	},
 	hash: {
 		type: String
@@ -27,25 +25,27 @@ const UserSchema = mongoose.Schema({
 	},
 	profile: {
 		name: {
-			type    : String,
-			required: 'Please Supply a Name',
-			trim    : true
+			type: String,
+			trim: true
 		},
 		username: {
-			type    : String,
-			required: 'please supply a username',
-			trim    : true
+			type: String,
+			trim: true
 		},
-		gender  : String,
+		gender: String,
 		location: String,
-		website : String,
-		picture : String
+		website: String,
+		picture: String
 	},
+	google: String,
+	facebook: String,
+	github: String,
+	tokens: Array,
 	resturants: [{
 		type: mongoose.Schema.ObjectId,
-		ref : 'Resturant'
+		ref: 'Resturant'
 	}],
-	resetPasswordToken  : String,
+	resetPasswordToken: String,
 	resetPasswordExpires: Date
 });
 
