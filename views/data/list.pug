@@ -3,12 +3,12 @@ include ../mixins/_pagination.pug
 include ../mixins/_single_resturant.pug
 
 block content
-	section.py-5.bg-gradient-light
+	section.py-5
 		.container
 			.row
-				h1.col-12.border-bottom.py-3.mb-4.text-capitalize= __('data.resturants')
-			.row
-				each resturant, index in resturants
-					+resturant(resturant, index)
-			if (pages > 0)
-				+pagination(page, pages)
+				h1.py-3.mb-4.text-capitalize= __('data.resturants')
+				.row
+					each resturant, index in resturants
+						+resturant(resturant, index)
+					if (pages > 0)
+						+pagination(page, pages)

@@ -1,24 +1,35 @@
 extends ../layouts/index-layout.pug
 
 block content
-	section.d-flex.align-items-center.justify-content-center(style="min-height: 80vh;")
-		.container.d-flex.flex-column.align-items-stretch.justify-content-between
-			h1.border-bottom.py-3.w-100.mb-4.text-capitalize= __('titles.register')
-			form.w-75.mx-auto.mb-5(action="/user/register", method="POST")
-				input(name="_csrf", type="hidden", value=`${csrfToken}`)
-				.form-group
-					label.text-capitalize(for="name")= __('user.name')
-					input.rounded-0.form-control#name(name="name" type="text" placeholder=__('user.name'))
-				.form-group
-					label.text-capitalize(for="username")= __('user.username')
-					input.rounded-0.form-control#username(name="username" type="text" placeholder=__('user.username'))
-				.form-group
-					label.text-capitalize(for="email")= __('user.email')
-					input.rounded-0.form-control#email(name="email" type="email" placeholder=__('user.email'))
-				.form-group
-					label.text-capitalize(for="password")= __('user.password')
-					input.rounded-0.form-control#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
-				.form-group
-					label.text-capitalize(for="confirmPassword")= __('user.confirm_password')
-					input.rounded-0.form-control#confirmPassword(name="confirmPassword" type="password" aria-describedby="confirmPasswordHelp" placeholder=__('user.confirm_password'))
-				button.btn.btn-primary.rounded-0.text-white.text-capitalize(type="submit")= __('user.register')
+	section(style="height: calc(100vh - 73px);")
+		.container.h-100
+			.row.d-flex.align-items-center.justify-content-center.h-100
+				.card.py-4.px-3.col-12.col-md-8
+					h2.pb-4.px-3.text-capitalize.m-0= __('titles.register')
+					form.col-12(action="/user/register", method="POST")
+						input(name="_csrf", type="hidden", value=`${csrfToken}`)
+						.form-row
+							.form-group.col-6
+								label.text-capitalize.text-dark.font-weight-bold(for="name")= __('user.name')
+									span.ml-2.text-danger *
+								input.shadow-none.bg-light.form-control#name.text-secondary(name="name" type="text" placeholder=__('user.name') required)
+							.form-group.col-6
+								label.text-capitalize.text-dark.font-weight-bold(for="username")= __('user.username')
+									span.ml-2.text-danger *
+								input.shadow-none.bg-light.form-control.text-secondary#username(name="username" type="text" placeholder=__('user.username') required)
+							.form-group.col-6
+								label.text-capitalize.text-dark.font-weight-bold(for="email")= __('user.email')
+									span.ml-2.text-danger *
+								input.shadow-none.bg-light.form-control#email.text-secondary(name="email" type="email" placeholder=__('user.email') required)
+							.form-group.col-6
+								label.text-capitalize.text-dark.font-weight-bold(for="password")= __('user.password')
+									span.ml-2.text-danger *
+								input.shadow-none.bg-light.form-control.text-secondary#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password') required)
+							.form-group.col-6
+								label.text-capitalize.text-dark.font-weight-bold(for="confirmPassword")= __('user.confirm_password')
+									span.ml-2.text-danger *
+								input.shadow-none.bg-light.form-control.text-secondary#confirmPassword(name="confirmPassword" type="password" aria-describedby="confirmPasswordHelp" placeholder=__('user.confirm_password') required)
+						.form-row
+							.col-12.col-md-2
+								button.w-100.btn.btn-primary.text-white.text-capitalize(type="submit")= __('user.register')
+			

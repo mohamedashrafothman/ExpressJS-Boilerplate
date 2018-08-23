@@ -1,27 +1,37 @@
 extends ../layouts/index-layout.pug
 
 block content
-	section.d-flex.align-items-center.justify-content-center(style="min-height: 80vh;")
-		.container.d-flex.flex-column.align-items-stretch.justify-content-between
-			h1.border-bottom.py-3.w-100.mb-4.text-capitalize= __('titles.login')
-			form.w-75.mx-auto(action="/user/login", method="POST")
-				input(name="_csrf", type="hidden", value=`${csrfToken}`)
-				.form-group
-					label(for="email")= __('user.email')
-					input.rounded-0.form-control.shadow-none#email(name="email" type="email" placeholder=__('user.email'))
-				.form-group
-					label(for="password")= __('user.password')
-					input.rounded-0.form-control.shadow-none#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
-				button.btn.btn-outline-primary.text-capitalize(type="submit")= __('user.login')
-				a.btn.btn-link(href='/user/forgot')= __('user.forgot_password_q')
-			.w-75.mx-auto.my-5.d-flex.align-items-start.justify-content-around
-				a.btn.btn-outline-danger.mx-3(href="/user/google")
-					span.fab.fa-google.mr-2
-					| sign in with Google+
-				a.btn.btn-outline-primary.mx-3(href="/user/facebook")
-					span.fab.fa-facebook-f.mr-2
-					| sign in with Facebook
-				a.btn.btn-outline-dark.mx-3(href="/user/github")
-					span.fab.fa-github.mr-2
-					| sign in with Github
-				
+	section(style="height: calc(100vh - 73px);")
+		.container.h-100
+			.row.h-100.d-flex.align-items-center.justify-content-center
+				.col-md-8.col-12.card.py-4.px-3
+					h2.pb-4.px-3.text-capitalize.m-0= __('titles.login')
+					form.col-12(action="/user/login", method="POST")
+						input(name="_csrf", type="hidden", value=`${csrfToken}`)
+						.form-row
+							.form-group.col-12
+								label.text-dark.text-capitalize.font-weight-bold(for="email")= __('user.email')
+									span.ml-2.text-danger *
+								input.bg-light.form-control.shadow-none.text-secondary#email(name="email" type="email" placeholder=__('user.email'))
+							.form-group.col-12
+								label.text-dark.text-capitalize.font-weight-bold(for="password")= __('user.password')
+									span.ml-2.text-danger *
+								input.bg-light.form-control.shadow-none.text-secondary#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
+						.form-row
+							.col-12.col-md-2
+								button.w-100.btn.btn-primary.text-capitalize(type="submit")= __('user.login')
+							a.btn.btn-link(href='/user/forgot')= __('user.forgot_password_q')
+						.form-row
+							.col-12.col-md-4.my-md-5.my-2
+								a.w-100.btn.btn-outline-danger.mr-3(href="/user/google")
+									span.fab.fa-google.mr-2
+									| sign in with Google+
+							.col-12.col-md-4.my-md-5.my-2
+								a.w-100.btn.btn-outline-primary.mr-3(href="/user/facebook")
+									span.fab.fa-facebook-f.mr-2
+									| sign in with Facebook
+							.col-12.col-md-4.my-md-5.my-2
+								a.w-100.btn.btn-outline-dark.mr-3(href="/user/github")
+									span.fab.fa-github.mr-2
+									| sign in with Github
+						

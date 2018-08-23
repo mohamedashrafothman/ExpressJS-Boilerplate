@@ -1,34 +1,32 @@
 /**
- ** Requiring Dependencies
+ ** ============================= Dependencies ============================== 
+ ** =========================================================================
+ *? Require dotenv package first then everything else
  */
-const express          = require('express');
-const path             = require("path");
-const logger           = require("morgan");
-const mongoose         = require("mongoose");
-const cookieSession    = require("cookie-session");
-const cookieParser     = require("cookie-parser");
-const errorHandler     = require('errorhandler');
-const flash            = require('connect-flash');
-const bodyParser       = require("body-parser");
+require("dotenv/config");
+const path = require("path");
+const i18n = require("i18n");
+const csrf = require('csurf');
+const flash = require('connect-flash');
+const chalk = require("chalk");
+const logger = require("morgan");
+const express = require('express');
+const favicon = require('serve-favicon');
+const mongoose = require("mongoose");
+const passport = require("passport");
+const userRoute = require("./routes/user");
+const indexRoute = require("./routes/index");
+const bodyParser = require("body-parser");
+const errorHandler = require('errorhandler');
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
+const generalHelpers = require('./helpers/general');
 const expressValidator = require("express-validator");
-const passport         = require("passport");
-const csrf             = require('csurf');
-const chalk            = require("chalk");
-const i18n             = require("i18n");
-const dotenv           = require("dotenv");
-const favicon          = require('serve-favicon');
-const indexRoute       = require("./routes/index");
-const userRoute        = require("./routes/user");
 
 /**
- * Load environment variables from .env file, where API keys and passwords are configured.
- */
-dotenv.config({
-	path: '.env'
-});
-
-/**
- * Configurations
+ ** ============================ Configurations =============================
+ ** =========================================================================
+ * todo: make all configurations in seprate files, then require them.
  */
 require('./config/passport');
 i18n.configure({
@@ -40,12 +38,14 @@ i18n.configure({
 });
 
 /**
- ** create app
+ ** ========================== Create App Instance ========================== 
+ ** ========================================================================= 
  */
 const app = express();
 
 /**
- ** MongoDB connection
+ ** ========================== MongoDB Connection =========================== 
+ ** ========================================================================= 
  */
 mongoose.connect(process.env.MONGODB_URI, {
 	useNewUrlParser: true
@@ -59,7 +59,8 @@ mongoose.connection.once("open", () => {
 });
 
 /** 
- ** Middlewares
+ ** ============================== Middlewares ============================== 
+ ** =========================================================================
  */
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views/'));
@@ -77,21 +78,22 @@ app.use(cookieSession({
 	name: 'session',
 	secret: process.env.SESSION_SECRET,
 	cookie: {
-		maxAge: 1209600000 // two weeks in milliseconds
-	}, 
+		maxAge: 1000 * 60 * 60 * 24 * 14 // 1000 ms * 60 s * 60 min * 24 h * 14 day = 14 Days
+	},
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+// todo: handle other security technuiqes, not only CSRF.
 app.use(csrf({
 	cookie: true
 }))
 app.use(flash());
 app.use(i18n.init);
 app.use((req, res, next) => {
-	res.locals.title     = 'Express Starter Env.';
-	res.locals.flashes   = req.flash() || null;
-	res.locals.user      = req.user || null;
-	res.locals.lang      = req.cookies.lang || req.setLocale('en') || 'en';
+	res.locals.h = generalHelpers;
+	res.locals.flashes = req.flash() || null;
+	res.locals.user = req.user || null;
+	res.locals.lang = req.cookies.lang || req.setLocale('en') || 'en';
 	res.locals.csrfToken = req.csrfToken();
 	next();
 });
@@ -105,25 +107,25 @@ app.use((req, res, next) => {
 	next();
 });
 
-
 /**
- ** Routing
+ ** ================================ Routes ================================= 
+ ** =========================================================================
  */
 app.use("/", indexRoute);
 app.use("/user", userRoute);
 
 
 /**
- * Error Handler.
+ ** ============================ Error Handling ============================= 
+ ** =========================================================================
  */
 if (process.env.NODE_ENV === 'development') {
-	// only use in development
 	app.use(errorHandler());
 }
 
-
 /**
- ** Listing to the server
+ ** =========================== Listen To Server ============================
+ ** =========================================================================
  */
 app.listen(app.get('port'), () => {
 	console.log(`${chalk.green('✓')} App is running at http://localhost:${app.get('port')} in ${app.get('env')} mode`);

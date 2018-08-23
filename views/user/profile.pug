@@ -3,87 +3,125 @@ extends ../layouts/index-layout.pug
 block content
 	section.d-flex.align-items-center.justify-content-center(style="min-height: 80vh;")
 		.container.d-flex.flex-column.align-items-stretch.justify-content-between
-			.row
-				h1.col-12.border-bottom.py-3.text-capitalize= __('user.basic_info')
-				form.col-lg-8.offset-lg-2.col-12.mb-5(action="/user/profile/update", method="POST")
-					input(name="_csrf", type="hidden", value=`${csrfToken}`)
-					.form-row.my-3
-						if user.profile.picture
-							img.rounded-circle.mx-auto.shadow.img-thumbnail.border-primary(data-placement="top" data-toggle="tooltip" src=user.profile.picture title=`${user.profile.name}'s profile`)
+			.row.py-4
+				.col-12.col-md-4.d-lg-block.d-none
+					.card.p-4
+						p content
+				.col-12.col-lg-8
+					.media.mb-4.w-75
+						if (user.profile.picture || user.profile.picture_sm || user.profile.picture_md || user.profile.picture_lg)
+							img.w-25.align-self-start.rounded-circle.mr-3(data-placement="top" data-toggle="tooltip" src=(!user.profile.picture_lg) ? user.profile.picture : user.profile.picture_lg title=`${user.profile.name}'s profile` width="100px")
 						else
-							img.rounded-circle.mx-auto.shadow.img-thumbnail.border-primary(data-placement="top" data-toggle="tooltip" src=user.gravatar(100) title=`${user.profile.name}'s profile`)
-					.form-row.my-3
-						.form-group.col-6
-							label.font-weight-bold.text-capitalize(for="email")= __('user.email')
-							input#emailclass(class=`rounded-0 form-control shadow-none ${(user.email) ? "is-valid" : "is-invalid"}` name="email" type="email" placeholder=__('user.email') value=`${user.email}`)
-						.form-group.col-6
-							label.font-weight-bold.text-capitalize(for="name")= __('user.name')
-							input#name(class=`rounded-0 form-control shadow-none  ${(user.profile.name) ? "is-valid" : "is-invalid"}` name="name" type="text" placeholder=__('user.name') value=`${user.profile.name}`)
-						.form-group.col-6
-							label.font-weight-bold.text-capitalize(for="username")= __('user.username')
-							input#username(class=`rounded-0 form-control shadow-none ${(user.profile.username) ? "is-valid" : "is-invalid"}` name="username" type="text" placeholder=__('user.username') value=`${user.profile.username}`)
-						.form-group.col-6
-							label.font-weight-bold.text-capitalize(for="location")= __('user.location')
-							input#location(class=`rounded-0 form-control shadow-none ${(user.profile.location) ? "is-valid" : "is-invalid"}` name="location" type="text" placeholder=__('user.location') value=`${user.profile.location ? user.profile.location : ''}`)
-						.form-group.col-6
-							label.font-weight-bold.text-capitalize(for="website")= __('user.website')
-							input#website(class=`rounded-0 form-control shadow-none ${(user.profile.website) ? "is-valid" : "is-invalid"}` name="website" type="text" placeholder=__('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
-						.form-group.col-6
-							label.font-weight-bold.col-12.mb-3= __('user.gender.title')
-							.form-check.form-check-inline.col-6.m-0.px-3
-								.custom-control.custom-checkbox
-									input(class="custom-control-input" id="gender_male", name="gender", type="radio", value="male", checked=(user.profile.gender == 'male' ? "checked" : undefined))
-									label.custom-control-label(for="gender_male")= __('user.gender.male')
-							.form-check.form-check-inline.col-6.m-0.px-3
-								.custom-control.custom-checkbox
-									input(class="custom-control-input" id="gender_female", name="gender", type="radio", value="female", checked=(user.profile.gender == 'female' ? "checked" : undefined))
-									label.custom-control-label(for="gender_female")= __('user.gender.female')
-					button.btn.btn-primary.rounded-0.text-white(type="submit")
-						span.mr-2.lnr.lnr-user
-						= __('user.update_profile')
-			.row
-				h1.col-12.border-bottom.py-3.text-capitalize= __('user.change_password')
-				form.col-lg-8.offset-lg-2.col-12.mb-5(action="/user/profile/password", method="POST")
-					input(name="_csrf", type="hidden", value=`${csrfToken}`)
-					.form-row.my-3
-						.form-group.col-6
-							label.font-weight-bold.text-capitalize(for="newPassword")= __('user.new_password')
-							input.rounded.form-control.shadow-none#newPassword(name="newPassword" type="password" placeholder=__('user.new_password'))
-						.form-group.col-6
-							label.font-weight-bold.text-capitalize(for="confirmPassword")= __('user.confirm_password')
-							input.rounded.form-control.shadow-none#confirmPassword(name="confirmPassword" type="password" placeholder=__('user.confirm_password'))
-					button.btn.btn-primary.rounded-0.text-white(type="submit")
-						span.mr-2.lnr.lnr-lock
-						= __('user.change_password')
-			.row.mb-5
-				h1.col-12.border-bottom.py-3.text-capitalize= __('user.delete_account')
-				a.offset-md-2.btn.btn-danger.text-uppercase.rounded-0(href="/user/profile/delete") 
-					span.mr-2.lnr.lnr-trash
-					= __('user.delete_my_account')
-			.row.mb-5
-				h1.col-12.border-bottom.py-3.text-capitalize linked accounts
-				.col-md-10.offset-md-2.col-6
-					if user.google
-						p.mb-1.text-danger
-							span.fab.fa-google.mr-2
-							a.text-danger(href='/user/unlink/google') Unlink your Google account
-					else
-						p.mb-1.text-danger
-							span.fab.fa-google.mr-2
-							a.text-danger(href='/user/google') Link your Google account
-					if user.facebook
-						p.mb-1.text-primary
-							span.fab.fa-facebook-f.mr-2
-							a.text-primary(href='/user/unlink/facebook') Unlink your Facebook account
-					else
-						p.mb-1.text-primary
-							span.fab.fa-facebook-f.mr-2
-							a.text-primary(href='/user/facebook') Link your Facebook account
-					if user.github
-						p.mb-1.text-dark
-							span.fab.fa-github.mr-2
-							a.text-dark(href='/user/unlink/github') Unlink your Github account
-					else
-						p.mb-1.text-dark
-							span.fab.fa-github.mr-2
-							a.text-dark(href='/user/github') Link your Github account
+							img.w-25.align-self-start.rounded-circle.mr-3(data-placement="top" data-toggle="tooltip" src=user.gravatar(100) title=`${user.profile.name}'s profile`)
+						.media-body.w-75
+							h4.m-0.text-capitalize.text-black profile photo
+							p.mb-4 
+								small.text-secondary You can upload a .jpg, .png, or .gif photo with max size of 5MB.
+							button.btn.btn-primary.text-capitalize(type="button", data-toggle="modal" data-target="#uploadAvatarModal")
+								span.mr-2.lnr.lnr-camera
+								|change photo 
+						// Modal
+						#uploadAvatarModal.modal.fade(role='dialog', aria-hidden='true', aria-labelledby='uploadAvatarModalTitle', tabindex='-1')
+							.modal-dialog.modal-dialog-centered(role='document')
+								.modal-content.shadow-none
+									form(action=`/user/profile/avatar?_csrf=${csrfToken}` method="POST", enctype="multipart/form-data")
+										.modal-header
+											h5#uploadAvatarModalTitle.modal-title.text-black.text-capitalize Update Profile Photo
+											button.close(data-dismiss='modal', type='button', aria-label='Close')
+											span(aria-hidden='true') ×
+										.modal-body
+											.custom-file
+												input.custom-file-input(type='file', name=`${avatar_field}`, required)
+												label.custom-file-label.shadow-none.bg-light(for='customFile') Choose file
+										.modal-footer
+											button.btn.btn-danger(data-dismiss='modal', type='button') Cancel
+											button.btn.btn-primary(type='submit')
+												span.lnr.lnr-upload 
+												|Upload
+
+
+					.card.mb-4.py-4.px-3
+						h4.col-12.pb-4.text-capitalize.m-0= __('user.basic_info')
+						form.col-12(action="/user/profile/update", method="POST")
+							input(name="_csrf", type="hidden", value=`${csrfToken}`)
+							.form-row.my-3
+								.form-group.col-12.col-md-6
+									label.text-capitalize.text-dark.font-weight-bold(for="email")
+										= __('user.email')
+										span.ml-1.text-danger *
+									input#emailclass(class=`text-secondary rounded-0 form-control shadow-none bg-light` name="email" type="email" placeholder=__('user.email') value=`${user.email}`)
+								.form-group.col-12.col-md-6
+									label.text-capitalize.text-dark.font-weight-bold(for="name")
+										= __('user.name')
+										span.ml-1.text-danger *
+									input#name(class=`text-secondary rounded-0 form-control shadow-none  bg-light` name="name" type="text" placeholder=__('user.name') value=`${user.profile.name}`)
+								.form-group.col-12.col-md-6
+									label.text-capitalize.text-dark.font-weight-bold(for="username")
+										= __('user.username')
+										span.ml-1.text-danger *
+									input#username(class=`text-secondary rounded-0 form-control shadow-none bg-light` name="username" type="text" placeholder=__('user.username') value=`${user.profile.username}`)
+								.form-group.col-12.col-md-6
+									label.text-capitalize.text-dark.font-weight-bold(for="location")= __('user.location')
+									input#location(class=`text-secondary rounded-0 form-control shadow-none bg-light` name="location" type="text" placeholder=__('user.location') value=`${user.profile.location ? user.profile.location : ''}`)
+								.form-group.col-12.col-md-6
+									label.text-capitalize.text-dark.font-weight-bold(for="website")= __('user.website')
+									input#website(class=`text-secondary rounded-0 form-control shadow-none bg-light` name="website" type="text" placeholder=__('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
+								.form-group.col-12.col-md-6
+									label.col-12.mb-3.text-capitalize.text-dark.font-weight-bold= __('user.gender.title')
+									.form-check.form-check-inline.col-6.m-0.px-3
+										.custom-control.custom-checkbox
+											input(class="custom-control-input", id="gender_male", name="gender", type="radio", value="male", checked=(user.profile.gender == 'male' ? "checked" : undefined))
+											label.custom-control-label.text-secondary(for="gender_male")= __('user.gender.male')
+									.form-check.form-check-inline.col-6.m-0.px-3
+										.custom-control.custom-checkbox
+											input(class="custom-control-input", id="gender_female", name="gender", type="radio", value="female", checked=(user.profile.gender == 'female' ? "checked" : undefined))
+											label.custom-control-label.text-secondary(for="gender_female")= __('user.gender.female')
+							button.btn.btn-primary.text-white(type="submit")
+								span.mr-2.lnr.lnr-user
+								= __('user.update_profile')
+					.card.mb-4.py-4.px-3
+						h4.col-12.pb-4.text-capitalize.m-0= __('user.change_password')
+						form.col-12(action="/user/profile/password", method="POST")
+							input(name="_csrf", type="hidden", value=`${csrfToken}`)
+							.form-row.my-3
+								.form-group.col-12.col-md-6
+									label.font-weight-bold.text-capitalize.text-dark(for="newPassword")= __('user.new_password')
+									input.bg-light.form-control.shadow-none.text-secondary#newPassword(name="newPassword" type="password" placeholder=__('user.new_password'))
+								.form-group.col-12.col-md-6
+									label.font-weight-bold.text-capitalize.text-dark(for="confirmPassword")= __('user.confirm_password')
+									input.bg-light.form-control.shadow-none.text-secondary#confirmPassword(name="confirmPassword" type="password" placeholder=__('user.confirm_password'))
+							button.btn.btn-primary.text-white(type="submit")
+								span.mr-2.lnr.lnr-lock
+								= __('user.change_password')
+					.card.mb-4.py-4.px-3
+						h4.col-12.pb-4.text-capitalize.m-0 linked accounts
+						.col-12
+							if user.google
+								p.mb-1.text-danger
+									span.fab.fa-google.mr-2
+									a.text-danger(href='/user/unlink/google') Unlink your Google account
+							else
+								p.mb-1.text-danger
+									span.fab.fa-google.mr-2
+									a.text-danger(href='/user/google') Link your Google account
+							if user.facebook
+								p.mb-1.text-primary
+									span.fab.fa-facebook-f.mr-2
+									a.text-primary(href='/user/unlink/facebook') Unlink your Facebook account
+							else
+								p.mb-1.text-primary
+									span.fab.fa-facebook-f.mr-2
+									a.text-primary(href='/user/facebook') Link your Facebook account
+							if user.github
+								p.mb-1.text-dark
+									span.fab.fa-github.mr-2
+									a.text-dark(href='/user/unlink/github') Unlink your Github account
+							else
+								p.mb-1.text-dark
+									span.fab.fa-github.mr-2
+									a.text-dark(href='/user/github') Link your Github account
+					.card.mb-4.py-4.px-3
+						h4.col-12.pb-4.text-capitalize.m-0= __('user.delete_account')
+						a.btn.btn-danger.text-uppercase.mx-3(href="/user/profile/delete") 
+							span.mr-2.lnr.lnr-trash
+							= __('user.delete_my_account')

@@ -2,15 +2,15 @@ extends ./layouts/index-layout.pug
 include ./mixins/_single_resturant.pug
 
 block content
-	main.border-bottom.bg-gradient-light(role="main")
+	main.border-bottom.bg-light(role="main")
 		.container
-			.text-center.d-flex.flex-column.justify-content-center.align-items-center.wow.zoomIn(data-wow-duration="1s" style="min-height:74vh;max-height: 74vh; height: 450px;")
-				h1.bg-white.text-uppercase.display-3.font-italic.font-weight-bold.shadow.mb-0.p-3.rounded= __("starter_env.main_title")
-				p.bg-white.lead.text-secondary.shadow.px-3.py-1.rounded-bottom= __("starter_env.main_subtitle")
+			.text-center.d-flex.flex-column.justify-content-center.align-items-center(data-wow-duration="1s" style="min-height:74vh;max-height: 74vh; height: 450px;")
+				h1.bg-white.text-uppercase.display-3.font-italic.font-weight-bold.mb-0.p-3.border= __("starter_env.main_title")
+				p.bg-white.lead.text-secondary.px-3.py-1.border.border-top-0= __("starter_env.main_subtitle")
 			.d-flex.align-items-center.justify-content-center.w-100.pb-5.h4
 				a.animated.bounce.infinite.slower(href="#resturant-sec")
 					span.lnr.lnr-chevron-down.font-weight-bold
-	section.border-bottom.bg-gradient-light.py-5#resturant-sec
+	section.border-bottom.bg-light.py-5#resturant-sec
 		.container
 			.row.align-items-center.justify-content-between
 				h1.py-3.mb-4.text-capitalize= __('data.resturants')

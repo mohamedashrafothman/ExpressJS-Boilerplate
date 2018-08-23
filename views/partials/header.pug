@@ -1,32 +1,34 @@
-nav.h-100.border-bottom
+nav.h-100.border-bottom.bg-white
 	.container.d-flex.align-items-center.justify-content-between
-		a.logo.text-black.h-100.pr-5.py-2.border-right(href="/" data-toggle="tooltip" data-placement="bottom" title=__("starter_env.main_title"))
-			span(class=(title === 'Home' ? 'lnr lnr-mustache text-primary' : 'lnr lnr-mustache text-dark'))
+		a.logo.text-black.h-100.pr-5.border-right(href="/" data-toggle="tooltip" data-placement="bottom" title=__("starter_env.main_title"))
+			span(class="lnr lnr-mustache text-primary")
 		.d-flex.flex-row.align-items-center.justify-content-end.w-75
-			ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0.py-4
-				li(class=(title === "Resturants" ? "text-uppercase h-6 bg-gradient-primary font-weight-bold m-0 border-right px-3" : "text-uppercase h-6 font-weight-bold m-0 border-right px-3"))
+			ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0
+				li(class=(title === "Home" ? "text-capitalize  bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
+						a(class=(title === "Home" ? "text-white" : " ") href="/") Home
+				li(class=(title === "Resturants" ? "text-capitalize  bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
 					a(href="/resturants" class=(title === "Resturants" ? "text-white" : " "))= __('data.resturants')
 				if user
-					li.text-uppercase.h-6.text-dark.font-weight-bold.px-3.m-0.border-right
+					li.text-capitalize.text-dark.px-3.m-0.border-right
 						a(href="/user/logout")= __('user.logout')
 				else
-					li(class=(title === "login" ? "text-uppercase h-6 bg-gradient-primary font-weight-bold m-0 border-right px-3" : "text-uppercase h-6 font-weight-bold m-0 border-right px-3"))
+					li(class=(title === "login" ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
 						a(href="/user/login" class=(title === "login" ? "text-white" : " "))= __('user.login')
-					li(class=(title === "register" ? "text-uppercase h-6 bg-gradient-primary font-weight-bold m-0 border-right px-3" : "text-uppercase h-6 font-weight-bold m-0 border-right px-3"))
+					li(class=(title === "register" ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
 						a(href="/user/register" class=(title === "register" ? "text-white" : " "))= __('user.register')
 				if (lang === 'en')
-					li(class="text-uppercase h-6 font-weight-bold m-0 px-3 pb-2") 
+					li(class="text-capitalize m-0 px-3 pb-2") 
 						a(href="/lang/ar" style="font-family: 'Cairo', sans-serif !important;")= __('lang.ar')
 				if (lang === 'ar')
-					li(class="text-uppercase h-6 font-weight-bold mr-4 px-3") 
+					li(class="text-capitalize mr-4 px-3") 
 						a(href="/lang/en")= __('lang.en')
 				if user
 					li(class=(title === `${user.profile.name}'s profile` ? "mx-3 rounded-circle" : "mx-3 rounded-circle"))
-						a(href="/user/profile" title=__("user.%s 's profile", `${user.profile.name}`) class="rounded-circle py-3" data-toggle="tooltip" data-placement="bottom")
-							if user.profile.picture
-								img.rounded-circle(src=user.profile.picture, width="40px" height="auto")
+						a(href="/user/profile" title=__("user.%s 's profile", `${user.profile.name}`) class="p-3" data-toggle="tooltip" data-placement="bottom")
+							if (user.profile.picture || user.profile.picture_sm || user.profile.picture_md || user.profile.picture_lg)
+								img.rounded-circle(src=(!user.profile.picture_sm) ? user.profile.picture : user.profile.picture_sm ,  width="50px" height="auto")
 							else
-								img.rounded-circle(src=user.gravatar(40))
+								img.rounded-circle(src=user.gravatar(50))
 			.d-inline-block.d-md-none.pl-3.py-3
 				span.menu-open.lnr.lnr-menu.text-dark
 

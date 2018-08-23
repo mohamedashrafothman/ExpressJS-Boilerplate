@@ -35,7 +35,10 @@ const UserSchema = mongoose.Schema({
 		gender: String,
 		location: String,
 		website: String,
-		picture: String
+		picture: String,
+		picture_sm: String,
+		picture_md: String,
+		picture_lg: String
 	},
 	google: String,
 	facebook: String,

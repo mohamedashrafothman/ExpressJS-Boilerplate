@@ -1,9 +1,11 @@
-const User = require("../models/user");
-const to = require("await-to-js").default;
-const mail = require("../handlers/mail");
+const User       = require("../models/user");
+const to         = require("await-to-js").default;
+const mail       = require("../helpers/mail");
 const nodemailer = require('nodemailer');
-const passport = require('passport');
-const crypto = require('crypto');
+const passport   = require('passport');
+const crypto     = require('crypto');
+const _          = require('lodash');
+const path       = require("path");
 
 /**
  *  Get Login View Page
@@ -212,7 +214,8 @@ const logoutUser = (req, res) => {
  */
 const getUserProfile = (req, res) => {
 	res.render('user/profile', {
-		title: `${req.user.profile.name}'s profile`
+		title: `${req.user.profile.name}'s profile`,
+		avatar_field: process.env.AVATAR_FIELD
 	});
 };
 
@@ -316,6 +319,35 @@ const updateUserPassword = async (req, res, next) => {
 	req.flash('success', res.__("msgs.validation.profile.success_password"));
 	res.redirect('/user/profile');
 };
+const updateUserAvatar = async function (req, res, next) {
+	var files;
+	var file = req.file.filename;
+	var matches = file.match(/^(.+?)_.+?\.(.+)$/i);
+	if (matches) {
+		files = _.map(['lg', 'md', 'sm'], function (size) {
+			return matches[1] + '_' + size + '.' + matches[2];
+		});
+	} else {
+		files = [file];
+	}
+	files = _.map(files, function (file) {
+		var port = req.app.get('port');
+		var base = req.protocol + '://' + req.hostname + (port ? ':' + port : '');
+		var url = path.join(req.file.baseUrl, file).replace(/[\\\/]+/g, '/').replace(/^[\/]+/g, '');
+		return (req.file.storage == 'local' ? base : '') + '/' + url;
+	});
+	console.log(files)
+	const [updateUserError, user] = await to(User.findOne({_id: req.user._id}));
+	if(updateUserError) return next(updateUserError);
+	user.profile.picture_lg = files[0];
+	user.profile.picture_md = files[1];
+	user.profile.picture_sm = files[2];
+	const [updateUserErr, updatedUser] = await to(user.save());
+	if (updateUserErr) return next(updateUserErr);
+	req.flash('success', 'successfully updated your avatar.');
+	res.redirect('/user/profile');
+
+}
 
 /**
  * Delete user profile by ID then logout.
@@ -437,7 +469,9 @@ const oauthRedirect = (req, res, next) => {
  * Unlink OAuth provider.
  */
 const getOauthUnlink = (req, res, next) => {
-	const {provider} = req.params;
+	const {
+		provider
+	} = req.params;
 	User.findById(req.user.id, (err, user) => {
 		if (err) {
 			return next(err);
@@ -470,6 +504,7 @@ module.exports = {
 	updateUserProfile,
 	validateUserPassword,
 	updateUserPassword,
+	updateUserAvatar,
 	deleteUserAccount,
 	getForgot,
 	postForgot,

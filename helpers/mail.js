@@ -2,16 +2,15 @@ const nodemailer = require('nodemailer');
 const pug = require('pug');
 const juice = require('juice');
 const htmlToText = require('html-to-text');
-const to = require("await-to-js").default;
 
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
-	host: "smtp.mailtrap.io",
-	port: 2525,
+	host: process.env.MAIL_HOST,
+	port: process.env.MAIL_PORT,
 	secure: false, // true for 465, false for other ports
 	auth: {
-		user: "263bef18b9356d", // generated ethereal user
-		pass: "240cb4687c6bda" // generated ethereal password
+		user: process.env.MAIL_USER, // generated ethereal user
+		pass: process.env.MAIL_PASS // generated ethereal password
 	},
 	tls: {
 		rejectUnautherized: false
