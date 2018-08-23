@@ -6,8 +6,6 @@ const i18n = require('i18n');
 const getHome = async (req, res, next)=> {
 	const [resturantsErr, resturants] = await to(Resturant.find({}).select("name cuisine address.street _id").limit(4).sort({created: "desc"}).exec());
 	if(resturantsErr) return next(resturantsErr);
-	console.log(i18n.getLocale());
-
 	res.render('index', {
 		title: 'Home',
 		resturants

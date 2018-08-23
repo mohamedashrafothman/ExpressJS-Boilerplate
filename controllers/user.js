@@ -128,13 +128,8 @@ const verifyUser = async (req, res, next) => {
 		req.flash('error', "Invalid approach, please use the link that has been send to your email.");
 		res.redirect("/user/register");
 	}
-	req.logIn(user, (err) => {
-		if (err) {
-			return next(err);
-		}
-		req.flash("success", "Your account has been activated, and loggedin");
-		res.redirect("/");
-	});
+	req.flash("success", "Your account has been activated, you can loggin now.");
+	res.redirect("/user/login");
 };
 
 /**
@@ -336,7 +331,6 @@ const updateUserAvatar = async function (req, res, next) {
 		var url = path.join(req.file.baseUrl, file).replace(/[\\\/]+/g, '/').replace(/^[\/]+/g, '');
 		return (req.file.storage == 'local' ? base : '') + '/' + url;
 	});
-	console.log(files)
 	const [updateUserError, user] = await to(User.findOne({_id: req.user._id}));
 	if(updateUserError) return next(updateUserError);
 	user.profile.picture_lg = files[0];

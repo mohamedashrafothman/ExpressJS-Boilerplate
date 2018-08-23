@@ -21,7 +21,6 @@ var limits = {
 var fileFilter = function (req, file, cb) {
 	// supported image file mimetypes
 	var allowedMimes = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'];
-	console.log(file);
 	if (_.includes(allowedMimes, file.mimetype)) {
 		// allow supported image files
 		cb(null, true);

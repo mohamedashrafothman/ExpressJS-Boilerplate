@@ -138,7 +138,6 @@ passport.use(new FacebookStrategy({
 	profileFields: ['name', 'email', 'link', 'locale', 'timezone', 'gender'],
 	passReqToCallback: true
 }, (req, accessToken, refreshToken, profile, done) => {
-	// console.log(profile)
 	if (req.user) {
 		User.findOne({
 			facebook: profile.id
@@ -203,7 +202,6 @@ passport.use(new FacebookStrategy({
 					user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
 					user.profile.location = (profile._json.location) ? profile._json.location.name : '';
 					user.active = 1;
-					console.log(user)
 					user.save((err) => {
 						done(err, user);
 					});
