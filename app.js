@@ -107,6 +107,7 @@ app.set('permission', {
 app.use((req, res, next) => {
 	res.locals.h = generalHelpers;
 	res.locals._ = _;
+	res.locals.siteName = process.env.SITE_NAME
 	res.locals.flashes = req.flash() || null;
 	res.locals.user = req.user || null;
 	res.locals.lang = req.cookies.lang || req.setLocale('en') || 'en';

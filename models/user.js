@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const crypto = require('crypto');
-const validator = require("validator");
+const crypto           = require('crypto');
+const bcrypt           = require("bcryptjs");
+const mongoose         = require("mongoose");
+const validator        = require("validator");
 const mongoosePaginate = require("mongoose-paginate");
-mongoose.Promise = global.Promise;
-
+      mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
 	email: {
@@ -71,17 +70,19 @@ UserSchema.pre("save", function (next) {
 		})
 	})
 });
+
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 	bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
 		if (err) return cb(err);
 		cb(null, isMatch);
 	})
-}
+};
+
 UserSchema.methods.gravatar = function gravatar(size, user) {
 	if (!size) {
 		size = 200;
 	}
-	if(!user){
+	if (!user) {
 		user = this.email;
 	}
 	// if (!user) {
@@ -90,8 +91,8 @@ UserSchema.methods.gravatar = function gravatar(size, user) {
 	const md5 = crypto.createHash('md5').update(user).digest('hex');
 	return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
-UserSchema.plugin(mongoosePaginate);
 
+UserSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

@@ -1,8 +1,8 @@
 const express         = require("express");
 const router          = express.Router();
+const permission      = require("permission");
+const passportConfig  = require('../config/passport');
 const indexController = require('../controllers/index');
-const passportConfig = require('../config/passport');
-const permission = require("permission");
 
 router.get("/", indexController.getHome);
 router.get("/lang/:lang", indexController.setLang);

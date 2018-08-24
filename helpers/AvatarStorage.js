@@ -211,7 +211,7 @@ var AvatarStorage = function (options) {
 		// write the uploaded file buffer to the fileManipulate stream
 		file.stream.pipe(fileManipulate);
 	};
-	
+
 	// multer requires this for destroying file	
 	AvatarStorage.prototype._removeFile = function (req, file, cb) {
 		var matches, pathsplit;

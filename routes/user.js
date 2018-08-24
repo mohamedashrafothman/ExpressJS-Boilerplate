@@ -1,11 +1,11 @@
+const _              = require('lodash');
 const express        = require("express");
 const router         = express.Router();
+const multer         = require('multer');
 const passport       = require("passport");
+const AvatarStorage  = require('../helpers/AvatarStorage');
 const userController = require("../controllers/user");
 const passportConfig = require('../config/passport');
-const _              = require('lodash');
-const multer         = require('multer');
-const AvatarStorage  = require('../helpers/AvatarStorage');
 
 // setup a new instance of the AvatarStorage engine 
 var storage = AvatarStorage({
@@ -54,13 +54,24 @@ router.get('/reset/:token', userController.getResetPassword);
 router.post('/reset/:token', userController.validateResetPassword, userController.postResetPassword);
 router.get('/verify/:email/:hash', userController.verifyUser);
 
+
 // Google Auth
-router.get('/google', passport.authenticate("google", {scope: 'profile email'}));
-router.get('/google/redirect', passport.authenticate("google") ,userController.oauthRedirect)
-router.get('/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
-router.get('/facebook/redirect', passport.authenticate('facebook', { failureRedirect: '/user/login' }), userController.oauthRedirect);
+router.get('/google', passport.authenticate("google", {
+	scope: 'profile email'
+}));
+router.get('/google/redirect', passport.authenticate("google"), userController.oauthRedirect);
+// Facebook Auth
+router.get('/facebook', passport.authenticate('facebook', {
+	scope: ['email', 'public_profile']
+}));
+router.get('/facebook/redirect', passport.authenticate('facebook', {
+	failureRedirect: '/user/login'
+}), userController.oauthRedirect);
+// Github Auth
 router.get('/github', passport.authenticate('github'));
-router.get('/github/redirect', passport.authenticate('github', { failureRedirect: '/user/login' }), userController.oauthRedirect);
+router.get('/github/redirect', passport.authenticate('github', {
+	failureRedirect: '/user/login'
+}), userController.oauthRedirect);
 
 
 

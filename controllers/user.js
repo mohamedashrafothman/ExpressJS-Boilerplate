@@ -1,11 +1,10 @@
-const User       = require("../models/user");
-const to         = require("await-to-js").default;
-const mail       = require("../helpers/mail");
-const nodemailer = require('nodemailer');
-const passport   = require('passport');
-const crypto     = require('crypto');
 const _          = require('lodash');
+const to         = require("await-to-js").default;
+const User       = require("../models/user");
 const path       = require("path");
+const mail       = require("../helpers/mail");
+const crypto     = require('crypto');
+const passport   = require('passport');
 
 /**
  *  Get Login View Page
@@ -46,7 +45,9 @@ const validateRegister = async (req, res, next) => {
 	req.sanitizeBody('email');
 	req.checkBody('password', res.__('msgs.validation.register.password')).notEmpty();
 	req.checkBody('password', `Password must be ${Number(process.env.MINIMUM_PASSWORD_LENGTH)} char Length.`)
-		.isLength({min: Number(process.env.MINIMUM_PASSWORD_LENGTH)});
+		.isLength({
+			min: Number(process.env.MINIMUM_PASSWORD_LENGTH)
+		});
 	req.checkBody("password", "password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i")
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.confirm_password')).notEmpty();
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.passwords_not_match')).equals(req.body.password);
@@ -345,8 +346,10 @@ const updateUserAvatar = async function (req, res, next) {
 		var url = path.join(req.file.baseUrl, file).replace(/[\\\/]+/g, '/').replace(/^[\/]+/g, '');
 		return (req.file.storage == 'local' ? base : '') + '/' + url;
 	});
-	const [updateUserError, user] = await to(User.findOne({_id: req.user._id}));
-	if(updateUserError) return next(updateUserError);
+	const [updateUserError, user] = await to(User.findOne({
+		_id: req.user._id
+	}));
+	if (updateUserError) return next(updateUserError);
 	user.profile.picture_lg = files[0];
 	user.profile.picture_md = files[1];
 	user.profile.picture_sm = files[2];

@@ -1,21 +1,20 @@
-const Resturant = require('../models/resturant');
-const to        = require("await-to-js").default;
-const i18n      = require('i18n');
-const User      = require("../models/user");
+const i18n = require('i18n');
+const User = require("../models/user");
 
-
-const getHome = async (req, res, next)=> {
-	res.render('index', {title: 'Home'});
+const getHome = async (req, res, next) => {
+	res.render('index', {
+		title: 'Home'
+	});
 };
 
-const setLang = (req, res, next)=> {
+const setLang = (req, res, next) => {
 	const lang = req.params.lang;
 	i18n.setLocale(res, lang, true);
 	res.cookie('lang', lang);
 	res.redirect('back');
 };
 
-const getListOfUsers = async (req, res, next)=> {
+const getListOfUsers = async (req, res, next) => {
 	const query = {};
 	const options = {
 		select: "profile.picture profile.name profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
@@ -43,6 +42,6 @@ const getListOfUsers = async (req, res, next)=> {
 
 module.exports = {
 	getHome,
-	setLang, 
+	setLang,
 	getListOfUsers
 }

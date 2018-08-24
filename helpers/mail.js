@@ -1,6 +1,6 @@
+const pug        = require('pug');
+const juice      = require('juice');
 const nodemailer = require('nodemailer');
-const pug = require('pug');
-const juice = require('juice');
 const htmlToText = require('html-to-text');
 
 // create reusable transporter object using the default SMTP transport
@@ -35,7 +35,6 @@ const send = (options) => {
 	};
 	return transporter.sendMail(mailOptions);
 };
-
 
 module.exports = {
 	send
