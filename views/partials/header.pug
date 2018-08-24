@@ -1,13 +1,14 @@
 nav.h-100.border-bottom.bg-white
 	.container.d-flex.align-items-center.justify-content-between
-		a.logo.text-black.h-100.pr-5.border-right(href="/" data-toggle="tooltip" data-placement="bottom" title=__("starter_env.main_title"))
-			span(class="lnr lnr-mustache text-primary")
+		a.logo.text-black.h-100.px-5.border-right(href="/" data-toggle="tooltip" data-placement="bottom" title=__("starter_env.main_title"))
+			span(class="lnr lnr-coffee-cup text-primary")
 		.d-flex.flex-row.align-items-center.justify-content-end.w-75
 			ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0
 				li(class=(title === "Home" ? "text-capitalize  bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
 						a(class=(title === "Home" ? "text-white" : " ") href="/") Home
-				li(class=(title === "Resturants" ? "text-capitalize  bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
-					a(href="/resturants" class=(title === "Resturants" ? "text-white" : " "))= __('data.resturants')
+				if (user && user.role === "admin")
+					li(class=(title === "Users" ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
+						a(href="/users" class=(title === "Users" ? "text-white" : " ")) Users
 				if user
 					li.text-capitalize.text-dark.px-3.m-0.border-right
 						a(href="/user/logout")= __('user.logout')

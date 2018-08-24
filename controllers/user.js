@@ -78,7 +78,8 @@ const registerUser = async (req, res, next) => {
 		},
 		email: req.body.email,
 		password: req.body.password,
-		confirmPassword: req.body.confirmPassword
+		confirmPassword: req.body.confirmPassword,
+		role: (req.body.adminCode && _.isEqual(req.body.adminCode, process.env.ADMIN_SECRET)) ? "admin" : "user"
 	}
 	const user = new User(userData);
 	User.findOne({
@@ -180,7 +181,7 @@ const loginUser = async (req, res, next) => {
 			return res.redirect('/user/login');
 		}
 		if (user.active == 0) {
-			req.flash('error', "please verify your account first so you can login!");
+			req.flash('error', "please verify your account first so you can login, or check the problem with system admin.");
 			return res.redirect('/user/login');
 		}
 		req.logIn(user, (err) => {
@@ -210,7 +211,8 @@ const logoutUser = (req, res) => {
 const getUserProfile = (req, res) => {
 	res.render('user/profile', {
 		title: `${req.user.profile.name}'s profile`,
-		avatar_field: process.env.AVATAR_FIELD
+		avatar_field: process.env.AVATAR_FIELD,
+		user: req.user
 	});
 };
 
@@ -249,7 +251,11 @@ const updateUserProfile = async (req, res, next) => {
 			username: req.body.username,
 			location: req.body.location,
 			gender: req.body.gender,
-			website: req.body.website
+			website: req.body.website,
+			picture: (req.user.profile.picture) ? req.user.profile.picture : '',
+			picture_sm: (req.user.profile.picture_sm) ? req.user.profile.picture_sm : '',
+			picture_md: (req.user.profile.picture_md) ? req.user.profile.picture_md : '',
+			picture_lg: (req.user.profile.picture_lg) ? req.user.profile.picture_lg : ''
 		}
 	}
 	const [err, user] = await to(User.findOneAndUpdate({

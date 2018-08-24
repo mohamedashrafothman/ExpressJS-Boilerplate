@@ -73,10 +73,6 @@
 		"ar": "ع",
 		"en": "E"
 	},
-	"data": {
-		"resturants": "قائمة المطاعم",
-		"view_all": "رؤية المزيد"
-	},
 	"pagination": {
 		"page %s": "صفحة رقم %s",
 		"pervious_page": "السابق",

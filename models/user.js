@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const crypto = require('crypto');
 const validator = require("validator");
+const mongoosePaginate = require("mongoose-paginate");
 mongoose.Promise = global.Promise;
 
 
@@ -49,7 +50,11 @@ const UserSchema = mongoose.Schema({
 		ref: 'Resturant'
 	}],
 	resetPasswordToken: String,
-	resetPasswordExpires: Date
+	resetPasswordExpires: Date,
+	role: {
+		type: String,
+		default: "user"
+	}
 });
 
 UserSchema.pre("save", function (next) {
@@ -72,15 +77,21 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 		cb(null, isMatch);
 	})
 }
-UserSchema.methods.gravatar = function gravatar(size) {
+UserSchema.methods.gravatar = function gravatar(size, user) {
 	if (!size) {
 		size = 200;
 	}
-	if (!this.email) {
-		return `https://gravatar.com/avatar/?s=${size}&d=retro`;
+	if(!user){
+		user = this.email;
 	}
-	const md5 = crypto.createHash('md5').update(this.email).digest('hex');
+	// if (!user) {
+	// 	return `https://gravatar.com/avatar/?s=${size}&d=retro`;
+	// }
+	const md5 = crypto.createHash('md5').update(user).digest('hex');
 	return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
+UserSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("User", UserSchema);
+
+const User = mongoose.model("User", UserSchema);
+module.exports = User;

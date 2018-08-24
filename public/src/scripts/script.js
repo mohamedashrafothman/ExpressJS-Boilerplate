@@ -3,6 +3,7 @@ const overlayMenu = require("./partials/overlayMenu");
 const tooltipInit = require("./partials/tooltipInit");
 const smothScroll = require("./partials/smothScroll");
 const wowInit = require("./partials/wowInit");
+const dataTableInit = require("./partials/dataTableInit");
 
 $(window).on("load", () => {
 	$(".preloader").animate({
@@ -19,4 +20,5 @@ $(document).ready(() => {
 	overlayMenu();
 	tooltipInit();
 	smothScroll();
+	dataTableInit();
 });

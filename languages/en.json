@@ -71,10 +71,6 @@
 		"ar": "ع",
 		"en": "en"
 	},
-	"data": {
-		"resturants": "resturants",
-		"view_all": "View All"
-	},
 	"pagination": {
 		"page %s": "page %s",
 		"next_page": "Next",

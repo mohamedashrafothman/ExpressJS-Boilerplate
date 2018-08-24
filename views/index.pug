@@ -1,5 +1,4 @@
 extends ./layouts/index-layout.pug
-include ./mixins/_single_resturant.pug
 
 block content
 	main.border-bottom.bg-light(role="main")
@@ -10,11 +9,3 @@ block content
 			.d-flex.align-items-center.justify-content-center.w-100.pb-5.h4
 				a.animated.bounce.infinite.slower(href="#resturant-sec")
 					span.lnr.lnr-chevron-down.font-weight-bold
-	section.border-bottom.bg-light.py-5#resturant-sec
-		.container
-			.row.align-items-center.justify-content-between
-				h1.py-3.mb-4.text-capitalize= __('data.resturants')
-				a.text-primary.text-capitalize(href="/resturants" title=__('data.view_all'))=__('data.view_all')
-			.row
-				each resturant, index in resturants
-					+resturant(resturant, index)

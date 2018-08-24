@@ -1,12 +1,12 @@
-mixin pagination(page, pages)
-	nav.col-12.my-4(aria-label="page navigation")
-		ul.justify-content-center.align-items-center.pagination
+mixin pagination(baseUrl, page, pages, direction)
+	nav.w-100.mt-4.p-0(aria-label="page navigation")
+		ul(class=`justify-content-${direction} align-items-center pagination m-0`)
 			li.page-item(class=`${(page==1) ? 'disabled' : ''}`)
-				a.page-link(data-placement="top", data-toggle="tooltip", href=`/resturants/page/${page-1}`, title=__('pagination.pervious_page'), tabindex="-1")= __('pagination.pervious_page')
+				a.page-link(data-placement="top", data-toggle="tooltip", href=`${baseUrl}/page/${page-1}`, title=__('pagination.pervious_page'), tabindex="-1")= __('pagination.pervious_page')
 			-var i = (Number(page) > 5 ? Number(page) - 4 : 1);
 			if (i !== 1)
 				li.page-item
-					a.page-link(data-placement="top", data-toggle="tooltip", href=`/resturants/page/${Number(1)}`, title=`${__('pagination.page %s', Number(1))}`)  ...
+					a.page-link(data-placement="top", data-toggle="tooltip", href=`${baseUrl}/page/${Number(1)}`, title=`${__('pagination.page %s', Number(1))}`)  ...
 			- for(; i <= (Number(page) + 4) && i <= pages; i++)
 				if (i == page)
 					li.page-item.active(data-placement="top", data-toggle="tooltip", title=__('pagination.current_page'))
@@ -14,9 +14,9 @@ mixin pagination(page, pages)
 							span.sr-only (current)
 				else 
 					li.page-item
-						a.page-link(data-placement="top", data-toggle="tooltip", href=`/resturants/page/${i}`, title=`${__('pagination.page %s', Number(i))}`)= `${i}`
+						a.page-link(data-placement="top", data-toggle="tooltip", href=`${baseUrl}/page/${i}`, title=`${__('pagination.page %s', Number(i))}`)= `${i}`
 				if (i == Number(page) + 4 && i < pages)
 					li.page-item
-						a.page-link(data-placement="top", data-toggle="tooltip", href=`/resturants/page/${Number(pages)}`, title=`${__('pagination.page %s', Number(pages))}`) ...
+						a.page-link(data-placement="top", data-toggle="tooltip", href=`${baseUrl}/page/${Number(pages)}`, title=`${__('pagination.page %s', Number(pages))}`) ...
 			li.page-item(class=`${(page == pages) ? 'disabled' : ''}`)
-				a.page-link(data-placement="top", data-toggle="tooltip", href=`/resturants/page/${Number(page)+1}`, title=__('pagination.next_page'))= __('pagination.next_page')
+				a.page-link(data-placement="top", data-toggle="tooltip", href=`${baseUrl}/page/${Number(page)+1}`, title=__('pagination.next_page'))= __('pagination.next_page')

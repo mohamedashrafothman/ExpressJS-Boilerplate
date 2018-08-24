@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/mohamedashrafothman/expressjs-starter-env#readme",
   "dependencies": {
-    "acl": "^0.4.11",
     "await-to-js": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -54,6 +53,7 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-http": "^0.3.0",
     "passport-local": "^1.0.0",
+    "permission": "^1.1.0",
     "pug": "^2.0.3",
     "serve-favicon": "^2.5.0",
     "streamifier": "^0.1.1",

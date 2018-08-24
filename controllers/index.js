@@ -1,15 +1,11 @@
 const Resturant = require('../models/resturant');
-const to = require("await-to-js").default;
-const i18n = require('i18n');
+const to        = require("await-to-js").default;
+const i18n      = require('i18n');
+const User      = require("../models/user");
 
 
 const getHome = async (req, res, next)=> {
-	const [resturantsErr, resturants] = await to(Resturant.find({}).select("name cuisine address.street _id").limit(4).sort({created: "desc"}).exec());
-	if(resturantsErr) return next(resturantsErr);
-	res.render('index', {
-		title: 'Home',
-		resturants
-	});
+	res.render('index', {title: 'Home'});
 };
 
 const setLang = (req, res, next)=> {
@@ -19,32 +15,34 @@ const setLang = (req, res, next)=> {
 	res.redirect('back');
 };
 
-const getListOfData = async (req, res, next) => {
+const getListOfUsers = async (req, res, next)=> {
 	const query = {};
 	const options = {
-		select: "name cuisine address.street _id",
+		select: "profile.picture profile.name profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
 		page: req.params.page || 1,
-		limit: 8,
+		limit: 10,
 		skip: (this.page * this.limit) - this.limit,
-		sort: {created: "desc"},
+		sort: {
+			created: "desc"
+		},
 		lean: true
 	}
-	const resturants = await Resturant.paginate(query, options);
-	if (!resturants.docs.length && resturants.offset === undefined) {
-		req.flash('info', `Hey! you asked for page ${req.params.page || 1}. But that dosen't exist. So i put you on page ${resturants.pages}.`)
-		return res.redirect(`/resturants/page/${resturants.pages}`);
+	const users = await User.paginate(query, options);
+	if (!users.docs.length && users.offset === undefined) {
+		req.flash('info', `Hey! you asked for page ${req.params.page || 1}. But that dosen't exist. So i put you on page ${users.pages}.`)
+		return res.redirect(`/users/page/${users.pages}`);
 	}
-	res.render('data/list', {
-		title: 'Resturants',
-		resturants: resturants.docs,
+	res.render('users/usersList', {
+		title: 'Users',
+		users: users.docs,
 		page: req.params.page || 1,
-		pages: resturants.pages,
-		count: resturants.total
+		pages: users.pages,
+		count: users.total
 	});
-};
+}
 
 module.exports = {
-	getListOfData,
 	getHome,
-	setLang
+	setLang, 
+	getListOfUsers
 }

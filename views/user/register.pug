@@ -4,7 +4,7 @@ block content
 	section(style="height: calc(100vh - 73px);")
 		.container.h-100
 			.row.d-flex.align-items-center.justify-content-center.h-100
-				.card.py-4.px-3.col-12.col-md-8
+				.card.py-4.px-3.col-12.col-md-9
 					h2.pb-4.px-3.text-capitalize.m-0= __('titles.register')
 					form.col-12(action="/user/register", method="POST")
 						input(name="_csrf", type="hidden", value=`${csrfToken}`)
@@ -12,23 +12,27 @@ block content
 							.form-group.col-6
 								label.text-capitalize.text-dark.font-weight-bold(for="name")= __('user.name')
 									span.ml-2.text-danger *
-								input.shadow-none.bg-light.form-control#name.text-secondary(name="name" type="text" placeholder=__('user.name') required)
+								input.form-control#name.text-secondary(name="name" type="text" placeholder=__('user.name') required)
 							.form-group.col-6
 								label.text-capitalize.text-dark.font-weight-bold(for="username")= __('user.username')
 									span.ml-2.text-danger *
-								input.shadow-none.bg-light.form-control.text-secondary#username(name="username" type="text" placeholder=__('user.username') required)
+								input.form-control.text-secondary#username(name="username" type="text" placeholder=__('user.username') required)
 							.form-group.col-6
 								label.text-capitalize.text-dark.font-weight-bold(for="email")= __('user.email')
 									span.ml-2.text-danger *
-								input.shadow-none.bg-light.form-control#email.text-secondary(name="email" type="email" placeholder=__('user.email') required)
+								input.form-control#email.text-secondary(name="email" type="email" placeholder=__('user.email') required)
 							.form-group.col-6
 								label.text-capitalize.text-dark.font-weight-bold(for="password")= __('user.password')
 									span.ml-2.text-danger *
-								input.shadow-none.bg-light.form-control.text-secondary#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password') required)
+								input.form-control.text-secondary#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password') required)
 							.form-group.col-6
 								label.text-capitalize.text-dark.font-weight-bold(for="confirmPassword")= __('user.confirm_password')
 									span.ml-2.text-danger *
-								input.shadow-none.bg-light.form-control.text-secondary#confirmPassword(name="confirmPassword" type="password" aria-describedby="confirmPasswordHelp" placeholder=__('user.confirm_password') required)
+								input.form-control.text-secondary#confirmPassword(name="confirmPassword" type="password" aria-describedby="confirmPasswordHelp" placeholder=__('user.confirm_password') required)
+							.form-group.col-6
+								label.text-capitalize.text-dark.font-weight-bold(for="adminCode") Admin Code
+								input.form-control.text-secondary#adminCode(name="adminCode" type="password" aria-describedby="adminCodeHelp" placeholder="Admin code")
+								small.form-text.text-muted#adminCodeHelp no worries if you don't have admin code, this field for admins only and not required for normal users.
 						.form-row
 							.col-12.col-md-2
 								button.w-100.btn.btn-primary.text-white.text-capitalize(type="submit")= __('user.register')

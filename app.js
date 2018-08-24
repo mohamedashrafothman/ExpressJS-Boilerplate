@@ -4,6 +4,7 @@
  *? Require dotenv package first then everything else
  */
 require("dotenv/config");
+const _ = require("lodash");
 const path = require("path");
 const i18n = require("i18n");
 const csrf = require('csurf');
@@ -17,6 +18,7 @@ const passport = require("passport");
 const userRoute = require("./routes/user");
 const indexRoute = require("./routes/index");
 const bodyParser = require("body-parser");
+const permission = require("permission");
 const errorHandler = require('errorhandler');
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
@@ -89,8 +91,22 @@ app.use(csrf({
 }))
 app.use(flash());
 app.use(i18n.init);
+app.set('permission', {
+	role: 'role',
+	notAuthenticated: {
+		flashType: 'error',
+		message: 'Login first so you can access your requested page.',
+		redirect: '/user/login'
+	},
+	notAuthorized: {
+		flashType: 'error',
+		message: "You are not allowed to see this content, only admins can see it.",
+		redirect: 'back'
+	}
+});
 app.use((req, res, next) => {
 	res.locals.h = generalHelpers;
+	res.locals._ = _;
 	res.locals.flashes = req.flash() || null;
 	res.locals.user = req.user || null;
 	res.locals.lang = req.cookies.lang || req.setLocale('en') || 'en';
