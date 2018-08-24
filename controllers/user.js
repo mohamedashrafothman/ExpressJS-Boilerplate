@@ -45,6 +45,9 @@ const validateRegister = async (req, res, next) => {
 	req.checkBody('email', res.__('msgs.validation.register.email')).isEmail();
 	req.sanitizeBody('email');
 	req.checkBody('password', res.__('msgs.validation.register.password')).notEmpty();
+	req.checkBody('password', `Password must be ${Number(process.env.MINIMUM_PASSWORD_LENGTH)} char Length.`)
+		.isLength({min: Number(process.env.MINIMUM_PASSWORD_LENGTH)});
+	req.checkBody("password", "password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i")
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.confirm_password')).notEmpty();
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.passwords_not_match')).equals(req.body.password);
 
@@ -283,6 +286,11 @@ const updateUserProfile = async (req, res, next) => {
  */
 const validateUserPassword = async (req, res, next) => {
 	req.checkBody('newPassword', res.__('msgs.validation.register.password')).notEmpty();
+	req.checkBody('newPassword', `Password must be ${Number(process.env.MINIMUM_PASSWORD_LENGTH)} char Length.`)
+		.isLength({
+			min: Number(process.env.MINIMUM_PASSWORD_LENGTH)
+		});
+	req.checkBody("newPassword", "password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i")
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.confirm_password')).notEmpty();
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.passwords_not_match')).equals(req.body.newPassword);
 	const errors = await req.getValidationResult();
@@ -396,7 +404,7 @@ const postForgot = async (req, res, next) => {
 		res.redirect('back');
 	}
 	user.resetPasswordToken = token;
-	user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+	user.resetPasswordExpires = Date.now() + (1000 * 60 * 60 * process.env.PASSWORD_RESET_TIME_LIMIT_IN_HOURS); // 1000 ms * 60 s * 60 min * hours number
 	const [updatedUserErr, updatedUser] = await to(user.save());
 	if (updatedUserErr) return next(updatedUserErr);
 	const resetUrl = `http://${req.headers.host}/user/reset/${updatedUser.resetPasswordToken}`;
@@ -419,6 +427,11 @@ const getResetPassword = (req, res, next) => {
 }
 const validateResetPassword = async (req, res, next) => {
 	req.checkBody('password', res.__('msgs.validation.register.password')).notEmpty();
+	req.checkBody('password', `Password must be ${Number(process.env.MINIMUM_PASSWORD_LENGTH)} char Length.`)
+		.isLength({
+			min: Number(process.env.MINIMUM_PASSWORD_LENGTH)
+		});
+	req.checkBody("password", "password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i")
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.confirm_password')).notEmpty();
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.passwords_not_match')).equals(req.body.password);
 
