@@ -4,20 +4,20 @@ block content
 	section(style="height: calc(100vh - 73px);")
 		.container.h-100
 			.row.h-100.d-flex.align-items-center.justify-content-center
-				.col-md-9.col-12.card.py-4.px-3
+				.col-md-7.col-12.card.py-4.px-3
 					h2.pb-4.px-3.text-capitalize.m-0= __('titles.login')
 					form.col-12(action="/user/login", method="POST")
 						input(name="_csrf", type="hidden", value=`${csrfToken}`)
 						.form-row
 							.form-group.col-12
-								label.text-dark.text-capitalize.font-weight-bold(for="email")= __('user.email')
+								label.text-dark.text-capitalize.font-weight-bold.m-0(for="email")= __('user.email')
 									span.ml-2.text-danger *
 								input.form-control.text-secondary#email(name="email" type="email" placeholder=__('user.email'))
 							.form-group.col-12
-								label.text-dark.text-capitalize.font-weight-bold(for="password")= __('user.password')
+								label.text-dark.text-capitalize.font-weight-bold.m-0(for="password")= __('user.password')
 									span.ml-2.text-danger *
 								input.form-control.text-secondary#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
-						.form-row
+						.form-row.mt-4
 							.col-12.col-md-2
 								button.w-100.btn.btn-primary.text-capitalize(type="submit")= __('user.login')
 							a.btn.btn-link(href='/user/forgot')= __('user.forgot_password_q')

@@ -4,15 +4,15 @@ block content
 	section(style="height: calc(100vh - 73px);")
 		.container.h-100
 			.row.h-100.d-flex.align-items-center.justify-content-center
-				.card.px-3.py-4.col-12.col-md-9
+				.card.px-3.py-4.col-12.col-md-7
 					h2.pb-4.px-3.text-capitalize.m-0= __('titles.reset_password')
 					form.col-12(action="/user/forgot", method="POST")
 						input(name="_csrf", type="hidden", value=`${csrfToken}`)
 						.form-row
 							.form-group.col-12
-								label.text-dark.text-capitalize.font-weight-bold(for="email")= __('user.email')
+								label.text-dark.text-capitalize.font-weight-bold.m-0(for="email")= __('user.email')
 									span.ml-2.text-danger *
 								input.form-control.text-secondary#email(name="email" type="email" placeholder=__('user.email'))
-						.form-row
+						.form-row.mt-3
 							.col-12.col-md-3
 								button.w-100.btn.btn-primary(type="submit")= __('titles.reset_password')

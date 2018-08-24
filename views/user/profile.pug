@@ -46,33 +46,39 @@ block content
 							input(name="_csrf", type="hidden", value=`${csrfToken}`)
 							.form-row.my-3
 								.form-group.col-12.col-md-6
-									label.text-capitalize.text-dark.font-weight-bold(for="email")
+									label.text-capitalize.text-dark.font-weight-bold.m-0(for="email")
 										= __('user.email')
 										span.ml-1.text-danger *
 									input#email(class=`text-secondary form-control` name="email" type="email" placeholder=__('user.email') value=`${user.email}` )
 								.form-group.col-12.col-md-6
-									label.text-capitalize.text-dark.font-weight-bold(for="name")
+									label.text-capitalize.text-dark.font-weight-bold.m-0(for="name")
 										= __('user.name')
 										span.ml-1.text-danger *
 									input#name(class=`text-secondary form-control ` name="name" type="text" placeholder=__('user.name') value=`${user.profile.name}`)
 								.form-group.col-12.col-md-6
-									label.text-capitalize.text-dark.font-weight-bold(for="username")
+									label.text-capitalize.text-dark.font-weight-bold.m-0(for="username")
 										= __('user.username')
 										span.ml-1.text-danger *
 									input#username(class=`text-secondary form-control` name="username" type="text" placeholder=__('user.username') value=`${user.profile.username}`)
 								.form-group.col-12.col-md-6
-									label.text-capitalize.text-dark.font-weight-bold(for="location")= __('user.location')
+									label.text-capitalize.text-dark.font-weight-bold.m-0(for="location")
+										= __('user.location')
+										span.text-muted.font-weight-light  - optional
 									input#location(class=`text-secondary form-control` name="location" type="text" placeholder=__('user.location') value=`${user.profile.location ? user.profile.location : ''}`)
 								.form-group.col-12.col-md-6
-									label.text-capitalize.text-dark.font-weight-bold(for="website")= __('user.website')
+									label.text-capitalize.text-dark.font-weight-bold.m-0(for="website")
+										= __('user.website')
+										span.text-muted.font-weight-light  - optional
 									input#website(class=`text-secondary form-control` name="website" type="text" placeholder=__('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
-								.form-group.col-12.col-md-6
-									label.col-12.mb-3.text-capitalize.text-dark.font-weight-bold= __('user.gender.title')
-									.form-check.form-check-inline.col-6.m-0.px-3
+								.form-group.col-12
+									label.col-12.text-capitalize.text-dark.font-weight-bold.m-0.p-0
+										= __('user.gender.title')
+										span.text-muted.font-weight-light  - optional
+									.form-check.form-check-inline.col-12
 										.custom-control.custom-checkbox
 											input(class="custom-control-input", id="gender_male", name="gender", type="radio", value="male", checked=(user.profile.gender == 'male' ? "checked" : undefined))
 											label.custom-control-label.text-secondary(for="gender_male")= __('user.gender.male')
-									.form-check.form-check-inline.col-6.m-0.px-3
+									.form-check.form-check-inline.col-12
 										.custom-control.custom-checkbox
 											input(class="custom-control-input", id="gender_female", name="gender", type="radio", value="female", checked=(user.profile.gender == 'female' ? "checked" : undefined))
 											label.custom-control-label.text-secondary(for="gender_female")= __('user.gender.female')
@@ -85,10 +91,10 @@ block content
 							input(name="_csrf", type="hidden", value=`${csrfToken}`)
 							.form-row.my-3
 								.form-group.col-12.col-md-6
-									label.font-weight-bold.text-capitalize.text-dark(for="newPassword")= __('user.new_password')
+									label.font-weight-bold.text-capitalize.text-dark.m-0(for="newPassword")= __('user.new_password')
 									input.form-control.text-secondary#newPassword(name="newPassword" type="password" placeholder=__('user.new_password'))
 								.form-group.col-12.col-md-6
-									label.font-weight-bold.text-capitalize.text-dark(for="confirmPassword")= __('user.confirm_password')
+									label.font-weight-bold.text-capitalize.text-dark.m-0(for="confirmPassword")= __('user.confirm_password')
 									input.form-control.text-secondary#confirmPassword(name="confirmPassword" type="password" placeholder=__('user.confirm_password'))
 							button.btn.btn-primary.text-white(type="submit")
 								span.mr-2.fas.fa-key
