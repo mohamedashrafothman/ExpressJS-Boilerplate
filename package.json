@@ -4,12 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "watch": "set NODE_ENV=dev && nodemon ./app.js --ignore public/",
-    "start": "node ./app.js",
-    "dev": "concurrently --kill-others \"npm run watch\" \"npm run assets\"",
-	"assets": "cd public/ && npm start",
-    "sample": "node ./helpers/load-data.js",
-    "blowitallaway": "node ./helpers/load-data.js --delete"
+    "start": "set NODE_ENV=prod && node ./app.js",
+    "dev": "set NODE_ENV=dev && concurrently --kill-others \"npm run watch-node\" \"npm run watch-assets\"",
+    "watch-node": "nodemon ./app.js --ignore public/",
+	"watch-assets": "cd public/ && npm start",
+    "sample": "node ./helpers/ImportAndClearMongoDb.js",
+    "blowitallaway": "node ./helpers/ImportAndClearMongoDb.js --delete"
   },
   "repository": {
     "type": "git",

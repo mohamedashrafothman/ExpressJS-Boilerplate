@@ -34,6 +34,16 @@ This application has been designed to use the free tiers of these services to ge
 * In your console window, execute `npm start` to launch the application.  It will be viewable in your browser at [http://localhost:3000/](http://localhost:3000/).
 
 
+## Available scripts
+
++ `npm start` - run nodejs in productions mode for deployment,
++ `npm run build` - run nodejs in development mode and watch assets throw gulp,
++ `watch-node` - watch node server throught nodemailer,
++ `watch-assets` - watch assets throught gulp task runner
++ `npm run sample` - load sample data to mongodb,
++ `npm run blowitallaway` - remove collections data,
+
+
 ## Environment Variables
 The below environment variables are needed to get the application up and running.
 
