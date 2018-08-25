@@ -6,7 +6,7 @@ block content
 			.row.h-100.d-flex.align-items-center.justify-content-center
 				.card.px-3.py-4.col-12.col-md-7
 					h2.pb-4.px-3.text-capitalize.m-0= __('titles.reset_password')
-					form.col-12(action="/user/forgot", method="POST")
+					form.col-12(action="/auth/forgot", method="POST")
 						input(name="_csrf", type="hidden", value=`${csrfToken}`)
 						.form-row
 							.form-group.col-12

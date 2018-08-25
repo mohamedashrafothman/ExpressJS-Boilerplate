@@ -2,9 +2,14 @@
   "name": "expressjs-starter-env",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "set NODE_ENV=dev && nodemon app.js"
+    "watch": "set NODE_ENV=dev && nodemon ./app.js --ignore public/",
+    "start": "node ./app.js",
+    "dev": "concurrently --kill-others \"npm run watch\" \"npm run assets\"",
+	"assets": "cd public/ && npm start",
+    "sample": "node ./helpers/load-data.js",
+    "blowitallaway": "node ./helpers/load-data.js --delete"
   },
   "repository": {
     "type": "git",
@@ -24,14 +29,15 @@
     "chalk": "^2.4.1",
     "concat-stream": "^1.6.2",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
-    "cookie-session": "^2.0.0-beta.3",
     "csurf": "^1.9.0",
     "dotenv": "^6.0.0",
     "errorhandler": "^1.5.0",
     "es6-promisify": "^6.0.0",
     "express": "^4.16.3",
     "express-messages": "^1.0.1",
+    "express-session": "^1.15.6",
     "express-validator": "^5.3.0",
     "html-to-text": "^4.0.0",
     "i18n": "^0.8.3",
@@ -61,6 +67,7 @@
     "validator": "^10.5.0"
   },
   "devDependencies": {
+    "concurrently": "^4.0.0",
     "nodemon": "^1.18.3"
   }
 }

@@ -303,7 +303,7 @@ exports.isAuthenticated = (req, res, next) => {
 		return next();
 	}
 	req.flash('warning', 'make sure you are logged in first!')
-	res.redirect('/user/login');
+	res.redirect('/auth/login');
 };
 
 /**
@@ -315,6 +315,6 @@ exports.isAuthorized = (req, res, next) => {
 	if (token) {
 		next();
 	} else {
-		res.redirect(`/user/${provider}`);
+		res.redirect(`/auth/${provider}`);
 	}
 };

@@ -3,9 +3,10 @@ const express        = require("express");
 const router         = express.Router();
 const multer         = require('multer');
 const passport       = require("passport");
+const permission 	 = require("permission");
 const AvatarStorage  = require('../helpers/AvatarStorage');
-const userController = require("../controllers/user");
-const passportConfig = require('../config/passport');
+const userController = require("../controllers/authController");
+const passportConfig = require('../config/passportConfig');
 
 // setup a new instance of the AvatarStorage engine 
 var storage = AvatarStorage({
@@ -42,11 +43,12 @@ router.get("/register", userController.getRegisteration);
 router.post("/register", userController.validateRegister, userController.registerUser);
 router.post("/login", userController.validateLogin, userController.loginUser);
 router.get('/logout', passportConfig.isAuthenticated, userController.logoutUser);
-router.get('/profile', passportConfig.isAuthenticated, userController.getUserProfile);
+router.get('/profile', passportConfig.isAuthenticated , permission(["sysAdmin", "admin", "user"]), userController.getUserProfile);
+router.get('/profile/:id', passportConfig.isAuthenticated, permission(["sysAdmin", "admin"]), userController.getUserProfile);
 router.post('/profile/avatar', passportConfig.isAuthenticated, upload.single(process.env.AVATAR_FIELD), userController.updateUserAvatar)
 router.post('/profile/update', passportConfig.isAuthenticated, userController.validateUserProfile, userController.updateUserProfile);
 router.post('/profile/password', passportConfig.isAuthenticated, userController.validateUserPassword, userController.updateUserPassword);
-router.get('/profile/delete', passportConfig.isAuthenticated, userController.deleteUserAccount);
+router.get('/profile/delete/:id', passportConfig.isAuthenticated, userController.deleteUserAccount);
 router.get("/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink)
 router.get('/forgot', userController.getForgot);
 router.post('/forgot', userController.postForgot);
@@ -65,12 +67,12 @@ router.get('/facebook', passport.authenticate('facebook', {
 	scope: ['email', 'public_profile']
 }));
 router.get('/facebook/redirect', passport.authenticate('facebook', {
-	failureRedirect: '/user/login'
+	failureRedirect: '/auth/login'
 }), userController.oauthRedirect);
 // Github Auth
 router.get('/github', passport.authenticate('github'));
 router.get('/github/redirect', passport.authenticate('github', {
-	failureRedirect: '/user/login'
+	failureRedirect: '/auth/login'
 }), userController.oauthRedirect);
 
 

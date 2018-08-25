@@ -40,7 +40,9 @@
 		"register": "تسجيل حساب",
 		"login": "تسجيل الدخول",
 		"home": "الرئيسية",
-		"reset_password": "تغيير كلمة المرور"
+		"reset_password": "تغيير كلمة المرور",
+		"users": "المستخدمين",
+		"admins": "المشرفين"
 	},
 	"user": {
 		"login": "تسجيل الدخول",
@@ -66,8 +68,15 @@
 		"delete_account": "حذف الملف الشخصي",
 		"delete_my_account": "حذف ملفي الشخصي",
 		"%s 's profile": "ملف %s الشخصي",
-		"forgot_password_q": "لا تتذكر الرقم السري الخاص بك؟"
-
+		"forgot_password_q": "لا تتذكر الرقم السري الخاص بك؟",
+		"profile_photo": "الصورة الشخصية",
+		"profile_note": "يمكنك تحميل صور بصيغة .jpg, .png, .gif حتي 5 ميجا بايت.",
+		"change_photo": "تغيير الصورة الشخصية",
+		"choose_file": "أختيار ملف",
+		"optional": "إختياري",
+		"linked_accounts": "الحسابات المرتبطة",
+		"danger_zone": "منطقة خطر",
+		"danger_zone_note": "هذه العملية لا يمكن الرجوع عنها وتتسبب فى حذف اي بيانات لها علاقة بهذا المستخدم."
 	},
 	"lang": {
 		"ar": "ع",
@@ -78,5 +87,15 @@
 		"pervious_page": "السابق",
 		"current_page": "الصفحة الحالية",
 		"next_page": "التالي"
+	},
+	"button": {
+		"cancel": "إلفاء",
+		"upload": "تحميل",
+		"link_google": "ربط حساب جوجل",
+		"unlink_google": "عدم ربط حساب جوجل",
+		"link_facebook": "ربط حساب الفيسبوك",
+		"unlink_facebook": "عدم ربط حساب الفيسبوك",
+		"link_github": "ربط حساب الجيتهب",
+		"unlink_github": "عدم ربط حساب الجيتهب"
 	}
 }

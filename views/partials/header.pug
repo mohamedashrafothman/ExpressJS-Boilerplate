@@ -4,19 +4,22 @@ nav.h-100.border-bottom.bg-white
 			span(class="lnr lnr-coffee-cup text-primary")
 		.d-flex.flex-row.align-items-center.justify-content-end.w-75
 			ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0
-				li(class=(title === "Home" ? "text-capitalize  bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
-						a(class=(title === "Home" ? "text-white" : " ") href="/") Home
-				if (user && user.role === "admin")
-					li(class=(title === "Users" ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
-						a(href="/users" class=(title === "Users" ? "text-white" : " ")) Users
+				li(class=(_.isEqual(title, "Home") ? "text-capitalize  bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
+						a(class=(_.isEqual(title, "Home") ? "text-white" : " ") href="/")= __("titles.home")
+				if (user && _.isEqual(user.role, "sysAdmin"))
+					li(class=(_.isEqual(title, "Admins") ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
+						a(class=(_.isEqual(title, "Admins") ? "text-white" : " ") href="/admins")= __("titles.admins")
+				if (user && _.isEqual(user.role, "admin") || user && _.isEqual(user.role, "sysAdmin"))
+					li(class=(_.isEqual(title, "Users") ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
+						a(href="/users" class=(_.isEqual(title, "Users") ? "text-white" : " "))= __("titles.users")
 				if user
 					li.text-capitalize.text-dark.px-3.m-0.border-right
-						a(href="/user/logout")= __('user.logout')
+						a(href="/auth/logout")= __('user.logout')
 				else
-					li(class=(title === "login" ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
-						a(href="/user/login" class=(title === "login" ? "text-white" : " "))= __('user.login')
-					li(class=(title === "register" ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
-						a(href="/user/register" class=(title === "register" ? "text-white" : " "))= __('user.register')
+					li(class=(_.isEqual(title, "login") ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
+						a(href="/auth/login" class=(_.isEqual(title, "login") ? "text-white" : " "))= __('user.login')
+					li(class=(_.isEqual(title, "register") ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
+						a(href="/auth/register" class=(_.isEqual(title, "register") ? "text-white" : " "))= __('user.register')
 				if (lang === 'en')
 					li(class="text-capitalize m-0 px-3 pb-2") 
 						a(href="/lang/ar" style="font-family: 'Cairo', sans-serif !important;")= __('lang.ar')
@@ -24,8 +27,8 @@ nav.h-100.border-bottom.bg-white
 					li(class="text-capitalize mr-4 px-3") 
 						a(href="/lang/en")= __('lang.en')
 				if user
-					li(class=(title === `${user.profile.name}'s profile` ? "mx-3 rounded-circle" : "mx-3 rounded-circle"))
-						a(href="/user/profile" title=__("user.%s 's profile", `${user.profile.name}`) class="p-3" data-toggle="tooltip" data-placement="bottom")
+					li(class=(_.isEqual(title, `${user.profile.name}'s profile`) ? "mx-3 rounded-circle" : "mx-3 rounded-circle"))
+						a(href="/auth/profile" title=__("user.%s 's profile", `${user.profile.name}`) class="p-3" data-toggle="tooltip" data-placement="bottom")
 							if (user.profile.picture || user.profile.picture_sm || user.profile.picture_md || user.profile.picture_lg)
 								img.rounded-circle(src=(!user.profile.picture_sm) ? user.profile.picture : user.profile.picture_sm ,  width="50px" height="auto")
 							else
@@ -37,5 +40,5 @@ nav.h-100.border-bottom.bg-white
 <!-- Speed options are: slow, slower, fast, faster -->
 <!-- Animation Type options: fade, slide, zoom, bounce -->
 <!-- Defauly options are: data-enternce-direction: left, data-exit-direction: left, data-animation-type: slide, data-speed: 1s -->
-.overlay(data-enternce-direction="left" data-exit-direction="left" data-speed="fast" data-animation-type="slide")
+.overlay(data-enternce-direction="left" data-exit-direction="left" data-speed="fast" data-animation-type="fade")
 	span.menu-close.lnr.lnr-cross

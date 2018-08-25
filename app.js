@@ -13,15 +13,16 @@ const chalk = require("chalk");
 const logger = require("morgan");
 const express = require('express');
 const favicon = require('serve-favicon');
+const session = require('express-session');
 const mongoose = require("mongoose");
 const passport = require("passport");
-const userRoute = require("./routes/user");
-const indexRoute = require("./routes/index");
+const userRoute = require("./routes/authRoute");
+const indexRoute = require("./routes/indexRoute");
+const MongoStore = require('connect-mongo')(session);
 const bodyParser = require("body-parser");
 const permission = require("permission");
 const errorHandler = require('errorhandler');
 const cookieParser = require("cookie-parser");
-const cookieSession = require("cookie-session");
 const generalHelpers = require('./helpers/general');
 const expressValidator = require("express-validator");
 
@@ -30,7 +31,7 @@ const expressValidator = require("express-validator");
  ** =========================================================================
  * todo: make all configurations in seprate files, then require them.
  */
-require('./config/passport');
+require('./config/passportConfig');
 i18n.configure({
 	locales: ['en', 'ar'],
 	cookie: 'lang',
@@ -76,12 +77,14 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(expressValidator());
 app.use(cookieParser(process.env.SESSION_SECRET));
-app.use(cookieSession({
-	name: 'session',
+app.use(session({
 	secret: process.env.SESSION_SECRET,
-	cookie: {
-		maxAge: 1000 * 60 * 60 * 24 * 14 // 1000 ms * 60 s * 60 min * 24 h * 14 day = 14 Days
-	},
+	saveUninitialized: false, // don't create session until something stored
+	resave: false, //don't save session if unmodified
+	store: new MongoStore({
+		url: process.env.MONGODB_URI,
+		ttl: 14 * 24 * 60 * 60 // 60 s * 60 min * 24 h * 14 day = 14 Days
+	})
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -96,12 +99,14 @@ app.set('permission', {
 	notAuthenticated: {
 		flashType: 'error',
 		message: 'Login first so you can access your requested page.',
-		redirect: '/user/login'
+		redirect: '/auth/login',
+		status: 401
 	},
 	notAuthorized: {
 		flashType: 'error',
 		message: "You are not allowed to see this content, only admins can see it.",
-		redirect: 'back'
+		redirect: 'back',
+		status: 403
 	}
 });
 app.use((req, res, next) => {
@@ -116,9 +121,9 @@ app.use((req, res, next) => {
 });
 app.use((req, res, next) => {
 	// After successful login, redirect back to the intended page
-	if (!req.user && req.path !== '/user/login' && req.path !== '/user/register' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
+	if (!req.user && req.path !== '/auth/login' && req.path !== '/auth/register' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
 		req.session.returnTo = req.originalUrl;
-	} else if (req.user && (req.path === '/user/profile' || req.path.match(/^\/api/))) {
+	} else if (req.user && (req.path === '/auth/profile' || req.path.match(/^\/api/))) {
 		req.session.returnTo = req.originalUrl;
 	}
 	next();
@@ -129,7 +134,7 @@ app.use((req, res, next) => {
  ** =========================================================================
  */
 app.use("/", indexRoute);
-app.use("/user", userRoute);
+app.use("/auth", userRoute);
 
 
 /**

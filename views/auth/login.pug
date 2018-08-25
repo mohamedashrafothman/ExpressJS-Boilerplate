@@ -6,7 +6,7 @@ block content
 			.row.h-100.d-flex.align-items-center.justify-content-center
 				.col-md-7.col-12.card.py-4.px-3
 					h2.pb-4.px-3.text-capitalize.m-0= __('titles.login')
-					form.col-12(action="/user/login", method="POST")
+					form.col-12(action="/auth/login", method="POST")
 						input(name="_csrf", type="hidden", value=`${csrfToken}`)
 						.form-row
 							.form-group.col-12
@@ -20,18 +20,18 @@ block content
 						.form-row.mt-4
 							.col-12.col-md-2
 								button.w-100.btn.btn-primary.text-capitalize(type="submit")= __('user.login')
-							a.btn.btn-link(href='/user/forgot')= __('user.forgot_password_q')
+							a.btn.btn-link(href='/auth/forgot')= __('user.forgot_password_q')
 						.form-row
 							.col-12.col-md-4.my-md-5.my-2
-								a.w-100.btn.btn-outline-danger.mr-3(href="/user/google")
+								a.w-100.btn.btn-outline-danger.mr-3(href="/auth/google")
 									span.fab.fa-google.mr-2
 									| sign in with Google+
 							.col-12.col-md-4.my-md-5.my-2
-								a.w-100.btn.btn-outline-primary.mr-3(href="/user/facebook")
+								a.w-100.btn.btn-outline-primary.mr-3(href="/auth/facebook")
 									span.fab.fa-facebook-f.mr-2
 									| sign in with Facebook
 							.col-12.col-md-4.my-md-5.my-2
-								a.w-100.btn.btn-outline-dark.mr-3(href="/user/github")
+								a.w-100.btn.btn-outline-dark.mr-3(href="/auth/github")
 									span.fab.fa-github.mr-2
 									| sign in with Github
 						

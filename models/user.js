@@ -44,10 +44,6 @@ const UserSchema = mongoose.Schema({
 	facebook: String,
 	github: String,
 	tokens: Array,
-	resturants: [{
-		type: mongoose.Schema.ObjectId,
-		ref: 'Resturant'
-	}],
 	resetPasswordToken: String,
 	resetPasswordExpires: Date,
 	role: {

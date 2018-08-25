@@ -13,7 +13,7 @@ const getLogin = (req, res) => {
 	if (req.user) {
 		return res.redirect('/');
 	}
-	res.render("user/login", {
+	res.render("auth/login", {
 		title: "login"
 	});
 };
@@ -24,7 +24,7 @@ const getLogin = (req, res) => {
  * @param {*} res 
  */
 const getRegisteration = (req, res) => {
-	res.render("user/register", {
+	res.render("auth/register", {
 		title: "register"
 	});
 };
@@ -56,7 +56,7 @@ const validateRegister = async (req, res, next) => {
 	if (!errors.isEmpty()) {
 		var err = errors.array();
 		req.flash('error', err);
-		res.render('user/register', {
+		res.render('auth/register', {
 			title: res.__('titles.register'),
 			body: req.body,
 			flashes: req.flash()
@@ -92,13 +92,13 @@ const registerUser = async (req, res, next) => {
 		if (err) return next(err);
 		if (existingUser) {
 			req.flash('error', res.__('msgs.validation.register.already_exists'));
-			res.redirect('/user/register');
+			res.redirect('/auth/register');
 		}
 		user.save(async (err) => {
 			if (err) {
 				return next(err);
 			}
-			const validateUrl = `http://${req.headers.host}/user/verify/${user.email}/${user.hash}`;
+			const validateUrl = `http://${req.headers.host}/auth/verify/${user.email}/${user.hash}`;
 			const [sendMailErr, info] = await to(mail.send({
 				user: user,
 				filename: 'verify-user',
@@ -131,10 +131,10 @@ const verifyUser = async (req, res, next) => {
 	if (userError) return next(userError);
 	if (!user) {
 		req.flash('error', "Invalid approach, please use the link that has been send to your email.");
-		res.redirect("/user/register");
+		res.redirect("/auth/register");
 	}
 	req.flash("success", "Your account has been activated, you can loggin now.");
-	res.redirect("/user/login");
+	res.redirect("/auth/login");
 };
 
 /**
@@ -157,7 +157,7 @@ const validateLogin = async (req, res, next) => {
 	if (!errors.isEmpty()) {
 		var err = errors.array();
 		req.flash('error', err);
-		res.render('user/login', {
+		res.render('auth/login', {
 			title: res.__("titles.login"),
 			body: req.body,
 			flashes: req.flash()
@@ -182,11 +182,11 @@ const loginUser = async (req, res, next) => {
 		}
 		if (!user) {
 			req.flash('error', info);
-			return res.redirect('/user/login');
+			return res.redirect('/auth/login');
 		}
 		if (user.active == 0) {
 			req.flash('error', "please verify your account first so you can login, or check the problem with system admin.");
-			return res.redirect('/user/login');
+			return res.redirect('/auth/login');
 		}
 		req.logIn(user, (err) => {
 			if (err) {
@@ -212,8 +212,8 @@ const logoutUser = (req, res) => {
 /** 
  * get Profile view page
  */
-const getUserProfile = (req, res) => {
-	res.render('user/profile', {
+const getUserProfile = async (req, res) => {  
+	res.render('auth/profile', {
 		title: `${req.user.profile.name}'s profile`,
 		avatar_field: process.env.AVATAR_FIELD,
 		user: req.user
@@ -327,7 +327,7 @@ const updateUserPassword = async (req, res, next) => {
 	}));
 	if (sendMailErr) return next(sendMailErr);
 	req.flash('success', res.__("msgs.validation.profile.success_password"));
-	res.redirect('/user/profile');
+	res.redirect('/auth/profile');
 };
 const updateUserAvatar = async function (req, res, next) {
 	var files;
@@ -356,7 +356,7 @@ const updateUserAvatar = async function (req, res, next) {
 	const [updateUserErr, updatedUser] = await to(user.save());
 	if (updateUserErr) return next(updateUserErr);
 	req.flash('success', 'successfully updated your avatar.');
-	res.redirect('/user/profile');
+	res.redirect('/auth/profile');
 
 }
 
@@ -368,16 +368,16 @@ const updateUserAvatar = async function (req, res, next) {
  */
 const deleteUserAccount = async (req, res, next) => {
 	const [err, user] = await to(User.findByIdAndRemove({
-		_id: req.user._id
+		_id: req.params.id
 	}).exec());
 	if (err) return next(err);
-	req.logout();
-	req.flash('success', res.__('msgs.validation.profile.success_deleted'));
-	res.redirect('/');
+	// req.logout();
+	req.flash('success', res.__('msgs.validation.profile.%s success_deleted', user.profile.name));
+	res.redirect("/");
 };
 
 const getForgot = (req, res, next) => {
-	res.render("user/forgot", {
+	res.render("auth/forgot", {
 		title: "Reset Password"
 	});
 }
@@ -410,7 +410,7 @@ const postForgot = async (req, res, next) => {
 	user.resetPasswordExpires = Date.now() + (1000 * 60 * 60 * process.env.PASSWORD_RESET_TIME_LIMIT_IN_HOURS); // 1000 ms * 60 s * 60 min * hours number
 	const [updatedUserErr, updatedUser] = await to(user.save());
 	if (updatedUserErr) return next(updatedUserErr);
-	const resetUrl = `http://${req.headers.host}/user/reset/${updatedUser.resetPasswordToken}`;
+	const resetUrl = `http://${req.headers.host}/auth/reset/${updatedUser.resetPasswordToken}`;
 	const [sendMailErr, info] = await to(mail.send({
 		user: updatedUser,
 		filename: 'password-reset',
@@ -419,12 +419,12 @@ const postForgot = async (req, res, next) => {
 	}));
 	if (sendMailErr) return next(sendMailErr);
 	req.flash('success', res.__('msgs.validation.reset.emailed_token'));
-	res.redirect('/user/login');
+	res.redirect('/auth/login');
 };
 
 
 const getResetPassword = (req, res, next) => {
-	res.render('user/reset-password', {
+	res.render('auth/reset-password', {
 		title: "Reset Password"
 	});
 }
@@ -442,7 +442,7 @@ const validateResetPassword = async (req, res, next) => {
 	if (!errors.isEmpty()) {
 		var err = errors.array();
 		req.flash('error', err);
-		res.render("user/reset-password", {
+		res.render("auth/reset-password", {
 			body: req.body,
 			flashes: req.flash()
 		});
@@ -472,7 +472,7 @@ const postResetPassword = async (req, res, next) => {
 	}));
 	if (sendMailErr) return next(sendMailErr);
 	req.flash('success', res.__('msgs.validation.reset.success_update_pass'));
-	res.redirect('/user/login');
+	res.redirect('/auth/login');
 }
 
 const oauthRedirect = (req, res, next) => {
@@ -499,7 +499,7 @@ const getOauthUnlink = (req, res, next) => {
 				return next(err);
 			}
 			req.flash('success', `${provider} account has been unlinked.`);
-			res.redirect('/user/profile');
+			res.redirect('/auth/profile');
 		});
 	});
 };

@@ -25,7 +25,7 @@
 			"profile": {
 				"success_basic": "profile basic info updated!",
 				"success_password": "successfully updated password",
-				"success_deleted": "Account has been deleted!"
+				"%s success_deleted": "%s's Account has been deleted!"
 			},
 			"reset": {
 				"email_not_exist": "account with that email doesn't exist.",
@@ -39,7 +39,9 @@
 		"register": "Register",
 		"login": "Login",
 		"home": "Home",
-		"reset_password": "Reset Password"
+		"reset_password": "Reset Password",
+		"users": "Users",
+		"admins": "Admins"
 	},
 	"user": {
 		"login": "login",
@@ -53,7 +55,7 @@
 		"profile": "Profile",
 		"location": "Location",
 		"website": "Website",
-		"update_profile": "Update Profile",
+		"update_profile": "Update Profile Photo",
 		"gender": {
 			"male": "Male",
 			"female": "Female",
@@ -65,7 +67,15 @@
 		"delete_account": "Delete Account",
 		"delete_my_account": "Delete my account",
 		"%s 's profile": "%s 's profile",
-		"forgot_password_q": "Forgot your password?"
+		"forgot_password_q": "Forgot your password?",
+		"profile_photo": "Profile Photo",
+		"profile_note": "You can upload a .jpg, .png, or .gif photo with max size of 5MB.",
+		"change_photo": "Change Photo",
+		"choose_file": "Choose File",
+		"optional": "Optional",
+		"linked_accounts": "Linked Accounts",
+		"danger_zone": "Danger zone",
+		"danger_zone_note": "This cannot be undone and could result in orphaned document relationships."
 	},
 	"lang": {
 		"ar": "ع",
@@ -76,5 +86,15 @@
 		"next_page": "Next",
 		"pervious_page": "Previous",
 		"current_page": "Current Page"
+	},
+	"button": {
+		"cancel": "Cancel",
+		"upload": "Upload",
+		"link_google": "Link Google Account",
+		"unlink_google": "Unlink Google Account",
+		"link_facebook": "Link Facebook Account",
+		"unlink_facebook": "Unlink Facebook Account",
+		"link_github": "Link Github Account",
+		"unlink_github": "Unlink Github Account"
 	}
 }

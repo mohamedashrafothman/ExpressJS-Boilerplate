@@ -8,41 +8,41 @@ block content
 					.card.p-4
 						p content
 				.col-12.col-lg-8
-					.media.mb-4.w-75
+					.media.mb-4.col-12
 						if (user.profile.picture || user.profile.picture_sm || user.profile.picture_md || user.profile.picture_lg)
 							img.align-self-start.rounded-circle.mr-3(data-placement="top" data-toggle="tooltip" src=(!user.profile.picture_lg) ? user.profile.picture : user.profile.picture_lg title=`${user.profile.name}'s profile` width="100px")
 						else
-							img.align-self-start.rounded-circle.mr-3(data-placement="top" data-toggle="tooltip" src=user.gravatar(100) title=`${user.profile.name}'s profile`)
-						.media-body.w-75
-							h4.m-0.text-capitalize.text-black profile photo
-							p.mb-4 
-								small.text-secondary You can upload a .jpg, .png, or .gif photo with max size of 5MB.
+							img.align-self-start.rounded-circle.img-fluid.mr-3(data-placement="top" data-toggle="tooltip" src=user.gravatar(100) title=`${user.profile.name}'s profile`)
+						.media-body
+							h4.m-0.text-capitalize.text-black= __("user.profile_photo")
+							p.mb-2.mb-md-4
+								small.text-secondary= __("user.profile_note")
 							button.btn.btn-primary.text-capitalize(type="button", data-toggle="modal" data-target="#uploadAvatarModal")
 								span.mr-2.fas.fa-camera-retro
-								|change photo 
+								= __("user.change_photo")
 						// Modal
 						#uploadAvatarModal.modal.fade(role='dialog', aria-hidden='true', aria-labelledby='uploadAvatarModalTitle', tabindex='-1')
 							.modal-dialog.modal-dialog-centered(role='document')
 								.modal-content
-									form(action=`/user/profile/avatar?_csrf=${csrfToken}` method="POST", enctype="multipart/form-data")
+									form(action=`/auth/profile/avatar?_csrf=${csrfToken}` method="POST", enctype="multipart/form-data")
 										.modal-header
-											h5#uploadAvatarModalTitle.modal-title.text-black.text-capitalize Update Profile Photo
+											h5#uploadAvatarModalTitle.modal-title.text-black.text-capitalize= __("user.update_profile")
 											button.close(data-dismiss='modal', type='button', aria-label='Close')
 											span(aria-hidden='true') ×
 										.modal-body
 											.custom-file
 												input.custom-file-input(type='file', name=`${avatar_field}`, required accept="image/*")
-												label.custom-file-label(for='customFile') Choose file
+												label.custom-file-label(for='customFile')= __("user.choose_file")
 										.modal-footer
-											button.btn.btn-danger(data-dismiss='modal', type='button') Cancel
+											button.btn.btn-danger(data-dismiss='modal', type='button')= __("button.cancel")
 											button.btn.btn-primary(type='submit')
 												span.fas.fa-upload.mr-2
-												|Upload
+												= __("button.upload")
 
 
 					.card.mb-4.py-4.px-3
 						h4.col-12.pb-4.text-capitalize.m-0= __('user.basic_info')
-						form.col-12(action="/user/profile/update", method="POST")
+						form.col-12(action="/auth/profile/update", method="POST")
 							input(name="_csrf", type="hidden", value=`${csrfToken}`)
 							.form-row.my-3
 								.form-group.col-12.col-md-6
@@ -63,17 +63,23 @@ block content
 								.form-group.col-12.col-md-6
 									label.text-capitalize.text-dark.font-weight-bold.m-0(for="location")
 										= __('user.location')
-										span.text-muted.font-weight-light  - optional
+										span.text-muted.font-weight-light
+											| - 
+											= __("user.optional")
 									input#location(class=`text-secondary form-control` name="location" type="text" placeholder=__('user.location') value=`${user.profile.location ? user.profile.location : ''}`)
 								.form-group.col-12.col-md-6
 									label.text-capitalize.text-dark.font-weight-bold.m-0(for="website")
 										= __('user.website')
-										span.text-muted.font-weight-light  - optional
+										span.text-muted.font-weight-light
+											| - 
+											= __("user.optional")
 									input#website(class=`text-secondary form-control` name="website" type="text" placeholder=__('user.website') value=`${user.profile.website ? user.profile.website : ''}`)
 								.form-group.col-12
 									label.col-12.text-capitalize.text-dark.font-weight-bold.m-0.p-0
 										= __('user.gender.title')
-										span.text-muted.font-weight-light  - optional
+										span.text-muted.font-weight-light
+											| - 
+											= __("user.optional")
 									.form-check.form-check-inline.col-12
 										.custom-control.custom-checkbox
 											input(class="custom-control-input", id="gender_male", name="gender", type="radio", value="male", checked=(user.profile.gender == 'male' ? "checked" : undefined))
@@ -87,7 +93,7 @@ block content
 								= __('user.update_profile')
 					.card.mb-4.py-4.px-3
 						h4.col-12.pb-4.text-capitalize.m-0= __('user.change_password')
-						form.col-12(action="/user/profile/password", method="POST")
+						form.col-12(action="/auth/profile/password", method="POST")
 							input(name="_csrf", type="hidden", value=`${csrfToken}`)
 							.form-row.my-3
 								.form-group.col-12.col-md-6
@@ -100,38 +106,38 @@ block content
 								span.mr-2.fas.fa-key
 								= __('user.change_password')
 					.card.mb-4.py-4.px-3
-						h4.col-12.pb-4.text-capitalize.m-0 linked accounts
+						h4.col-12.pb-4.text-capitalize.m-0= __("user.linked_accounts")
 						.col-12
 							if user.google
 								p.mb-1.text-danger
 									span.fab.fa-google.mr-2
-									a.text-danger(href='/user/unlink/google') Unlink your Google account
+									a.text-danger(href='/auth/unlink/google')= __("button.unlink_google")
 							else
 								p.mb-1.text-danger
 									span.fab.fa-google.mr-2
-									a.text-danger(href='/user/google') Link your Google account
+									a.text-danger(href='/auth/google')= __("button.link_google")
 							if user.facebook
 								p.mb-1.text-primary
 									span.fab.fa-facebook-f.mr-2
-									a.text-primary(href='/user/unlink/facebook') Unlink your Facebook account
+									a.text-primary(href='/auth/unlink/facebook')= __("button.unlink_facebook")
 							else
 								p.mb-1.text-primary
 									span.fab.fa-facebook-f.mr-2
-									a.text-primary(href='/user/facebook') Link your Facebook account
+									a.text-primary(href='/auth/facebook')= __("button.link_facebook")
 							if user.github
 								p.mb-1.text-dark
 									span.fab.fa-github.mr-2
-									a.text-dark(href='/user/unlink/github') Unlink your Github account
+									a.text-dark(href='/auth/unlink/github')= __("button.unlink_github")
 							else
 								p.mb-1.text-dark
 									span.fab.fa-github.mr-2
-									a.text-dark(href='/user/github') Link your Github account
+									a.text-dark(href='/auth/github')= __("button.link_github")
 					.card.mb-4.pb-4.border-danger
 						.card-header.bg-danger.text-white.border-0.p-2
-							h5.text-capitalize.m-0 Danger zone
+							h5.text-capitalize.m-0= __("user.danger_zone")
 						.card-body
 							h4.col-12.px-0.text-capitalize.m-0= __('user.delete_account')
-							small.text-muted.font-italic This cannot be undone and could result in orphaned document relationships.
-							a.btn.btn-danger.text-uppercase.d-block.mt-4(href="/user/profile/delete") 
+							small.text-muted.font-italic= __("user.danger_zone_note")
+							a.btn.btn-danger.text-uppercase.d-block.mt-4(href=`/auth/profile/delete/${user._id}`) 
 								span.mr-2.far.fa-trash-alt
 								= __('user.delete_my_account')

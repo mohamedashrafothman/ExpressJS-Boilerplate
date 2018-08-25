@@ -20,6 +20,25 @@ html[dir="rtl"] {
 		font-family: 'Cairo', sans-serif;
 		letter-spacing: -1px;
 	}
+	div.dataTables_wrapper {
+        & > * {
+			direction: ltr;
+		}
+		.dataTables_filter{
+			text-align: right !important;
+			.form-control{
+				margin-left: 0.5em !important;
+				margin-right: 0 !important;
+			}
+		}
+    }
+ 
+    /* Ensure that the demo table scrolls */
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
 }
 
 a {

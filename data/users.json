@@ -1,0 +1,44 @@
+[{
+	"profile": {
+		"name": "System Admin Name",
+		"username": "System Admin Username",
+		"location": "Cairo, Egypt",
+		"gender": "male",
+		"website": "",
+		"picture": "",
+		"picture_sm": "",
+		"picture_md": "",
+		"picture_lg": ""
+	},
+	"active": 1,
+	"tokens": [],
+	"role": "sysAdmin",
+	"email": "systemadmin@example.com",
+	"password": "$2a$12$sGORB2VEmY8gKhF6JnPWVubaGu.gtIqS.SIMiqxxN7.4xnyrJn1cu",
+	"hash": "e8ab2d03afd59a14c45f8e9d4845ce94"
+}, {
+	"profile": {
+		"name": "Admin Name",
+		"username": "Admin Username"
+	},
+	"active": 1,
+	"tokens": [],
+	"role": "admin",
+	"email": "admin@example.com",
+	"password": "$2a$12$QrVinX9o0xmSuBYZV0PxM.4VeeqXe/09SezFtqFeNzZIgOSay/zqS",
+	"hash": "023d7cea8920d959bf57da78f3ffb55a"
+}, {
+	"profile": {
+		"name": "User name",
+		"username": "User Username",
+		"location": "",
+		"gender": "male",
+		"website": ""
+	},
+	"active": 1,
+	"tokens": [],
+	"role": "user",
+	"email": "user@example.com",
+	"password": "$2a$12$vnbeQtTzn0IPyyLnDMVgx.Yg0AhY0WeLWR3U1Q/YHTmnQfjHoyXaO",
+	"hash": "33c2771398dda77525a78714fe93dd00"
+}]
