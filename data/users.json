@@ -1,7 +1,7 @@
 [{
 	"profile": {
-		"name": "System Admin Name",
-		"username": "System Admin Username",
+		"name": "Super Admin Name",
+		"username": "Super Admin Username",
 		"location": "Cairo, Egypt",
 		"gender": "male",
 		"website": "",
@@ -12,8 +12,8 @@
 	},
 	"active": 1,
 	"tokens": [],
-	"role": "sysAdmin",
-	"email": "systemadmin@example.com",
+	"role": "superAdmin",
+	"email": "superadmin@example.com",
 	"password": "$2a$12$sGORB2VEmY8gKhF6JnPWVubaGu.gtIqS.SIMiqxxN7.4xnyrJn1cu",
 	"hash": "e8ab2d03afd59a14c45f8e9d4845ce94"
 }, {

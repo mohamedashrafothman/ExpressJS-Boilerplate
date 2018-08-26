@@ -43,7 +43,7 @@ block content
 					.card.mb-4.py-4.px-3
 						h4.col-12.pb-4.text-capitalize.m-0= __('user.basic_info')
 						form.col-12(action="/auth/profile/update", method="POST")
-							input(name="_csrf", type="hidden", value=`${csrfToken}`)
+							include ../partials/csrf.pug
 							.form-row.my-3
 								.form-group.col-12.col-md-6
 									label.text-capitalize.text-dark.font-weight-bold.m-0(for="email")
@@ -94,7 +94,7 @@ block content
 					.card.mb-4.py-4.px-3
 						h4.col-12.pb-4.text-capitalize.m-0= __('user.change_password')
 						form.col-12(action="/auth/profile/password", method="POST")
-							input(name="_csrf", type="hidden", value=`${csrfToken}`)
+							include ../partials/csrf.pug
 							.form-row.my-3
 								.form-group.col-12.col-md-6
 									label.font-weight-bold.text-capitalize.text-dark.m-0(for="newPassword")= __('user.new_password')

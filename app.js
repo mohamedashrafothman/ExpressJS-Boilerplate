@@ -109,18 +109,17 @@ app.set('permission', {
 		status: 403
 	}
 });
-// todo: handle other security technuiqes, not only CSRF.
 app.use(lusca.csrf());
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
 app.use((req, res, next) => {
-	res.locals.h = generalHelpers;
-	res.locals._ = _;
-	res.locals.siteName = process.env.SITE_NAME
-	res.locals.flashes = req.flash() || null;
-	res.locals.user = req.user || null;
-	res.locals.lang = req.cookies.lang || req.setLocale('en') || 'en';
+	res.locals.h         = generalHelpers;
+	res.locals._         = _;
+	res.locals.siteName  = process.env.SITE_NAME
+	res.locals.flashes   = req.flash() || null;
+	res.locals.user      = req.user || null;
+	res.locals.lang      = req.cookies.lang || req.setLocale('en') || 'en';
 	res.locals.csrfToken = req.csrfToken();
 	next();
 });

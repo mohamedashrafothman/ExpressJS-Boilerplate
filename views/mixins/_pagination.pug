@@ -1,6 +1,6 @@
 mixin pagination(baseUrl, page, pages, direction)
 	nav.w-100.mt-4.p-0(aria-label="page navigation")
-		ul(class=`justify-content-${direction} align-items-center pagination m-0`)
+		ul(class=`justify-content-${direction} align-items-center pagination pagination-sm m-0`)
 			li.page-item(class=`${(page==1) ? 'disabled' : ''}`)
 				a.page-link(data-placement="top", data-toggle="tooltip", href=`${baseUrl}/page/${page-1}`, title=__('pagination.pervious_page'), tabindex="-1")= __('pagination.pervious_page')
 			-var i = (Number(page) > 5 ? Number(page) - 4 : 1);

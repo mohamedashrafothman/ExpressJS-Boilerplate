@@ -43,8 +43,7 @@ router.get("/register", userController.getRegisteration);
 router.post("/register", userController.validateRegister, userController.registerUser);
 router.post("/login", userController.validateLogin, userController.loginUser);
 router.get('/logout', passportConfig.isAuthenticated, userController.logoutUser);
-router.get('/profile', passportConfig.isAuthenticated , permission(["sysAdmin", "admin", "user"]), userController.getUserProfile);
-router.get('/profile/:id', passportConfig.isAuthenticated, permission(["sysAdmin", "admin"]), userController.getUserProfile);
+router.get('/profile', passportConfig.isAuthenticated ,userController.getUserProfile);
 router.post('/profile/avatar', passportConfig.isAuthenticated, upload.single(process.env.AVATAR_FIELD), userController.updateUserAvatar)
 router.post('/profile/update', passportConfig.isAuthenticated, userController.validateUserProfile, userController.updateUserProfile);
 router.post('/profile/password', passportConfig.isAuthenticated, userController.validateUserPassword, userController.updateUserPassword);

@@ -6,10 +6,10 @@ nav.h-100.border-bottom.bg-white
 			ul.d-none.flex-row.align-items-center.justify-content-end.w-100.d-md-flex.m-0
 				li(class=(_.isEqual(title, "Home") ? "text-capitalize  bg-primary m-0 border-right px-3" : "text-capitalize  m-0 border-right px-3"))
 						a(class=(_.isEqual(title, "Home") ? "text-white" : " ") href="/")= __("titles.home")
-				if (user && _.isEqual(user.role, "sysAdmin"))
+				if (user && _.isEqual(user.role, "superAdmin"))
 					li(class=(_.isEqual(title, "Admins") ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
 						a(class=(_.isEqual(title, "Admins") ? "text-white" : " ") href="/admins")= __("titles.admins")
-				if (user && _.isEqual(user.role, "admin") || user && _.isEqual(user.role, "sysAdmin"))
+				if (user && _.isEqual(user.role, "admin") || user && _.isEqual(user.role, "superAdmin"))
 					li(class=(_.isEqual(title, "Users") ? "text-capitalize bg-primary m-0 border-right px-3" : "text-capitalize m-0 border-right px-3"))
 						a(href="/users" class=(_.isEqual(title, "Users") ? "text-white" : " "))= __("titles.users")
 				if user

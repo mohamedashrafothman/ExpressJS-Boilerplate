@@ -7,7 +7,7 @@ block content
 				.card.py-4.px-3.col-12.col-md-7
 					h2.pb-4.px-3.text-capitalize.m-0= __('titles.register')
 					form.col-12(action="/auth/register", method="POST")
-						input(name="_csrf", type="hidden", value=`${csrfToken}`)
+						include ../partials/csrf.pug
 						.form-row
 							.form-group.col-12
 								label.text-capitalize.text-dark.font-weight-bold.m-0(for="name")= __('user.name')
