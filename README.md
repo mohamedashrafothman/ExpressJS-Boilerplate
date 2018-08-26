@@ -38,7 +38,7 @@ This application has been designed to use the free tiers of these services to ge
 
 + `npm start` - run nodejs in productions mode for deployment,
 + `npm run build` - run nodejs in development mode and watch assets throw gulp,
-+ `watch-node` - watch node server throught nodemailer,
++ `watch-server` - watch node server throught nodemailer,
 + `watch-assets` - watch assets throught gulp task runner
 + `npm run sample` - load sample data to mongodb,
 + `npm run blowitallaway` - remove collections data,
