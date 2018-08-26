@@ -7,7 +7,7 @@ require("dotenv/config");
 const _ = require("lodash");
 const path = require("path");
 const i18n = require("i18n");
-const csrf = require('csurf');
+const lusca = require("lusca");
 const flash = require('connect-flash');
 const chalk = require("chalk");
 const logger = require("morgan");
@@ -21,6 +21,7 @@ const indexRoute = require("./routes/indexRoute");
 const MongoStore = require('connect-mongo')(session);
 const bodyParser = require("body-parser");
 const permission = require("permission");
+const compression = require("compression");
 const errorHandler = require('errorhandler');
 const cookieParser = require("cookie-parser");
 const generalHelpers = require('./helpers/general');
@@ -70,6 +71,7 @@ app.set('views', path.join(__dirname, 'views/'));
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public/build/')));
 app.use(favicon(path.join(__dirname, 'public/build/images', 'favicon.ico')));
+app.use(compression())
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -81,17 +83,15 @@ app.use(session({
 	secret: process.env.SESSION_SECRET,
 	saveUninitialized: false, // don't create session until something stored
 	resave: false, //don't save session if unmodified
+	cookie : { maxAge: 1209600000 },       // two weeks in milliseconds
 	store: new MongoStore({
 		url: process.env.MONGODB_URI,
-		ttl: 14 * 24 * 60 * 60 // 60 s * 60 min * 24 h * 14 day = 14 Days
+		ttl: 14 * 24 * 60 * 60, // 60 s * 60 min * 24 h * 14 day = 14 Days,
+		autoReconnect: true
 	})
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-// todo: handle other security technuiqes, not only CSRF.
-app.use(csrf({
-	cookie: true
-}))
 app.use(flash());
 app.use(i18n.init);
 app.set('permission', {
@@ -109,6 +109,11 @@ app.set('permission', {
 		status: 403
 	}
 });
+// todo: handle other security technuiqes, not only CSRF.
+app.use(lusca.csrf());
+app.use(lusca.xframe('SAMEORIGIN'));
+app.use(lusca.xssProtection(true));
+app.disable('x-powered-by');
 app.use((req, res, next) => {
 	res.locals.h = generalHelpers;
 	res.locals._ = _;
@@ -128,6 +133,7 @@ app.use((req, res, next) => {
 	}
 	next();
 });
+
 
 /**
  ** ================================ Routes ================================= 
