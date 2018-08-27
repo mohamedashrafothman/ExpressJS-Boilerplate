@@ -89,7 +89,7 @@ That will populate 3 accounts based on 3 roles (system admin, admin, user). The 
 
 |Role|Name|Email (login)|Password|
 |---|---|---|---|
-|sysAdmin|System Admin Name|systemadmin@example.com|root|
+|superAdmin|SuperAdmin Name|superadmin@example.com|root|
 |admin|Admin Name|admin@example.com|root|
 |user|User Name|user@example.com|root|
 
