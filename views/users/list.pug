@@ -15,7 +15,7 @@ block content
 									th.border-bottom-0(scope='col') Pic
 									th.border-bottom-0(scope='col') Email
 									th.border-bottom-0(scope='col') Role
-									th.border-bottom-0(scope='col') Active
+									th.border-bottom-0(scope='col') Verified
 									th.border-bottom-0(scope='col') Id
 							tbody
 								each singleUser, index in users
@@ -23,7 +23,7 @@ block content
 										td.py-2.d-flex.align-items-center.justify-content-around(scope='row')
 											a.text-danger(href=`/auth/profile/delete/${singleUser._id}`)
 												span.fas.fa-trash-alt
-											a(href=`/auth/profile/${singleUser._id}`)
+											a(href=`/auth/profile/${singleUser.profile.slug}`)
 												span.fas.fa-pencil-alt
 										td.py-2
 											.media
@@ -37,7 +37,7 @@ block content
 										td.py-2= `${singleUser.email}`
 										td.py-2
 											span(class=(_.isEqual(singleUser.role, "admin") ? "badge badge-primary text-uppercase text-white w-100" : "badge badge-warning text-uppercase text-white w-100"))= `${singleUser.role}`
-										td.py-2= `${singleUser.active}`
+										td.py-2= `${(singleUser.active === 1) ? "Verified" : "Not-Verified"}`
 										td.py-2= `${singleUser._id}`
 					if (pages > 0)
 						+pagination(baseUrl, page, pages, "end")

@@ -1,3 +1,4 @@
+const slug             = require('speakingurl');
 const crypto           = require('crypto');
 const bcrypt           = require("bcryptjs");
 const mongoose         = require("mongoose");
@@ -28,6 +29,9 @@ const UserSchema = mongoose.Schema({
 			type: String,
 			trim: true
 		},
+		slug: {
+			type: String
+		},
 		username: {
 			type: String,
 			trim: true
@@ -54,6 +58,7 @@ const UserSchema = mongoose.Schema({
 
 UserSchema.pre("save", function (next) {
 	const user = this;
+	// skip it stop this function from running
 	if (!user.isModified('password')) return next();
 	bcrypt.genSalt(Number(process.env.PASSWORD_HASH_ROUNDS), function (err, salt) {
 		if (err) return next(err);
@@ -66,6 +71,21 @@ UserSchema.pre("save", function (next) {
 		})
 	})
 });
+
+UserSchema.pre("save", async function (next) {
+	// skip it stop this function from running
+	if (!this.isModified('profile.name')) return next();
+	this.profile.slug = slug(this.profile.name); // assign slug name to slug property
+	const slugRegEx = new RegExp(`^(${this.profile.slug})((-[0-9]*$)?)$`, 'i');
+	const userWithSlug = await this.constructor.find({
+		slug: slugRegEx
+	});
+	if (userWithSlug.length) {
+		this.profile.slug = `${this.profile.slug}-${userWithSlug.length + 1}`;
+	}
+	next();
+});
+
 
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 	bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {

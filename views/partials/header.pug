@@ -28,7 +28,7 @@ nav.h-100.border-bottom.bg-white
 						a(href="/lang/en")= __('lang.en')
 				if user
 					li(class=(_.isEqual(title, `${user.profile.name}'s profile`) ? "mx-3 rounded-circle" : "mx-3 rounded-circle"))
-						a(href="/auth/profile" title=__("user.%s 's profile", `${user.profile.name}`) class="p-3" data-toggle="tooltip" data-placement="bottom")
+						a(href=`/auth/profile/${user.profile.slug}` title=__("user.%s 's profile", `${user.profile.name}`) class="p-3" data-toggle="tooltip" data-placement="bottom")
 							if (user.profile.picture || user.profile.picture_sm || user.profile.picture_md || user.profile.picture_lg)
 								img.rounded-circle(src=(!user.profile.picture_sm) ? user.profile.picture : user.profile.picture_sm ,  width="50px" height="auto")
 							else

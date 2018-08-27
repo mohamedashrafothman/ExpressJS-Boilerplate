@@ -5,23 +5,7 @@ html(lang=lang dir=(lang == 'en' ? 'ltr' : 'rtl'))
 		include ../partials/header
 		include ../partials/preloader
 		block messages
-			if flashes
-				- const categories = Object.keys(flashes)
-					each category in categories
-						.messages.d-flex.flex-column.justify-content-center.align-items-end.w-100.position-absolute
-							each message, i in flashes[category]
-								.col-xs-11.col-sm-4.alert.alert-with-icon.animated.fadeInDown(class=(category === 'error' ? `alert-danger` : `alert-${category}`), data-notify='container', data-notify-position=`top-${(lang == 'en' ? 'right' : 'left')}`, role='alert', style='display: block; margin: 0 10px 10px;transition: all 0.5s ease-in-out; z-index:1;' )
-									if message.msg						
-										button.close(data-notify='dismiss', type='button', aria-hidden='true', style=`position: absolute; ${(lang == 'en' ? 'right' : 'left')}: 10px; top: 55%; margin-top: -13px; z-index: 1;`, onClick="this.parentElement.remove()") &times;
-										span(data-notify='title')
-										span(data-notify='message')= message.msg
-										a(data-notify='url', href='#', target='_blank')
-
-									else 
-										button.close(data-notify='dismiss', type='button', aria-hidden='true', style=`position: absolute; ${(lang == 'en' ? 'right' : 'left')}: 10px; top: 55%; margin-top: -13px; z-index: 1;`, onClick="this.parentElement.remove()") &times;
-										span(data-notify='title')
-										span(data-notify='message')= message
-										a(data-notify='url', href='#', target='_blank')
+			include ../partials/flash_messages.pug
 
 		block content
 		include ../partials/foot

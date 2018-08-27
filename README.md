@@ -1,10 +1,10 @@
-# Express Starter Env
+# Express.JS Boilerplate
 Inspired by [Hackathon Starter](https://github.com/sahat/hackathon-starter) & [Aqua](https://jedireza.github.io/aqua/), this project is a more simplified boilerplate application with some basic examples of user authentication with [Passport](https://github.com/jaredhanson/passport), [OAuth2](https://oauth.net/2/) using Passportjs OAuth Strategies, and simple permission system via an [Permission](https://www.npmjs.com/package/permission).
 
 This boilerplate comes with two language in mind [En, Ar], thanks to [i18n](https://www.npmjs.com/package/i18n). Languages files are located in `./languages/` .
 
 ## Services
-This application has been designed to use the free tiers of these services to get a live development environment up and running with minimal effort as a starter env. In order to deploy this application as-is, you will need accounts from these services:
+This application has been designed to use the free tiers of these services to get a live development environment up and running with minimal effort as a starter template. In order to deploy this application as-is, you will need accounts from these services:
 
 * [Heroku](https://signup.heroku.com/) - hosts the application.
 * [Mailtrap](https://mailtrap.io) - Mailtrap is a solution that allows testing email notifications without sending them to the real users of your application. It also lets you view all your emails online, forward them to your regular mailbox, share with the team and more!

@@ -1,23 +1,23 @@
 const _              = require('lodash');
+const multer         = require('multer');
 const express        = require("express");
 const router         = express.Router();
-const multer         = require('multer');
 const passport       = require("passport");
-const permission 	 = require("permission");
+const permission     = require("permission");
 const AvatarStorage  = require('../helpers/AvatarStorage');
 const userController = require("../controllers/authController");
 const passportConfig = require('../config/passportConfig');
 
 // setup a new instance of the AvatarStorage engine 
 var storage = AvatarStorage({
-	square: true,
+	square    : true,
 	responsive: true,
-	greyscale: false,
-	quality: 90
+	greyscale : false,
+	quality   : 90
 });
 var limits = {
-	files: 1, // allow only 1 file per request
-	fileSize: 1024 * 1024 * 5, // 5 MB (max file size)
+	files   : 1,                 // allow only 1 file per request
+	fileSize: 1024 * 1024 * 5,   // 5 MB (max file size)
 };
 var fileFilter = function (req, file, cb) {
 	// supported image file mimetypes
@@ -32,22 +32,21 @@ var fileFilter = function (req, file, cb) {
 };
 // setup multer
 var upload = multer({
-	storage: storage,
-	limits: limits,
+	storage   : storage,
+	limits    : limits,
 	fileFilter: fileFilter
 });
-
 
 router.get("/login", userController.getLogin);
 router.get("/register", userController.getRegisteration);
 router.post("/register", userController.validateRegister, userController.registerUser);
 router.post("/login", userController.validateLogin, userController.loginUser);
 router.get('/logout', passportConfig.isAuthenticated, userController.logoutUser);
-router.get('/profile', passportConfig.isAuthenticated ,userController.getUserProfile);
-router.post('/profile/avatar', passportConfig.isAuthenticated, upload.single(process.env.AVATAR_FIELD), userController.updateUserAvatar)
-router.post('/profile/update', passportConfig.isAuthenticated, userController.validateUserProfile, userController.updateUserProfile);
-router.post('/profile/password', passportConfig.isAuthenticated, userController.validateUserPassword, userController.updateUserPassword);
-router.get('/profile/delete/:id', passportConfig.isAuthenticated, userController.deleteUserAccount);
+router.get('/profile/:name', passportConfig.isAuthenticated, permission(["user", "admin", "superAdmin"]), userController.getUserProfile);
+router.post('/profile/:id/upateAvatar', passportConfig.isAuthenticated, permission(["user", "admin", "superAdmin"]), upload.single(process.env.AVATAR_FIELD), userController.updateUserAvatar)
+router.post('/profile/:id/updateInfo', passportConfig.isAuthenticated, userController.validateUserProfile, userController.updateUserProfile);
+router.post('/profile/:id/updatePassword', passportConfig.isAuthenticated, userController.validateUserPassword, userController.updateUserPassword);
+router.get('/profile/:id/delete', passportConfig.isAuthenticated, userController.deleteUserAccount);
 router.get("/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink)
 router.get('/forgot', userController.getForgot);
 router.post('/forgot', userController.postForgot);

@@ -17,11 +17,11 @@ const setLang = (req, res, next) => {
 const getListOfUsers = async (req, res, next) => {
 	const query = {
 		role: {
-			$nin: ["sysAdmin", "admin"]
+			$nin: ["superAdmin", "admin"]
 		}
 	};
 	const options = {
-		select: "profile.picture profile.name profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
+		select: "profile.picture profile.name profile.slug profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
 		page: req.params.page || 1,
 		limit: 10,
 		skip: (this.page * this.limit) - this.limit,
@@ -47,11 +47,11 @@ const getListOfUsers = async (req, res, next) => {
 const getListOfAdmins = async (req, res, next) => {
 	const query = {
 		role: {
-			$nin: ["sysAdmin", "user"]
+			$nin: ["superAdmin", "user"]
 		}
 	};
 	const options = {
-		select: "profile.picture profile.name profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
+		select: "profile.picture profile.name profile.slug profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
 		page: req.params.page || 1,
 		limit: 10,
 		skip: (this.page * this.limit) - this.limit,

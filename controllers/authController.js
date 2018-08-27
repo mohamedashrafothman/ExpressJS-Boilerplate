@@ -1,10 +1,10 @@
-const _          = require('lodash');
-const to         = require("await-to-js").default;
-const User       = require("../models/user");
-const path       = require("path");
-const mail       = require("../helpers/mail");
-const crypto     = require('crypto');
-const passport   = require('passport');
+const _        = require('lodash');
+const to       = require("await-to-js").default;
+const User     = require("../models/user");
+const path     = require("path");
+const mail     = require("../helpers/mail");
+const crypto   = require('crypto');
+const passport = require('passport');
 
 /**
  *  Get Login View Page
@@ -83,7 +83,17 @@ const registerUser = async (req, res, next) => {
 		email: req.body.email,
 		password: req.body.password,
 		confirmPassword: req.body.confirmPassword,
-		role: (req.body.adminCode && _.isEqual(req.body.adminCode, process.env.ADMIN_SECRET)) ? "admin" : "user"
+		role: (() => {
+			if (!req.body.adminCode) {
+				return "user";
+			} else if (req.body.adminCode && _.isEqual(req.body.adminCode, process.env.ADMIN_SECRET)) {
+				return "admin"
+			} else if (req.body.adminCode && _.isEqual(req.body.adminCode, process.env.SUPER_ADMIN_SECRET)) {
+				return "superAdmin"
+			} else {
+				return "";
+			}
+		})()
 	}
 	const user = new User(userData);
 	User.findOne({
@@ -133,7 +143,7 @@ const verifyUser = async (req, res, next) => {
 		req.flash('error', "Invalid approach, please use the link that has been send to your email.");
 		res.redirect("/auth/register");
 	}
-	req.flash("success", "Your account has been activated, you can loggin now.");
+	req.flash("success", "Your account has been Verified");
 	res.redirect("/auth/login");
 };
 
@@ -184,10 +194,11 @@ const loginUser = async (req, res, next) => {
 			req.flash('error', info);
 			return res.redirect('/auth/login');
 		}
-		if (user.active == 0) {
-			req.flash('error', "please verify your account first so you can login, or check the problem with system admin.");
-			return res.redirect('/auth/login');
-		}
+		// ! uncomment this if you want user to be blocked from loggin as he is not verified yet
+		// if (user.active == 0) {
+		// 	req.flash('error', "please verify your account first so you can login, or check the problem with system admin.");
+		// 	return res.redirect('/auth/login');
+		// }
 		req.logIn(user, (err) => {
 			if (err) {
 				return next(err);
@@ -212,11 +223,19 @@ const logoutUser = (req, res) => {
 /** 
  * get Profile view page
  */
-const getUserProfile = async (req, res) => {  
-	res.render('auth/profile', {
-		title: `${req.user.profile.name}'s profile`,
+const getUserProfile = async (req, res, next) => {
+	const [gettingUserErr, user] = await to(User.findOne({
+		"profile.slug": req.params.name
+	}).exec());
+	if (gettingUserErr) return next(gettingUserErr);
+	if (!user) {
+		req.flash("error", "No user found with this name");
+		return res.redirect("/");
+	}
+	return res.render("auth/profile", {
+		title: `${user.profile.username}'s profile`,
 		avatar_field: process.env.AVATAR_FIELD,
-		user: req.user
+		userData: user
 	});
 };
 
@@ -248,33 +267,25 @@ const validateUserProfile = async (req, res, next) => {
  * @param {*} res 
  */
 const updateUserProfile = async (req, res, next) => {
-	const userNewData = {
-		email: req.body.email,
-		profile: {
-			name: req.body.name,
-			username: req.body.username,
-			location: req.body.location,
-			gender: req.body.gender,
-			website: req.body.website,
-			picture: (req.user.profile.picture) ? req.user.profile.picture : '',
-			picture_sm: (req.user.profile.picture_sm) ? req.user.profile.picture_sm : '',
-			picture_md: (req.user.profile.picture_md) ? req.user.profile.picture_md : '',
-			picture_lg: (req.user.profile.picture_lg) ? req.user.profile.picture_lg : ''
-		}
-	}
-	const [err, user] = await to(User.findOneAndUpdate({
-		_id: req.user._id
-	}, {
-		$set: userNewData
-	}, {
-		new: true,
-		runValidators: true,
-		context: 'query'
-	}).exec());
-	if (err) return next(err);
+	let [gettingUserErr, user] = await to(User.findOne({_id: req.params.id}).exec());
+	if (gettingUserErr) return next(gettingUserErr);
+
+	user.email              = req.body.email;
+	user.profile.name       = req.body.name;
+	user.profile.gender     = req.body.gender;
+	user.profile.website    = req.body.website;
+	user.profile.username   = req.body.username;
+	user.profile.location   = req.body.location;
+	user.profile.picture    = (user.profile.picture) ? user.profile.picture : '',
+	user.profile.picture_sm = (user.profile.picture_sm) ? user.profile.picture_sm : '',
+	user.profile.picture_md = (user.profile.picture_md) ? user.profile.picture_md : '',
+	user.profile.picture_lg = (user.profile.picture_lg) ? user.profile.picture_lg : ''
+
+	let [updatingUserErr, updatedUser] = await to(user.save());
+	if (updatingUserErr) return next(updatingUserErr);
 
 	req.flash('success', res.__("msgs.validation.profile.success_basic"));
-	res.redirect('back');
+	res.redirect(`/auth/profile/${updatedUser.profile.slug}`);
 };
 
 /**
@@ -327,7 +338,7 @@ const updateUserPassword = async (req, res, next) => {
 	}));
 	if (sendMailErr) return next(sendMailErr);
 	req.flash('success', res.__("msgs.validation.profile.success_password"));
-	res.redirect('/auth/profile');
+	res.redirect(`/auth/profile/${updatedUser.profile.slug}`);
 };
 const updateUserAvatar = async function (req, res, next) {
 	var files;
@@ -347,7 +358,7 @@ const updateUserAvatar = async function (req, res, next) {
 		return (req.file.storage == 'local' ? base : '') + '/' + url;
 	});
 	const [updateUserError, user] = await to(User.findOne({
-		_id: req.user._id
+		_id: req.params.id
 	}));
 	if (updateUserError) return next(updateUserError);
 	user.profile.picture_lg = files[0];
@@ -356,7 +367,7 @@ const updateUserAvatar = async function (req, res, next) {
 	const [updateUserErr, updatedUser] = await to(user.save());
 	if (updateUserErr) return next(updateUserErr);
 	req.flash('success', 'successfully updated your avatar.');
-	res.redirect('/auth/profile');
+	res.redirect(`/auth/profile/${updatedUser.profile.slug}`);
 
 }
 
@@ -499,7 +510,7 @@ const getOauthUnlink = (req, res, next) => {
 				return next(err);
 			}
 			req.flash('success', `${provider} account has been unlinked.`);
-			res.redirect('/auth/profile');
+			res.redirect(`/auth/profile/${user.profile.slug}`);
 		});
 	});
 };
@@ -509,25 +520,25 @@ const getOauthUnlink = (req, res, next) => {
  */
 module.exports = {
 	getLogin,
-	getRegisteration,
-	validateRegister,
-	registerUser,
-	validateLogin,
 	loginUser,
-	logoutUser,
-	getUserProfile,
-	validateUserProfile,
-	updateUserProfile,
-	validateUserPassword,
-	updateUserPassword,
-	updateUserAvatar,
-	deleteUserAccount,
 	getForgot,
 	postForgot,
-	getResetPassword,
-	postResetPassword,
-	validateResetPassword,
+	logoutUser,
 	verifyUser,
+	registerUser,
 	oauthRedirect,
-	getOauthUnlink
+	validateLogin,
+	getOauthUnlink,
+	getUserProfile,
+	getRegisteration,
+	updateUserAvatar,
+	validateRegister,
+	getResetPassword,
+	updateUserProfile,
+	deleteUserAccount,
+	postResetPassword,
+	updateUserPassword,
+	validateUserProfile,
+	validateUserPassword,
+	validateResetPassword
 }

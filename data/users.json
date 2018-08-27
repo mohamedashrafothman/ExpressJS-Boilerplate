@@ -2,6 +2,7 @@
 	"profile": {
 		"name": "Super Admin Name",
 		"username": "Super Admin Username",
+		"slug": "super-admin-username",
 		"location": "Cairo, Egypt",
 		"gender": "male",
 		"website": "",
@@ -19,7 +20,15 @@
 }, {
 	"profile": {
 		"name": "Admin Name",
-		"username": "Admin Username"
+		"username": "Admin Username",
+		"slug": "admin-username",
+		"location": "Cairo, Egypt",
+		"gender": "male",
+		"website": "",
+		"picture": "",
+		"picture_sm": "",
+		"picture_md": "",
+		"picture_lg": ""
 	},
 	"active": 1,
 	"tokens": [],
@@ -31,9 +40,14 @@
 	"profile": {
 		"name": "User name",
 		"username": "User Username",
-		"location": "",
+		"slug": "user-username",
+		"location": "Cairo, Egypt",
 		"gender": "male",
-		"website": ""
+		"website": "",
+		"picture": "",
+		"picture_sm": "",
+		"picture_md": "",
+		"picture_lg": ""
 	},
 	"active": 1,
 	"tokens": [],
