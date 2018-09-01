@@ -1,0 +1,18 @@
+{
+	"starter_env": {
+		"main_title": "starter_env.main_title",
+		"main_subtitle": "starter_env.main_subtitle"
+	},
+	"titles": {
+		"home": "titles.home",
+		"admins": "titles.admins",
+		"users": "titles.users"
+	},
+	"user": {
+		"logout": "user.logout",
+		"%s 's profile": "user.%s 's profile"
+	},
+	"lang": {
+		"ar": "lang.ar"
+	}
+}
