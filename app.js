@@ -16,8 +16,6 @@ const favicon = require('serve-favicon');
 const session = require('express-session');
 const mongoose = require("mongoose");
 const passport = require("passport");
-const userRoute = require("./routes/authRoute");
-const indexRoute = require("./routes/indexRoute");
 const MongoStore = require('connect-mongo')(session);
 const bodyParser = require("body-parser");
 const permission = require("permission");
@@ -30,16 +28,10 @@ const expressValidator = require("express-validator");
 /**
  ** ============================ Configurations =============================
  ** =========================================================================
- * todo: make all configurations in seprate files, then require them.
+ * ? make sure that all configuration must be replaced in config folder
  */
 require('./config/passportConfig');
-i18n.configure({
-	locales: ['en', 'ar'],
-	cookie: 'lang',
-	directory: __dirname + '/languages',
-	register: global,
-	objectNotation: true,
-});
+require('./config/i18nConfig');
 
 /**
  ** ========================== Create App Instance ========================== 
@@ -90,6 +82,8 @@ app.use(session({
 		autoReconnect: true
 	})
 }));
+
+// passport needs to come after session initialization
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -113,6 +107,8 @@ app.use(lusca.csrf());
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
+
+// pass the Globals to all responses
 app.use((req, res, next) => {
 	res.locals.h         = generalHelpers;
 	res.locals._         = _;
@@ -138,6 +134,8 @@ app.use((req, res, next) => {
  ** ================================ Routes ================================= 
  ** =========================================================================
  */
+const userRoute = require("./routes/authRoute");
+const indexRoute = require("./routes/indexRoute");
 app.use("/", indexRoute);
 app.use("/auth", userRoute);
 
@@ -146,6 +144,13 @@ app.use("/auth", userRoute);
  ** ============================ Error Handling ============================= 
  ** =========================================================================
  */
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
+});
+
 if (process.env.NODE_ENV === 'development') {
 	app.use(errorHandler());
 }
