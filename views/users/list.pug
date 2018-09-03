@@ -6,13 +6,7 @@ block content
 		.container
 			.row
 				.col-12.card.py-4.px-4
-					.d-flex.align-items-center.justify-content-between
-						h2.pb-2.text-capitalize.m-0= `${title}`
-						if (title === "Admins")
-							button.btn.btn-link.text-capitalize(type="button", data-toggle="modal", data-target="#addAdminModal") add new admin
-						if (title === "Users")
-							button.btn.btn-link.text-capitalize(data-target="#addUserModal", data-toggle="modal", type="button") add new user
-
+					h2.pb-2.text-capitalize.m-0= `${title}`
 					.table-responsive-md
 						table.table.table-lg.table-hover.border.border-top-0.rounded.usersListing
 							thead
@@ -27,7 +21,7 @@ block content
 								each singleUser, index in users
 									tr
 										td.py-2.d-flex.align-items-center.justify-content-around(scope='row')
-											a.text-danger(href=`/auth/profile/delete/${singleUser._id}`)
+											a.text-danger(href=`/auth/profile/${singleUser._id}/delete`)
 												span.fas.fa-trash-alt
 											a(href=`/auth/profile/${singleUser.profile.slug}`)
 												span.fas.fa-pencil-alt
@@ -47,29 +41,4 @@ block content
 										td.py-2= `${singleUser._id}`
 					if (pages > 0)
 						+pagination(baseUrl, page, pages, "end")
-					
-					#addAdminModal.modal.fade(role='dialog', aria-hidden='true', aria-labelledby='addAdminModalTitle', tabindex='-1')
-						.modal-dialog.modal-dialog-centered(role='document')
-							.modal-content
-								.modal-header
-									h5#addAdminModalTitle.modal-title.text-uppercase Add New Admin
-									button.close(data-dismiss='modal', type='button', aria-label='Close')
-									span(aria-hidden='true') ×
-								.modal-body
-									| ...
-								.modal-footer
-									button.btn.btn-secondary(data-dismiss='modal', type='button') Close
-									button.btn.btn-primary(type='button') Save
-					#addUserModal.modal.fade(role='dialog', aria-hidden='true', aria-labelledby='addUserModalTitle', tabindex='-1')
-						.modal-dialog.modal-dialog-centered(role='document')
-							.modal-content
-								.modal-header
-									h5#addUserModalTitle.modal-title.text-uppercase Add New User
-									button.close(data-dismiss='modal', type='button', aria-label='Close')
-									span(aria-hidden='true') ×
-								.modal-body
-									| ...
-								.modal-footer
-									button.btn.btn-secondary(data-dismiss='modal', type='button') Close
-									button.btn.btn-primary(type='button') Save
 

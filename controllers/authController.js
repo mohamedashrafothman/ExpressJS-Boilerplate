@@ -5,6 +5,7 @@ const path     = require("path");
 const mail     = require("../helpers/mail");
 const crypto   = require('crypto');
 const passport = require('passport');
+const utilityHelper = require("../helpers/utility.js");
 
 /**
  *  Get Login View Page
@@ -202,9 +203,17 @@ const loginUser = async (req, res, next) => {
 		req.logIn(user, (err) => {
 			if (err) {
 				return next(err);
+			} else {
+				if (req.body.remember) {
+					let expire = 1000 * 60 * 60 * process.env.COKKIES_MAXAGE_IN_HOURS;
+					req.session.cookie.expires = new Date(Date.now() + expire);
+					req.session.cookie.maxAge = expire;
+				} else {
+					req.session.cookie.expires = false;
+				}
+				req.flash('success', res.__('msgs.validation.login.success_login'));
+				res.redirect("/");
 			}
-			req.flash('success', res.__('msgs.validation.login.success_login'));
-			res.redirect("/");
 		});
 	})(req, res, next);
 };
@@ -382,7 +391,6 @@ const deleteUserAccount = async (req, res, next) => {
 		_id: req.params.id
 	}).exec());
 	if (err) return next(err);
-	// req.logout();
 	req.flash('success', res.__('msgs.validation.profile.%s success_deleted', user.profile.name));
 	res.redirect("/");
 };
@@ -406,9 +414,7 @@ const postForgot = async (req, res, next) => {
 		res.redirect('back');
 		return;
 	}
-
-	const RandomBytes = await crypto.randomBytes(16);
-	const token = RandomBytes.toString('hex');
+	const token = utilityHelper.createRandomToken(16);
 	const [findUserError, user] = await to(User.findOne({
 		email: req.body.email
 	}).exec());

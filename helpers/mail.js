@@ -36,6 +36,4 @@ const send = (options) => {
 	return transporter.sendMail(mailOptions);
 };
 
-module.exports = {
-	send
-};
+module.exports = {send};

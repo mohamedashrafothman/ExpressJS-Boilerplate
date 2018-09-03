@@ -4,6 +4,7 @@ const tooltipInit = require("./partials/tooltipInit");
 const smothScroll = require("./partials/smothScroll");
 const wowInit = require("./partials/wowInit");
 const dataTableInit = require("./partials/dataTableInit");
+const swiperInit = require("./partials/swiperInit");
 
 $(window).on("load", () => {
 	$(".preloader").animate({
@@ -21,4 +22,5 @@ $(document).ready(() => {
 	tooltipInit();
 	smothScroll();
 	dataTableInit();
+	swiperInit();
 });

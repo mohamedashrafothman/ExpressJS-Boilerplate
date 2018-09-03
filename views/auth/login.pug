@@ -17,6 +17,11 @@ block content
 								label.text-dark.text-capitalize.font-weight-bold.m-0(for="password")= __('user.password')
 									span.ml-2.text-danger *
 								input.form-control.text-secondary#password(name="password" type="password" aria-describedby="passwordHelp" placeholder=__('user.password'))
+						.form-row
+							.form-check.form-check-inline.col-12
+								.custom-control.custom-checkbox
+									input(class="custom-control-input", id="remember_me", name="remember", type="checkbox", value="remember")
+									label.custom-control-label.text-secondary.text-capitalize(for="remember_me") remember me
 						.form-row.mt-4
 							.col-12.col-md-2
 								button.w-100.btn.btn-primary.text-capitalize(type="submit")= __('user.login')

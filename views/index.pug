@@ -1,11 +1,33 @@
 extends ./layouts/index-layout.pug
 
 block content
-	main.border-bottom.bg-light(role="main")
+	main.bg-light(role="main")
 		.container
-			.text-center.d-flex.flex-column.justify-content-center.align-items-center(data-wow-duration="1s" style="min-height:74vh;max-height: 74vh; height: 450px;")
-				h1.bg-white.text-capitalize.display-3.font-italic.font-weight-bold.mb-0.p-3.border= __("starter_env.main_title")
-				p.bg-white.lead.text-secondary.px-3.py-1.border.border-top-0= __("starter_env.main_subtitle")
-			.d-flex.align-items-center.justify-content-center.w-100.pb-5.h4
+			.swiper-container
+				.swiper-wrapper
+					.swiper-slide
+						.bg-light.text-center.d-flex.flex-column.justify-content-center.align-items-center(style="height: calc(100vh - 25vh);")
+							h1.bg-white.text-capitalize.display-3.font-weight-bold.mb-0.p-3.border(data-swiper-parallax="-300")= __("starter_env.main_title")
+							p.lead.text-secondary.px-3.py-1.w-50(data-swiper-parallax="-150")= __("starter_env.main_subtitle")
+					.swiper-slide
+						.bg-light.text-center.d-flex.flex-column.justify-content-center.align-items-center(style="height: calc(100vh - 25vh);")
+							h1.bg-white.text-capitalize.display-3.font-weight-bold.mb-0.p-3.border(data-swiper-parallax="-300")= __("starter_env.main_title")
+							p.lead.text-secondary.px-3.py-1.w-50(data-swiper-parallax="-150")
+								|This is an composition of the best things of 
+								code Express.js
+								|, 
+								code MongoDB
+								|, 
+								code Passport.js
+								|, and 
+								code Bootstrap 4.
+					.swiper-slide
+						.bg-light.text-center.d-flex.flex-column.justify-content-center.align-items-center(style="height: calc(100vh - 25vh);")
+							h1.bg-white.text-capitalize.display-3.font-weight-bold.mb-0.p-3.border(data-swiper-parallax="-300")= __("starter_env.main_title")
+							p.lead.text-secondary.px-3.py-1.w-50(data-swiper-parallax="-150")
+								| The aim of this Boilerplate is to use the free tiers of these services to get a live development environment up and running with minimal effort as a starter template.
+				.swiper-button-prev
+				.swiper-button-next
+			.d-flex.align-items-center.justify-content-center.w-100.h4.mt-5
 				a.animated.bounce.infinite.slower(href="#")
 					span.lnr.lnr-chevron-down.font-weight-bold

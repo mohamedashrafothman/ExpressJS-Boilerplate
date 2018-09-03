@@ -7,7 +7,7 @@ require("dotenv/config");
 const _ = require("lodash");
 const path = require("path");
 const i18n = require("i18n");
-const lusca = require("lusca");
+const csrf = require("csurf");
 const flash = require('connect-flash');
 const chalk = require("chalk");
 const logger = require("morgan");
@@ -22,7 +22,7 @@ const permission = require("permission");
 const compression = require("compression");
 const errorHandler = require('errorhandler');
 const cookieParser = require("cookie-parser");
-const generalHelpers = require('./helpers/general');
+const utilityHelpers = require('./helpers/utility');
 const expressValidator = require("express-validator");
 
 /**
@@ -66,23 +66,20 @@ app.use(favicon(path.join(__dirname, 'public/build/images', 'favicon.ico')));
 app.use(compression())
 app.use(logger("dev"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-	extended: false
-}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressValidator());
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(session({
 	secret: process.env.SESSION_SECRET,
 	saveUninitialized: false, // don't create session until something stored
 	resave: false, //don't save session if unmodified
-	cookie: {
-		// Experation time in milliseconds
-		maxAge: 1000 * 60 * 60 * process.env.COKKIES_MAXAGE_IN_HOURS
-	},
 	store: new MongoStore({
 		url: process.env.MONGODB_URI,
-		ttl: 1000 * 60 * 60 * process.env.COKKIES_MAXAGE_IN_HOURS,
-		autoReconnect: true
+		ttl: 60 * 60 * 0.5, // one hour and remove session from database
+		resave: false,
+		autoReconnect: true,
+		autoRemove: 'native',
+		autoRemoveInterval: 1
 	})
 }));
 
@@ -106,15 +103,12 @@ app.set('permission', {
 		status: 403
 	}
 });
-app.use(lusca.csrf());
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
-app.disable('x-powered-by');
-
+// csrf protection MUST be defined after cookieParser and session middleware
+app.use(csrf({ cookie: true }));
 // pass the Globals to all responses
 app.use((req, res, next) => {
 	res.locals._         = _;
-	res.locals.h         = generalHelpers;
+	res.locals.h         = utilityHelpers;
 	res.locals.user      = req.user || null;
 	res.locals.lang      = req.cookies.lang || req.setLocale('en') || 'en';
 	res.locals.flashes   = req.flash() || null;
