@@ -1,6 +1,7 @@
-mixin pagination(baseUrl, page, pages, direction)
-	nav.w-100.mt-4.p-0(aria-label="page navigation")
-		ul(class=`justify-content-${direction} align-items-center pagination pagination-sm m-0`)
+mixin pagination(baseUrl, page, pages, count, total, direction)
+	nav(class=`w-100 mt-4 p-0 d-flex flex-column justify-content-center align-items-${direction}` aria-label="page navigation")
+		p.mb-2.text-muted= `${page*count-count+1}-${page * count} of ${total}`
+		ul.pagination.pagination-sm.m-0
 			li.page-item(class=`${(page==1) ? 'disabled' : ''}`)
 				a.page-link(data-placement="top", data-toggle="tooltip", href=`${baseUrl}/page/${page-1}`, title=__('pagination.pervious_page'), tabindex="-1")= __('pagination.pervious_page')
 			-var i = (Number(page) > 5 ? Number(page) - 4 : 1);

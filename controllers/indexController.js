@@ -31,6 +31,7 @@ const getListOfUsers = async (req, res, next) => {
 		lean: true
 	}
 	const users = await User.paginate(query, options);
+	const usersCount = await User.find(query).count();
 	if (!users.docs.length && users.offset === undefined & users.page !== 1) {
 		req.flash('info', `Hey! you asked for page ${req.params.page || 1}. But that dosen't exist. So i put you on page ${users.pages}.`)
 		return res.redirect(`/users`);
@@ -41,7 +42,7 @@ const getListOfUsers = async (req, res, next) => {
 		page: req.params.page || 1,
 		pages: users.pages,
 		count: users.total,
-		baseUrl: "/users"
+		total: usersCount
 	});
 }
 const getListOfAdmins = async (req, res, next) => {
@@ -61,8 +62,8 @@ const getListOfAdmins = async (req, res, next) => {
 		lean: true
 	}
 	const users = await User.paginate(query, options);
+	const usersCount = await User.find(query).count();
 	if (!users.docs.length && users.offset === undefined && users.page !== 1) {
-		console.log(users);
 		req.flash('info', `Hey! you asked for page ${req.params.page || 1}. But that dosen't exist. So i put you on page ${users.pages}.`)
 		return res.redirect(`/admins`);
 	}
@@ -72,7 +73,7 @@ const getListOfAdmins = async (req, res, next) => {
 		page: req.params.page || 1,
 		pages: users.pages,
 		count: users.total,
-		baseUrl: "/admins"
+		total: usersCount,
 	});
 };
 

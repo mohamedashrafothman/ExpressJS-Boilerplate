@@ -6,7 +6,7 @@ block content
 		.container
 			.row
 				.col-12.card.py-4.px-4
-					h2.pb-2.text-capitalize.m-0= `${title}`
+					h2.pb-2.text-capitalize.m-0= `${urlSegment[1]}`
 					.table-responsive-md
 						table.table.table-lg.table-hover.border.border-top-0.rounded.usersListing
 							thead
@@ -40,5 +40,5 @@ block content
 										td.py-2= `${(singleUser.active === 1) ? "Verified" : "Not-Verified"}`
 										td.py-2= `${singleUser._id}`
 					if (pages > 0)
-						+pagination(baseUrl, page, pages, "end")
+						+pagination(`/${urlSegment[1]}`, page, pages, count, total, "end")
 

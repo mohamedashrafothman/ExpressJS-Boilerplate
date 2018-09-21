@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "set NODE_ENV=production && node ./app.js",
-    "dev": "set NODE_ENV=dev && concurrently --kill-others \"npm run watch-node\" \"npm run watch-assets\"",
-    "watch-server": "nodemon ./app.js --ignore public/",
-    "watch-assets": "cd public/ && npm start",
+    "dev": "set NODE_ENV=dev && concurrently --kill-others \"npm run server\" \"npm run assets\"",
+    "server": "nodemon ./app.js --ignore public/",
+    "assets": "cd public/ && npm start",
     "sample": "node ./helpers/ImportAndClearMongoDb.js",
     "blowitallaway": "node ./helpers/ImportAndClearMongoDb.js --delete"
   },

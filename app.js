@@ -109,6 +109,7 @@ app.use(csrf({ cookie: true }));
 app.use((req, res, next) => {
 	res.locals._         = _;
 	res.locals.h         = utilityHelpers;
+	res.locals.urlSegment = utilityHelpers.urlSegment(req);
 	res.locals.user      = req.user || null;
 	res.locals.lang      = req.cookies.lang || req.setLocale('en') || 'en';
 	res.locals.flashes   = req.flash() || null;

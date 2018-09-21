@@ -5,10 +5,21 @@ block content
 		.container.d-flex.flex-column.align-items-stretch.justify-content-between
 			.row.py-4
 				.col-12.col-md-4.d-lg-block.d-none
-					.card.p-4
-						p content
+					ul.list-group
+						li.list-group-item 
+							a.text-capitalize.d-block.w-100.h-100(href="#profile-photo") profile photo
+						li.list-group-item 
+							a.text-capitalize.d-block.w-100.h-100(href="#profile-info") personal information
+						li.list-group-item 
+							a.text-capitalize.d-block.w-100.h-100(href="#change-password") change password
+						if (_.isEqual(userData._id, user._id))
+							li.list-group-item 
+								a.text-capitalize.d-block.w-100.h-100(href="#linked-account") linked accounts
+						li.list-group-item
+							a.text-capitalize.d-block.w-100.h-100(href="#delete-account") Delete account
+						
 				.col-12.col-lg-8
-					.media.mb-4.col-12
+					.media.mb-4.col-12#profile-photo
 						if (userData.profile.picture || userData.profile.picture_sm || userData.profile.picture_md || userData.profile.picture_lg)
 							img.align-self-start.rounded-circle.mr-3(data-placement="top" data-toggle="tooltip" src=(!userData.profile.picture_lg) ? userData.profile.picture : userData.profile.picture_lg title=`${userData.profile.name}'s profile` width="100px")
 						else
@@ -40,7 +51,7 @@ block content
 												= __("button.upload")
 
 
-					.card.mb-4.py-4.px-3
+					.card.mb-4.py-4.px-3#profile-info
 						h4.col-12.pb-4.text-capitalize.m-0= __('user.basic_info')
 						form.col-12(action=`/auth/profile/${userData._id}/updateInfo`, method="POST")
 							include ../partials/csrf.pug
@@ -91,7 +102,7 @@ block content
 							button.btn.btn-primary.text-white(type="submit")
 								span.mr-2.far.fa-user
 								= __('user.update_profile')
-					.card.mb-4.py-4.px-3
+					.card.mb-4.py-4.px-3#change-password
 						h4.col-12.pb-4.text-capitalize.m-0= __('user.change_password')
 						form.col-12(action=`/auth/profile/${userData._id}/updatePassword`, method="POST")
 							include ../partials/csrf.pug
@@ -106,7 +117,7 @@ block content
 								span.mr-2.fas.fa-key
 								= __('user.change_password')
 					if (_.isEqual(userData._id, user._id))
-						.card.mb-4.py-4.px-3
+						.card.mb-4.py-4.px-3#linked-account
 							h4.col-12.pb-4.text-capitalize.m-0= __("user.linked_accounts")
 							.col-12
 								if userData.google
@@ -133,12 +144,12 @@ block content
 									p.mb-1.text-dark
 										span.fab.fa-github.mr-2
 										a.text-dark(href='/auth/github')= __("button.link_github")
-					.card.mb-4.pb-4.border-danger
+					.card.mb-4.pb-4.border-danger#delete-account
 						.card-header.bg-danger.text-white.border-0.p-2
 							h5.text-capitalize.m-0= __("user.danger_zone")
 						.card-body
 							h4.col-12.px-0.text-capitalize.m-0= __('user.delete_account')
 							small.text-muted.font-italic= __("user.danger_zone_note")
-							a.btn.btn-danger.text-uppercase.d-block.mt-4(href=`/auth/profile/delete/${userData._id}`) 
+							a.btn.btn-danger.text-uppercase.d-block.mt-4(href=`/auth/profile/${userData._id}/delete`) 
 								span.mr-2.far.fa-trash-alt
 								= __('user.delete_my_account')
