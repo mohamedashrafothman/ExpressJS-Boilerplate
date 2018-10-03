@@ -11,6 +11,7 @@ const csrf = require("csurf");
 const flash = require('connect-flash');
 const chalk = require("chalk");
 const logger = require("morgan");
+const loggerToMongo = require('mongo-morgan-ext');
 const express = require('express');
 const favicon = require('serve-favicon');
 const session = require('express-session');
@@ -24,7 +25,6 @@ const errorHandler = require('errorhandler');
 const cookieParser = require("cookie-parser");
 const utilityHelpers = require('./helpers/utility');
 const expressValidator = require("express-validator");
-
 /**
  ** ============================ Configurations =============================
  ** =========================================================================
@@ -53,6 +53,7 @@ mongoose.connection.once("open", () => {
 	console.log(`${chalk.red('✗')} MongoDB connection error. Please make sure MongoDB is running.`);
 	process.exit();
 });
+
 
 /** 
  ** ============================== Middlewares ============================== 
@@ -105,6 +106,7 @@ app.set('permission', {
 });
 // csrf protection MUST be defined after cookieParser and session middleware
 app.use(csrf({ cookie: true }));
+app.use(loggerToMongo(process.env.MONGODB_URI, 'logs', function (req, res) {return res.statusCode > 399;}));
 // pass the Globals to all responses
 app.use((req, res, next) => {
 	res.locals._         = _;
