@@ -1,10 +1,34 @@
-const slug             = require('speakingurl');
+/*
+     ██╗   ██╗███████╗███████╗██████╗ ███████╗ ██████╗██╗  ██╗███████╗███╗   ███╗ █████╗
+    ██║   ██║██╔════╝██╔════╝██╔══██╗██╔════╝██╔════╝██║  ██║██╔════╝████╗ ████║██╔══██╗
+   ██║   ██║███████╗█████╗  ██████╔╝███████╗██║     ███████║█████╗  ██╔████╔██║███████║
+  ██║   ██║╚════██║██╔══╝  ██╔══██╗╚════██║██║     ██╔══██║██╔══╝  ██║╚██╔╝██║██╔══██║
+ ╚██████╔╝███████║███████╗██║  ██║███████║╚██████╗██║  ██║███████╗██║ ╚═╝ ██║██║  ██║
+ ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝
+*/
+
+
+
+
+//
+// ─── 1- DEPENDENCIES ────────────────────────────────────────────────────────────
+//
+
+const slug             = require('mongoose-slug-updater');
 const crypto           = require('crypto');
 const bcrypt           = require("bcryptjs");
 const mongoose         = require("mongoose");
 const validator        = require("validator");
 const mongoosePaginate = require("mongoose-paginate");
       mongoose.Promise = global.Promise;
+
+
+
+
+
+//
+// ─── 2- DEFINING SCHEMA ─────────────────────────────────────────────────────────
+//
 
 const UserSchema = mongoose.Schema({
 	email: {
@@ -24,13 +48,14 @@ const UserSchema = mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+	slug: {
+		type: String,
+		slug: "profile.name"
+	},
 	profile: {
 		name: {
 			type: String,
 			trim: true
-		},
-		slug: {
-			type: String
 		},
 		username: {
 			type: String,
@@ -56,6 +81,15 @@ const UserSchema = mongoose.Schema({
 	}
 });
 
+
+
+
+
+
+//
+// ─── 3- SCHEMA HOOKS ────────────────────────────────────────────────────────────
+//
+
 UserSchema.pre("save", function (next) {
 	const user = this;
 	// skip it stop this function from running
@@ -72,20 +106,13 @@ UserSchema.pre("save", function (next) {
 	})
 });
 
-UserSchema.pre("save", async function (next) {
-	// skip it stop this function from running
-	if (!this.isModified('profile.name')) return next();
-	this.profile.slug = slug(this.profile.name); // assign slug name to slug property
-	const slugRegEx = new RegExp(`^(${this.profile.slug})((-[0-9]*$)?)$`, 'i');
-	const userWithSlug = await this.constructor.find({
-		slug: slugRegEx
-	});
-	if (userWithSlug.length) {
-		this.profile.slug = `${this.profile.slug}-${userWithSlug.length + 1}`;
-	}
-	next();
-});
 
+
+
+
+//
+// ─── 4- SCHEMA METHODS ──────────────────────────────────────────────────────────
+//
 
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 	bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
@@ -95,20 +122,39 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 };
 
 UserSchema.methods.gravatar = function gravatar(size, user) {
-	if (!size) {
-		size = 200;
-	}
-	if (!user) {
-		user = this.email;
-	}
-	// if (!user) {
-	// 	return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-	// }
+	if (!size) { size = 200; } 			// default size.
+	if (!user) { user = this.email; } 	// default email is this schema email.
 	const md5 = crypto.createHash('md5').update(user).digest('hex');
 	return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
+
+
+
+
+//
+// ─── 5- SCHEMA PLUGINS ──────────────────────────────────────────────────────────
+//
+
 UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(slug);
+
+
+
+
+
+//
+// ─── 6- SCHEMA MODEL ────────────────────────────────────────────────────────────
+//
 
 const User = mongoose.model("User", UserSchema);
+
+
+
+
+
+//
+// ─── 7- EXPORTING SCHEMA ────────────────────────────────────────────────────────
+//
+
 module.exports = User;

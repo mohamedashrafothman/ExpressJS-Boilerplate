@@ -1,3 +1,20 @@
+/*
+	      █████╗ ██╗   ██╗████████╗██╗  ██╗██████╗  ██████╗ ██╗   ██╗████████╗███████╗        ██╗███████╗
+	    ██╔══██╗██║   ██║╚══██╔══╝██║  ██║██╔══██╗██╔═══██╗██║   ██║╚══██╔══╝██╔════╝        ██║██╔════╝
+	   ███████║██║   ██║   ██║   ███████║██████╔╝██║   ██║██║   ██║   ██║   █████╗          ██║███████╗
+	  ██╔══██║██║   ██║   ██║   ██╔══██║██╔══██╗██║   ██║██║   ██║   ██║   ██╔══╝     ██   ██║╚════██║
+	 ██║  ██║╚██████╔╝   ██║   ██║  ██║██║  ██║╚██████╔╝╚██████╔╝   ██║   ███████╗██╗╚█████╔╝███████║
+	╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝╚═╝ ╚════╝ ╚══════╝
+	Defining and using separate route modules:
+	http: //expressjs.com/en/starter/basic-routing.html
+*/
+
+
+
+//
+// ─── 1- DEPENDENCIES ───────────────────────────────────────────────────────────────
+//
+
 const _              = require('lodash');
 const multer         = require('multer');
 const express        = require("express");
@@ -8,7 +25,13 @@ const AvatarStorage  = require('../helpers/AvatarStorage');
 const userController = require("../controllers/authController");
 const passportConfig = require('../config/passportConfig');
 
-// setup a new instance of the AvatarStorage engine 
+
+
+
+//
+// ─── 2- FILE STORAGE ──────────────────────────────────────────────────────────────
+// setup a new instance of the AvatarStorage engine
+
 var storage = AvatarStorage({
 	square    : true,
 	responsive: true,
@@ -37,6 +60,14 @@ var upload = multer({
 	fileFilter: fileFilter
 });
 
+
+
+
+
+//
+// ─── 3- ROUTES BREAKPOINTS ─────────────────────────────────────────────────────────
+//
+
 router.get("/login", userController.getLogin);
 router.get("/register", userController.getRegisteration);
 router.post("/register", userController.validateRegister, userController.registerUser);
@@ -55,24 +86,30 @@ router.post('/reset/:token', userController.validateResetPassword, userControlle
 router.get('/verify/:email/:hash', userController.verifyUser);
 
 
-// Google Auth
-router.get('/google', passport.authenticate("google", {
-	scope: 'profile email'
-}));
+
+
+
+//
+// ─── 4- OAUTH BREAKPOINTS ──────────────────────────────────────────────────────────
+// 4.1- Google
+// 4.2- FaceBook
+// 4.3- Github
+
+// 4.1
+router.get('/google', passport.authenticate("google", {scope: 'profile email'}));
 router.get('/google/redirect', passport.authenticate("google"), userController.oauthRedirect);
-// Facebook Auth
-router.get('/facebook', passport.authenticate('facebook', {
-	scope: ['email', 'public_profile']
-}));
-router.get('/facebook/redirect', passport.authenticate('facebook', {
-	failureRedirect: '/auth/login'
-}), userController.oauthRedirect);
-// Github Auth
+// 4.2
+router.get('/facebook', passport.authenticate('facebook', {scope: ['email', 'public_profile']}));
+router.get('/facebook/redirect', passport.authenticate('facebook', {failureRedirect: '/auth/login'}), userController.oauthRedirect);
+// 4.3
 router.get('/github', passport.authenticate('github'));
-router.get('/github/redirect', passport.authenticate('github', {
-	failureRedirect: '/auth/login'
-}), userController.oauthRedirect);
+router.get('/github/redirect', passport.authenticate('github', {failureRedirect: '/auth/login'}), userController.oauthRedirect);
 
 
 
+
+
+//
+// ─── 5- EXPORTING ROUTER ───────────────────────────────────────────────────────────
+//
 module.exports = router;

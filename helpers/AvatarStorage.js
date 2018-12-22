@@ -1,4 +1,20 @@
-// Load dependencies
+/*
+	      █████╗ ██╗   ██╗ █████╗ ████████╗ █████╗ ██████╗ ███████╗████████╗ ██████╗ ██████╗  █████╗  ██████╗ ███████╗        ██╗███████╗
+	    ██╔══██╗██║   ██║██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝ ██╔════╝        ██║██╔════╝
+	   ███████║██║   ██║███████║   ██║   ███████║██████╔╝███████╗   ██║   ██║   ██║██████╔╝███████║██║  ███╗█████╗          ██║███████╗
+	  ██╔══██║╚██╗ ██╔╝██╔══██║   ██║   ██╔══██║██╔══██╗╚════██║   ██║   ██║   ██║██╔══██╗██╔══██║██║   ██║██╔══╝     ██   ██║╚════██║
+ 	 ██║  ██║ ╚████╔╝ ██║  ██║   ██║   ██║  ██║██║  ██║███████║   ██║   ╚██████╔╝██║  ██║██║  ██║╚██████╔╝███████╗██╗╚█████╔╝███████║
+	╚═╝  ╚═╝  ╚═══╝  ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝ ╚════╝ ╚══════╝
+	https://scotch.io/tutorials/advanced-photo-upload-in-node
+*/
+
+
+
+
+//
+// ─── 1- DEPENDENCIES ───────────────────────────────────────────────────────────────
+//
+
 var _           = require('lodash');
 var fs          = require('fs');
 var path        = require('path');
@@ -191,7 +207,7 @@ var AvatarStorage = function (options) {
 		});
 	};
 
-	// multer requires this for handling the uploaded file	
+	// multer requires this for handling the uploaded file
 	AvatarStorage.prototype._handleFile = function (req, file, cb) {
 		// create a reference for this to use in local functions
 		var that = this;
@@ -212,7 +228,7 @@ var AvatarStorage = function (options) {
 		file.stream.pipe(fileManipulate);
 	};
 
-	// multer requires this for destroying file	
+	// multer requires this for destroying file
 	AvatarStorage.prototype._removeFile = function (req, file, cb) {
 		var matches, pathsplit;
 		var filename = file.filename;

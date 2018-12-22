@@ -1,8 +1,8 @@
 [{
+	"_id": "5c1eb232f101d7093cbe1c49",
 	"profile": {
 		"name": "Super Admin Name",
 		"username": "Super Admin Username",
-		"slug": "super-admin-username",
 		"location": "Cairo, Egypt",
 		"gender": "male",
 		"website": "",
@@ -11,17 +11,18 @@
 		"picture_md": "",
 		"picture_lg": ""
 	},
+	"slug": "super-admin-username",
 	"active": 1,
 	"tokens": [],
 	"role": "superAdmin",
-	"email": "superadmin@example.com",
+	"email": "superadmin@superadmin.com",
 	"password": "$2a$12$sGORB2VEmY8gKhF6JnPWVubaGu.gtIqS.SIMiqxxN7.4xnyrJn1cu",
 	"hash": "e8ab2d03afd59a14c45f8e9d4845ce94"
 }, {
+	"_id": "5c1eb232f101d7093cbe1c4a",
 	"profile": {
 		"name": "Admin Name",
 		"username": "Admin Username",
-		"slug": "admin-username",
 		"location": "Cairo, Egypt",
 		"gender": "male",
 		"website": "",
@@ -30,17 +31,18 @@
 		"picture_md": "",
 		"picture_lg": ""
 	},
+	"slug": "admin-username",
 	"active": 1,
 	"tokens": [],
 	"role": "admin",
-	"email": "admin@example.com",
+	"email": "admin@admin.com",
 	"password": "$2a$12$QrVinX9o0xmSuBYZV0PxM.4VeeqXe/09SezFtqFeNzZIgOSay/zqS",
 	"hash": "023d7cea8920d959bf57da78f3ffb55a"
 }, {
+	"_id": "5c1eb232f101d7093cbe1c4b",
 	"profile": {
 		"name": "User name",
 		"username": "User Username",
-		"slug": "user-username",
 		"location": "Cairo, Egypt",
 		"gender": "male",
 		"website": "",
@@ -49,10 +51,11 @@
 		"picture_md": "",
 		"picture_lg": ""
 	},
+	"slug": "user-username",
 	"active": 1,
 	"tokens": [],
 	"role": "user",
-	"email": "user@example.com",
+	"email": "user@user.com",
 	"password": "$2a$12$vnbeQtTzn0IPyyLnDMVgx.Yg0AhY0WeLWR3U1Q/YHTmnQfjHoyXaO",
 	"hash": "33c2771398dda77525a78714fe93dd00"
 }]

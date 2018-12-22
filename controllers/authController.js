@@ -7,38 +7,29 @@ const crypto   = require('crypto');
 const passport = require('passport');
 const utilityHelper = require("../helpers/utility.js");
 
-/**
- *  Get Login View Page
- */
+
+//
+// ─── GET LOGIN VIEW ─────────────────────────────────────────────────────────────
+//
 const getLogin = (req, res) => {
-	if (req.user) {
-		return res.redirect('/');
-	}
-	res.render("auth/login", {
-		title: "login"
-	});
+	if (req.user) { return res.redirect('/'); } // checking fo user if loged in, if so return to home page
+	res.render("auth/login", { title: "login" });
 };
 
-/**
- * Get Registeration view page
- * @param {*} req 
- * @param {*} res 
- */
+
+//
+// ─── GET REGISTERATION VIEW ─────────────────────────────────────────────────────
+//
 const getRegisteration = (req, res) => {
 	res.render("auth/register", {
 		title: "register"
 	});
 };
 
-/**
- * Validate Registeration data before submiting it to database.
- * validate email, name, password, confirm password.
- * if there is an errors return to registeration page with flash messages containe errors.
- * if there is no errors, continue to next middleware function.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- */
+
+//
+// ─── VALIDATE REGISTERATION ─────────────────────────────────────────────────────
+//
 const validateRegister = async (req, res, next) => {
 	req.sanitizeBody('name');
 	req.checkBody('name', res.__('msgs.validation.register.name')).notEmpty();
@@ -46,9 +37,7 @@ const validateRegister = async (req, res, next) => {
 	req.sanitizeBody('email');
 	req.checkBody('password', res.__('msgs.validation.register.password')).notEmpty();
 	req.checkBody('password', `Password must be ${Number(process.env.MINIMUM_PASSWORD_LENGTH)} char Length.`)
-		.isLength({
-			min: Number(process.env.MINIMUM_PASSWORD_LENGTH)
-		});
+	   .isLength({ min: Number(process.env.MINIMUM_PASSWORD_LENGTH) });
 	req.checkBody("password", "password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i")
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.confirm_password')).notEmpty();
 	req.checkBody('confirmPassword', res.__('msgs.validation.register.passwords_not_match')).equals(req.body.password);
@@ -67,14 +56,10 @@ const validateRegister = async (req, res, next) => {
 	next();
 };
 
-/**
- * parsing user data and create new user using mongoose model
- * if there is an user exists in the database, redirect back to registeration page with already exist flash message.
- * if there is no users exists in the database, save the new one, then redirect to login page to login.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- */
+
+//
+// ─── REGISTERATION ──────────────────────────────────────────────────────────────
+//
 const registerUser = async (req, res, next) => {
 	const userData = {
 		profile: {
@@ -97,18 +82,15 @@ const registerUser = async (req, res, next) => {
 		})()
 	}
 	const user = new User(userData);
-	User.findOne({
-		email: userData.email
-	}, (err, existingUser) => {
+	User.findOne({ email: userData.email }, (err, existingUser) => {
 		if (err) return next(err);
 		if (existingUser) {
 			req.flash('error', res.__('msgs.validation.register.already_exists'));
 			res.redirect('/auth/register');
 		}
 		user.save(async (err) => {
-			if (err) {
-				return next(err);
-			}
+			if (err) return next(err);
+			// Send email including verification code
 			const validateUrl = `http://${req.headers.host}/auth/verify/${user.email}/${user.hash}`;
 			const [sendMailErr, info] = await to(mail.send({
 				user: user,
@@ -123,22 +105,23 @@ const registerUser = async (req, res, next) => {
 	});
 };
 
+
+//
+// ─── VERIFING USER ──────────────────────────────────────────────────────────────
+//
 const verifyUser = async (req, res, next) => {
 	const [userError, user] = await to(User.findOneAndUpdate({
-		email: req.params.email,
-		hash: req.params.hash,
-		active: {
-			$lt: 1
-		}
+		email : req.params.email,
+		hash  : req.params.hash,
+		active: { $lt: 1 }
 	}, {
-		$set: {
-			active: 1
-		}
-	}, {
-		new: true,
-		runValidators: true,
-		context: 'query'
-	}).exec());
+		$set:
+			{ active: 1 }
+		}, {
+			new          : true,
+			runValidators: true,
+			context      : 'query'
+		}).exec());
 	if (userError) return next(userError);
 	if (!user) {
 		req.flash('error', "Invalid approach, please use the link that has been send to your email.");
@@ -148,21 +131,14 @@ const verifyUser = async (req, res, next) => {
 	res.redirect("/auth/login");
 };
 
-/**
- * Validate Login data.
- * validate email, password.
- * if there is an errors return to login page with flash messages containe errors.
- * if there is no errors, continue to next middleware function.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- */
+
+//
+// ─── VALIDATE LOGIN ─────────────────────────────────────────────────────────────
+//
 const validateLogin = async (req, res, next) => {
 	req.checkBody('email', res.__("msgs.validation.login.email")).isEmail();
 	req.checkBody('password', res.__("msgs.validation.login.password")).notEmpty();
-	req.sanitize('email').normalizeEmail({
-		gmail_remove_dots: false
-	});
+	req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
 	const errors = await req.getValidationResult();
 	if (!errors.isEmpty()) {
@@ -178,19 +154,13 @@ const validateLogin = async (req, res, next) => {
 	next();
 };
 
-/**
- * Login user with submitted data [email, password] using passportjs package.
- * if there is no user exist in the database, redirect back to login with error flash message.
- * if there is an existing user then pass user to passportjs, then redirect back after logged in. 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- */
+
+//
+// ─── LOGIN ──────────────────────────────────────────────────────────────────────
+//
 const loginUser = async (req, res, next) => {
 	passport.authenticate('local', (err, user, info) => {
-		if (err) {
-			return next(err);
-		}
+		if (err) return next(err);
 		if (!user) {
 			req.flash('error', info);
 			return res.redirect('/auth/login');
@@ -218,10 +188,10 @@ const loginUser = async (req, res, next) => {
 	})(req, res, next);
 };
 
-/** 
- * logout user using passportjs.
- * then redirect back to root page with logout success flash message.
- */
+
+//
+// ─── LOGOUT ─────────────────────────────────────────────────────────────────────
+//
 const logoutUser = (req, res) => {
 	req.logout();
 	req.user = null;
@@ -229,12 +199,13 @@ const logoutUser = (req, res) => {
 	res.redirect('/');
 };
 
-/** 
- * get Profile view page
- */
+
+//
+// ─── PROFILE VIEW ───────────────────────────────────────────────────────────────
+//
 const getUserProfile = async (req, res, next) => {
 	const [gettingUserErr, user] = await to(User.findOne({
-		"profile.slug": req.params.name
+		"slug": req.params.name
 	}).exec());
 	if (gettingUserErr) return next(gettingUserErr);
 	if (!user) {
@@ -248,13 +219,10 @@ const getUserProfile = async (req, res, next) => {
 	});
 };
 
-/**
- * Validate user profile data for update it.
- * if there is an error or empty data return to profile with errors flash messages
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- */
+
+//
+// ─── VALIDATE BASIC USER PROFILE ────────────────────────────────────────────────
+//
 const validateUserProfile = async (req, res, next) => {
 	req.sanitizeBody('name');
 	req.checkBody('name', res.__('msgs.validation.register.name')).notEmpty();
@@ -270,11 +238,11 @@ const validateUserProfile = async (req, res, next) => {
 	next();
 };
 
-/**
- * Update user's profile submitted data then return back to profile with new data and success flash message.
- * @param {*} req 
- * @param {*} res 
- */
+
+
+//
+// ─── UPDATE USER BASIC DATA ─────────────────────────────────────────────────────
+//
 const updateUserProfile = async (req, res, next) => {
 	let [gettingUserErr, user] = await to(User.findOne({_id: req.params.id}).exec());
 	if (gettingUserErr) return next(gettingUserErr);
@@ -294,16 +262,16 @@ const updateUserProfile = async (req, res, next) => {
 	if (updatingUserErr) return next(updatingUserErr);
 
 	req.flash('success', res.__("msgs.validation.profile.success_basic"));
-	res.redirect(`/auth/profile/${updatedUser.profile.slug}`);
+	res.redirect(`/auth/profile/${updatedUser.slug}`);
 };
 
 /**
  * Validate user profile password.
  * if there is errors then return back with error flash messages.
  * if there is no errors then go to next middleware.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 const validateUserPassword = async (req, res, next) => {
 	req.checkBody('newPassword', res.__('msgs.validation.register.password')).notEmpty();
@@ -327,9 +295,9 @@ const validateUserPassword = async (req, res, next) => {
 /**
  * Update User's password, hashing new one before saveing it.
  * then return to profile with new password.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 const updateUserPassword = async (req, res, next) => {
 	const [err, user] = await to(User.findOne({
@@ -347,7 +315,7 @@ const updateUserPassword = async (req, res, next) => {
 	}));
 	if (sendMailErr) return next(sendMailErr);
 	req.flash('success', res.__("msgs.validation.profile.success_password"));
-	res.redirect(`/auth/profile/${updatedUser.profile.slug}`);
+	res.redirect(`/auth/profile/${updatedUser.slug}`);
 };
 const updateUserAvatar = async function (req, res, next) {
 	var files;
@@ -376,15 +344,15 @@ const updateUserAvatar = async function (req, res, next) {
 	const [updateUserErr, updatedUser] = await to(user.save());
 	if (updateUserErr) return next(updateUserErr);
 	req.flash('success', 'successfully updated your avatar.');
-	res.redirect(`/auth/profile/${updatedUser.profile.slug}`);
+	res.redirect(`/auth/profile/${updatedUser.slug}`);
 
 }
 
 /**
  * Delete user profile by ID then logout.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 const deleteUserAccount = async (req, res, next) => {
 	const [err, user] = await to(User.findByIdAndRemove({
@@ -502,9 +470,7 @@ const oauthRedirect = (req, res, next) => {
  * Unlink OAuth provider.
  */
 const getOauthUnlink = (req, res, next) => {
-	const {
-		provider
-	} = req.params;
+	const {provider} = req.params;
 	User.findById(req.user.id, (err, user) => {
 		if (err) {
 			return next(err);
@@ -516,7 +482,7 @@ const getOauthUnlink = (req, res, next) => {
 				return next(err);
 			}
 			req.flash('success', `${provider} account has been unlinked.`);
-			res.redirect(`/auth/profile/${user.profile.slug}`);
+			res.redirect(`/auth/profile/${user.slug}`);
 		});
 	});
 };

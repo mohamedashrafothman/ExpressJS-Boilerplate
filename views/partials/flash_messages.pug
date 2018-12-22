@@ -3,8 +3,8 @@
 		.col-xs-11.col-sm-4.alert.alert-info.alert-with-icon.animated.fadeInDown(data-notify='container', data-notify-position=`top-${(lang == 'en' ? 'right' : 'left')}`, role='alert', style='display: block; margin: 0 10px 10px;transition: all 0.5s ease-in-out; z-index:99;')
 			button.close(data-notify='dismiss', type='button', aria-hidden='true', style=`position: absolute; ${(lang == 'en' ? 'right' : 'left')}: 10px; top: 55%; margin-top: -13px; z-index: 1;`, onClick="this.parentElement.remove()") &times;
 			span(data-notify='message')
-				strong.text-capitalize.h5 Pssst!, 
-				| Don't forget to verify your account 
+				strong.text-capitalize.h5 Pssst!,
+				| Don't forget to verify your account
 				strong
 					em= `${user.email}`
 	if flashes
@@ -17,7 +17,7 @@
 							span(data-notify='title')
 							span(data-notify='message')= message.msg
 							a(data-notify='url', href='#', target='_blank')
-						else 
+						else
 							button.close(data-notify='dismiss', type='button', aria-hidden='true', style=`position: absolute; ${(lang == 'en' ? 'right' : 'left')}: 10px; top: 55%; margin-top: -13px; z-index: 1;`, onClick="this.parentElement.remove()") &times;
 							span(data-notify='title')
 							span(data-notify='message')= message

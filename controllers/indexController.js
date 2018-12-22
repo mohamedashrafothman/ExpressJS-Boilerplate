@@ -1,3 +1,20 @@
+/*
+     ██╗███╗   ██╗██████╗ ███████╗██╗  ██╗
+    ██║████╗  ██║██╔══██╗██╔════╝╚██╗██╔╝
+   ██║██╔██╗ ██║██║  ██║█████╗   ╚███╔╝
+  ██║██║╚██╗██║██║  ██║██╔══╝   ██╔██╗
+ ██║██║ ╚████║██████╔╝███████╗██╔╝ ██╗
+╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝
+
+      ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     ██╗     ███████╗██████╗
+    ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║     ██║     ██╔════╝██╔══██╗
+   ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║     ██║     █████╗  ██████╔╝
+  ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██╗██║   ██║██║     ██║     ██╔══╝  ██╔══██╗
+ ╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗███████╗███████╗██║  ██║
+ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
+*/
+
+
 const i18n = require('i18n');
 const User = require("../models/user");
 
@@ -21,7 +38,7 @@ const getListOfUsers = async (req, res, next) => {
 		}
 	};
 	const options = {
-		select: "profile.picture profile.name profile.slug profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
+		select: "profile.picture profile.name slug profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
 		page: req.params.page || 1,
 		limit: 5,
 		skip: (this.page * this.limit) - this.limit,
@@ -52,7 +69,7 @@ const getListOfAdmins = async (req, res, next) => {
 		}
 	};
 	const options = {
-		select: "profile.picture profile.name profile.slug profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
+		select: "profile.picture profile.name slug profile.picture_sm profile.picture_md profile.picture_lg email active _id role",
 		page: req.params.page || 1,
 		limit: 5,
 		skip: (this.page * this.limit) - this.limit,
