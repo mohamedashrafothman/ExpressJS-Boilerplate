@@ -15,8 +15,7 @@
 // ─── 1- DEPENDENCIES ───────────────────────────────────────────────────────────────
 //
 
-const express         = require("express");
-const router          = express.Router();
+const router          = require("express").Router();
 const permission      = require("permission");
 const passportConfig  = require('../config/passportConfig');
 const indexController = require('../controllers/indexController');

@@ -15,10 +15,9 @@
 // ─── 1- DEPENDENCIES ───────────────────────────────────────────────────────────────
 //
 
-const _              = require('lodash');
+const {includes}     = require('lodash');
 const multer         = require('multer');
-const express        = require("express");
-const router         = express.Router();
+const router         = require("express").Router();
 const passport       = require("passport");
 const permission     = require("permission");
 const AvatarStorage  = require('../helpers/AvatarStorage');
@@ -45,7 +44,7 @@ var limits = {
 var fileFilter = function (req, file, cb) {
 	// supported image file mimetypes
 	var allowedMimes = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'];
-	if (_.includes(allowedMimes, file.mimetype)) {
+	if (includes(allowedMimes, file.mimetype)) {
 		// allow supported image files
 		cb(null, true);
 	} else {

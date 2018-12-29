@@ -1,18 +1,22 @@
+/*
+     ██╗███╗   ███╗██████╗  ██████╗ ██████╗ ████████╗      ███████╗██╗  ██╗██████╗  ██████╗ ██████╗ ████████╗    ██████╗  █████╗ ████████╗ █████╗
+    ██║████╗ ████║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝      ██╔════╝╚██╗██╔╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+   ██║██╔████╔██║██████╔╝██║   ██║██████╔╝   ██║   █████╗█████╗   ╚███╔╝ ██████╔╝██║   ██║██████╔╝   ██║       ██║  ██║███████║   ██║   ███████║
+  ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ╚════╝██╔══╝   ██╔██╗ ██╔═══╝ ██║   ██║██╔══██╗   ██║       ██║  ██║██╔══██║   ██║   ██╔══██║
+ ██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║         ███████╗██╔╝ ██╗██║     ╚██████╔╝██║  ██║   ██║       ██████╔╝██║  ██║   ██║   ██║  ██║
+╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝         ╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝       ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+*/
+
+
 require('dotenv').config({path: __dirname + '/../.env'});
-const fs               = require('fs');  // node js file system module.
-const to               = require("await-to-js").default; // async await error handler module.
-const User             = require('../models/User'); // user Model.
-const chalk            = require("chalk"); // for coloring log purpose.
-const mongoose         = require('mongoose'); // mongoosejs, mongodb ORM module.
-      mongoose.Promise = global.Promise;  // Tell Mongoose to use ES6 promises.
+const fs               = require('fs');
+const to               = require("await-to-js").default;
+const User             = require('../models/User');
+const chalk            = require("chalk");
+const mongoose         = require('mongoose');
+      mongoose.Promise = global.Promise;
 
 
-/**
- * @description this class for importing data from json files and droping mongodb collections from database
- * @author Mohamed Ashraf Othman
- * @date 2018-08-25
- * @class ImportAndClearMongoDb
- */
 class ImportAndClearMongoDb {
 	constructor(users){
 		this.users = users;
@@ -50,7 +54,6 @@ class ImportAndClearMongoDb {
 		console.log(chalk.blue(`Data Deleted. To load sample data, run\n\n${chalk.green("npm run sample")}\n\n`));
 		process.exit();
 	}
-	
 	async loadData() {
 		const [saveUsersError, savedUsers] = await to(User.insertMany(this.users));
 		if(saveUsersError){

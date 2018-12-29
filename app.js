@@ -5,7 +5,7 @@
 	  ██╔══██║██╔═══╝ ██╔═══╝    ██   ██║╚════██║
  	 ██║  ██║██║     ██║     ██╗╚█████╔╝███████║
 	╚═╝  ╚═╝╚═╝     ╚═╝     ╚═╝ ╚════╝ ╚══════╝
-	Is the starting point of your application. It loads everything and it begins serving user requests.
+	starting point of the application. It loads everything and it begins serving user requests.
 	https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction#Helloworld_Express
 */
 
@@ -17,7 +17,7 @@
 // ─── 1- DEPENDENCIES ───────────────────────────────────────────────────────────────
 //
 
-require("dotenv/config"); // NOTE: Require dotenv package first then other dependencies
+require("dotenv/config"); // NOTE: Require dotenv package first then other dependencies.
 const _                = require("lodash");
 const path             = require("path");
 const i18n             = require("i18n");
@@ -46,7 +46,7 @@ const expressValidator = require("express-validator");
 
 //
 // ─── 2- CONFIGURATIONS ─────────────────────────────────────────────────────────────
-// NOTE: Make sure that all configuration must be replaced in config folder
+// NOTE: Make sure that all configuration must be replaced in config folder.
 
 require('./config/passportConfig');
 require('./config/i18nConfig');
@@ -106,11 +106,11 @@ app.use(expressValidator());
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(session({
 	secret: process.env.SESSION_SECRET,
-	saveUninitialized: false, // Don't create session until something stored
-	resave: false,            // Don't save session if unmodified
+	saveUninitialized: false, // Don't create session until something stored.
+	resave: false,            // Don't save session if unmodified.
 	store: new MongoStore({
 		url: process.env.MONGODB_URI,
-		ttl: 60 * 60 * 1,   // One hour and remove session from database
+		ttl: 60 * 60 * 1,   // One hour and remove session from database.
 		resave: false,
 		autoReconnect: true,
 		autoRemove: 'native',
@@ -136,9 +136,9 @@ app.set('permission', {
 		status: 403
 	}
 });
-app.use(csrf({ cookie: true }));  // csrf protection MUST be defined after cookieParser and session middleware
+app.use(csrf({ cookie: true }));  // csrf protection MUST be defined after cookieParser and session middleware.
 app.use(loggerToMongo(process.env.MONGODB_URI, 'logs', function (req, res) {return res.statusCode > 399;}));
-app.use((req, res, next) => {     // pass the Globals to all responses
+app.use((req, res, next) => {     // pass the Globals to all responses.
 	res.locals._          = _;
 	res.locals.h          = utilityHelpers;
 	res.locals.urlSegment = utilityHelpers.urlSegment(req);
@@ -150,7 +150,7 @@ app.use((req, res, next) => {     // pass the Globals to all responses
 	next();
 });
 app.use((req, res, next) => {
-	// After successful login, redirect back to the intended page
+	// After successful login, redirect back to the intended page.
 	if (!req.user && req.path !== '/auth/login' && req.path !== '/auth/register' && !req.path.match(/^\/auth/) && !req.path.match(/\./)) {
 		req.session.returnTo = req.originalUrl;
 	} else if (req.user && (req.path === '/auth/profile' || req.path.match(/^\/api/))) {

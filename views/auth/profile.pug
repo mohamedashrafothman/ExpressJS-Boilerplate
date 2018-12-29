@@ -6,18 +6,18 @@ block content
 			.row.py-4
 				.col-12.col-md-4.d-lg-block.d-none
 					ul.list-group
-						li.list-group-item 
+						li.list-group-item
 							a.text-capitalize.d-block.w-100.h-100(href="#profile-photo") profile photo
-						li.list-group-item 
+						li.list-group-item
 							a.text-capitalize.d-block.w-100.h-100(href="#profile-info") personal information
-						li.list-group-item 
+						li.list-group-item
 							a.text-capitalize.d-block.w-100.h-100(href="#change-password") change password
 						if (_.isEqual(userData._id, user._id))
-							li.list-group-item 
+							li.list-group-item
 								a.text-capitalize.d-block.w-100.h-100(href="#linked-account") linked accounts
 						li.list-group-item
 							a.text-capitalize.d-block.w-100.h-100(href="#delete-account") Delete account
-						
+
 				.col-12.col-lg-8
 					.media.mb-4.col-12#profile-photo
 						if (userData.profile.picture || userData.profile.picture_sm || userData.profile.picture_md || userData.profile.picture_lg)
@@ -75,21 +75,21 @@ block content
 									label.text-capitalize.text-dark.font-weight-bold.m-0(for="location")
 										= __('user.location')
 										span.text-muted.font-weight-light
-											| - 
+											| -
 											= __("user.optional")
 									input#location(class=`text-secondary form-control` name="location" type="text" placeholder=__('user.location') value=`${userData.profile.location ? userData.profile.location : ''}`)
 								.form-group.col-12.col-md-6
 									label.text-capitalize.text-dark.font-weight-bold.m-0(for="website")
 										= __('user.website')
 										span.text-muted.font-weight-light
-											| - 
+											| -
 											= __("user.optional")
 									input#website(class=`text-secondary form-control` name="website" type="text" placeholder=__('user.website') value=`${userData.profile.website ? userData.profile.website : ''}`)
 								.form-group.col-12
 									label.col-12.text-capitalize.text-dark.font-weight-bold.m-0.p-0
 										= __('user.gender.title')
 										span.text-muted.font-weight-light
-											| - 
+											| -
 											= __("user.optional")
 									.form-check.form-check-inline.col-12
 										.custom-control.custom-checkbox
@@ -150,6 +150,6 @@ block content
 						.card-body
 							h4.col-12.px-0.text-capitalize.m-0= __('user.delete_account')
 							small.text-muted.font-italic= __("user.danger_zone_note")
-							a.btn.btn-danger.text-uppercase.d-block.mt-4(href=`/auth/profile/${userData._id}/delete`) 
+							a.btn.btn-danger.text-uppercase.d-block.mt-4(href=`/auth/profile/${userData._id}/delete`)
 								span.mr-2.far.fa-trash-alt
 								= __('user.delete_my_account')

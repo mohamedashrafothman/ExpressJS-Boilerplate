@@ -30,12 +30,11 @@ block content
 									span.ml-2.text-danger *
 								input.form-control.text-secondary#confirmPassword(name="confirmPassword" type="password" aria-describedby="confirmPasswordHelp" placeholder=__('user.confirm_password') required)
 							.form-group.col-12
-								label.text-capitalize.text-dark.font-weight-bold.m-0(for="adminCode") 
-									| Admin Code 
+								label.text-capitalize.text-dark.font-weight-bold.m-0(for="adminCode")
+									| Admin Code
 									small.text-muted - optional
 								input.form-control.text-secondary#adminCode(name="adminCode" type="password" aria-describedby="adminCodeHelp" placeholder="Admin code")
 								small.form-text.text-muted#adminCodeHelp no worries if you don't have admin code, this field for admins only and not required for normal users.
 						.form-row.mt-3
 							.col-12.col-md-2
 								button.w-100.btn.btn-primary.text-white.text-capitalize(type="submit")= __('user.register')
-			
